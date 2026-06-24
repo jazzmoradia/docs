@@ -7,14 +7,30 @@ mode: "custom"
 
 import { OmniScapeBundle } from "/snippets/omniscape.jsx";
 
-export const {
-  CinematicHero,
-  WorkflowSpectrum,
-  IntentTile,
-  DeterminismDemo,
-  OsRevealBoot,
-  ControlCenterExplorer,
-} = OmniScapeBundle;
+export function CinematicHero() {
+  const Comp = OmniScapeBundle.CinematicHero;
+  return <Comp />;
+}
+export function WorkflowSpectrum() {
+  const Comp = OmniScapeBundle.WorkflowSpectrum;
+  return <Comp />;
+}
+export function IntentTile(props) {
+  const Comp = OmniScapeBundle.IntentTile;
+  return <Comp {...props} />;
+}
+export function DeterminismDemo() {
+  const Comp = OmniScapeBundle.DeterminismDemo;
+  return <Comp />;
+}
+export function OsRevealBoot() {
+  const Comp = OmniScapeBundle.OsRevealBoot;
+  return <Comp />;
+}
+export function ControlCenterExplorer() {
+  const Comp = OmniScapeBundle.ControlCenterExplorer;
+  return <Comp />;
+}
 
 <div className="os-landing">
 

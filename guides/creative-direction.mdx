@@ -7,7 +7,10 @@ keywords: ["OmniScape art direction", "creative direction", "settlement recipes"
 
 import { OmniScapeBundle } from "/snippets/omniscape.jsx";
 
-export const { IntentTile } = OmniScapeBundle;
+export function IntentTile(props) {
+  const Comp = OmniScapeBundle.IntentTile;
+  return <Comp {...props} />;
+}
 
 OmniScape places and instances; you direct the composition. Think in five terms: **silhouette** from above, **rhythm** from spacing, **contrast** between landmarks and filler, **grounding** from terrain, and **story** from gates, walls, and debris.
 

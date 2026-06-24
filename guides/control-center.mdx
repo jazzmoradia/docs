@@ -8,7 +8,10 @@ mode: "wide"
 
 import { OmniScapeBundle } from "/snippets/omniscape.jsx";
 
-export const { ControlCenterExplorer } = OmniScapeBundle;
+export function ControlCenterExplorer() {
+  const Comp = OmniScapeBundle.ControlCenterExplorer;
+  return <Comp />;
+}
 
 Everything in OmniScape routes through one dockable panel. It's organised in workflow order, top to bottom and left to right — so the panel reads like the act of building a place.
 
