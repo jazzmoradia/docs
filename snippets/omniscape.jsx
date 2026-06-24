@@ -1,11 +1,10 @@
 /*
- * OmniScape shared web components (Mintlify snippet bundle).
- * One file so components can share the deterministic generator — Mintlify does
- * not support nested imports between snippet files. No external packages.
- *
- * Exports: HeroPanel, WorkflowSpectrum, IntentTile, DeterminismDemo, PhaseTag.
+ * OmniScape Mintlify components — single bundle export.
+ * Mintlify inlines named exports only (not module helpers), so everything
+ * lives inside one IIFE. Pages import OmniScapeBundle and destructure.
  */
 
+export const OmniScapeBundle = (() => {
 function mulberry32(a) {
   return function () {
     a |= 0;
@@ -466,7 +465,7 @@ function useReveal(drawFn, deps) {
 }
 
 /* ---- HeroPanel — canonical v13 mockup (live iframe) ------------------ */
-export const HeroPanel = () => (
+const HeroPanel = () => (
   <div className="os-cc-frame-wrap os-cc-frame-wrap--hero">
     <iframe
       src="/control-center-mockup.html?embed=1"
@@ -493,12 +492,13 @@ function getScrollParent(el) {
   return null;
 }
 
-export const CinematicHero = () => {
+const CinematicHero = () => {
   const trackRef = useRef(null);
   const frameRef = useRef(null);
   const canvasRef = useRef(null);
   const [size, setSize] = useState({ w: 388, h: 480 });
   const [progress, setProgress] = useState(0);
+  const [introP, setIntroP] = useState(0);
   const [reduced, setReduced] = useState(false);
   const data = useMemo(() => genVariant(24601, 'town'), []);
 
@@ -510,6 +510,22 @@ export const CinematicHero = () => {
     if (mq && mq.addEventListener) { mq.addEventListener('change', apply); return () => mq.removeEventListener('change', apply); }
     return undefined;
   }, []);
+
+  /* Auto-play opening build so the hero is alive before scroll */
+  useEffect(() => {
+    if (typeof window === 'undefined' || reduced) return undefined;
+    let start = 0;
+    let raf = 0;
+    const dur = 2800;
+    const tick = (ts) => {
+      if (!start) start = ts;
+      const t = Math.min(1, (ts - start) / dur);
+      setIntroP(0.42 * (1 - Math.pow(1 - t, 3)));
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [reduced]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return undefined;
@@ -551,14 +567,16 @@ export const CinematicHero = () => {
     };
   }, [reduced]);
 
-  const buildP = reduced ? 1 : Math.min(1, progress / 0.55);
+  const motionP = reduced ? 1 : Math.max(introP, progress);
+  const buildP = Math.min(1, motionP / 0.55);
   useEffect(() => { drawIso(canvasRef.current, data, size, buildP); }, [data, size, buildP]);
 
-  const seg = (a, b) => Math.max(0, Math.min(1, (progress - a) / (b - a)));
-  const canvasFade = reduced ? 0 : 1 - seg(0.08, 0.45);
+  const seg = (a, b) => Math.max(0, Math.min(1, (motionP - a) / (b - a)));
+  /* Device visible on load; canvas only when the build has started */
+  const canvasFade = reduced ? 0 : (buildP > 0.03 ? 1 - seg(0.08, 0.45) : 0);
   const canvasScale = 1 - 0.04 * seg(0.2, 0.5);
   const canvasPointer = canvasFade < 0.05 ? 'none' : 'auto';
-  const cueOpacity = reduced ? 0 : 1 - seg(0.02, 0.14);
+  const cueOpacity = reduced ? 0 : Math.max(0, 1 - seg(0.02, 0.14) - introP * 1.2);
 
   return (
     <section ref={trackRef} className={'os-cine' + (reduced ? ' os-cine--static' : '')}>
@@ -613,7 +631,7 @@ const SPECTRUM = [
   { n: 'Ambient', q: 'Does it breathe?', cls: 'os-phase-ambient', href: '/guides/ambient', d: 'Flora, fauna, audio.' },
 ];
 
-export const WorkflowSpectrum = () => (
+const WorkflowSpectrum = () => (
   <div className="not-prose os-wf-grid">
     {SPECTRUM.map((p, i) => (
       <a
@@ -632,7 +650,7 @@ export const WorkflowSpectrum = () => (
 );
 
 /* ---- IntentTile — creative-direction gallery ------------------------- */
-export const IntentTile = ({ variant = 'town', seed = 12345, kicker = '', title = '', desc = '' }) => {
+const IntentTile = ({ variant = 'town', seed = 12345, kicker = '', title = '', desc = '' }) => {
   const [size, setSize] = useState({ w: 320, h: 230 });
   const wrapRef = useRef(null);
   const data = useMemo(() => genVariant(seed, variant), [seed, variant]);
@@ -660,7 +678,7 @@ export const IntentTile = ({ variant = 'town', seed = 12345, kicker = '', title 
 };
 
 /* ---- DeterminismDemo — same seed renders identically ----------------- */
-export const DeterminismDemo = () => {
+const DeterminismDemo = () => {
   const [seed, setSeed] = useState(48217);
   const sz = { w: 240, h: 150 };
   const data = useMemo(() => genVariant(seed, 'town'), [seed]);
@@ -698,13 +716,145 @@ export const DeterminismDemo = () => {
 };
 
 /* ---- PhaseTag — inline tag for doc pages ----------------------------- */
-export const PhaseTag = ({ phase = 'layout', children }) => {
+const PhaseTag = ({ phase = 'layout', children }) => {
   const cls = { layout: 'os-phase-layout', build: 'os-phase-build', structure: 'os-phase-structure', ambient: 'os-phase-ambient' }[phase] || 'os-phase-layout';
   return <span className={'os-tag ' + cls}>{children || phase}</span>;
 };
 
+/* ---- ControlCenterExplorer — canonical v13 mockup + phase reader ------ */
+const PHASES = [
+  {
+    id: 'layout', name: 'Layout', q: 'Where?', cls: 'os-phase-layout',
+    kicker: 'Tab 1 · the footprint', title: 'Decide where the settlement lives',
+    desc: 'Layout sets the silhouette — pattern, size, districts, and the zones every later layer inherits. It is the first read from the map view.',
+    controls: [
+      { n: 'Pattern strip', loc: 'Layout · top', d: 'Radial, Voronoi, Perlin, Axial, or Organic — the big shape of the place.' },
+      { n: 'Settlement size & Num Nodes', loc: 'Layout · Settlement', d: 'Radius in centimetres and how many landmark nodes the pattern places.' },
+      { n: 'Districts & Zones', loc: 'Layout · Zones table', d: 'Macro regions and weighted district tags (market, sacred, civic) that bias spawn.', v3: true },
+      { n: 'Volumes & Anchors', loc: 'Canvas · edge docks', d: 'Inclusion / exclusion regions and fixed nodes you place by hand.' },
+      { n: 'Atlas', loc: 'Canvas · fold-corner', d: 'Import a real place by name, file, or screenshot as the layout skeleton.', v3: true },
+    ],
+  },
+  {
+    id: 'build', name: 'Build', q: 'What?', cls: 'os-phase-build',
+    kicker: 'Tab 2 · the fabric', title: 'Bring your own buildings',
+    desc: 'Build is where your art lives. Assign meshes or Blueprints per tier; OmniScape places them with hand-built rhythm. Presets store the numbers — you bring the kit.',
+    controls: [
+      { n: 'Large / Medium / Small / Sprawl', loc: 'Build · tier tabs', d: 'Large is one landmark per node; medium and small fill the fabric and edges.' },
+      { n: 'Asset slots (Mesh · Blueprint)', loc: 'Build · asset cards', d: 'Drop a static mesh for fast instancing or a Blueprint when you need logic.' },
+      { n: 'Tier scale & per-node max', loc: 'Build · tier strip', d: 'Uniform size and how dense each node gets.' },
+      { n: 'Cluster vs Roadside', loc: 'Build · placement', d: 'Rings around nodes, or plots that face and line the roads.' },
+      { n: 'Edge Density (sprawl)', loc: 'Build · Sprawl tier', d: 'Fills the gaps between clusters and roads with small buildings.' },
+    ],
+  },
+  {
+    id: 'structure', name: 'Structure', q: 'How does it connect?', cls: 'os-phase-structure',
+    kicker: 'Tab 3 · the connective tissue', title: 'Connect and enclose',
+    desc: 'Structure ties the settlement together — roads that read like a real network, and walls that hug irregular sites with gates and towers.',
+    controls: [
+      { n: 'Roads — style & terrain', loc: 'Structure · Roads', d: 'Straight, curved, or natural; follow the ground, contour steep slopes, or level.' },
+      { n: 'Road hierarchy', loc: 'Structure · Roads', d: 'Arterial, Collector, and Local classes with their own width and mesh.', v3: true },
+      { n: 'Walls — shape & coverage', loc: 'Structure · Walls', d: 'Hull-hugging or grand ring, full loop or ruined gaps, angular to organic.' },
+      { n: 'Gates, pillars & towers', loc: 'Structure · Walls', d: 'Auto, anchored, or evenly spaced gates; towers snap to the sharpest corners.', v3: true },
+      { n: 'Landscape bake', loc: 'Structure · Terrain', d: 'Paint landscape layer weights from roads, pads, and walls.', beta: true },
+    ],
+  },
+  {
+    id: 'ambient', name: 'Ambient', q: 'Does it breathe?', cls: 'os-phase-ambient',
+    kicker: 'Tab 4 · the life', title: 'Make it breathe',
+    desc: 'Ambient is the final pass — vegetation, rock and debris that tell a story, plus optional fauna, audio, and a clean hand-off to your own PCG graphs.',
+    controls: [
+      { n: 'Flora layers', loc: 'Ambient · Flora', d: 'Vegetation, Rock, and Debris layers with density and distance bands.' },
+      { n: 'Fauna', loc: 'Ambient · Fauna', d: 'Creature placement with building-distance rules and a global budget.', beta: true },
+      { n: 'Audio zones', loc: 'Ambient · Audio', d: 'Per-zone ambient sound with real attenuation, sampled along roads.', beta: true },
+      { n: 'PCG Hand-off', loc: 'Ambient · PCG', d: 'Export nodes, roads, walls, and footprints as tagged PCG point records.', beta: true },
+    ],
+  },
+];
+const PHASE_INDEX = { layout: 0, build: 1, structure: 2, ambient: 3 };
+
+const ControlCenterExplorer = () => {
+  const [phase, setPhase] = useState(0);
+  const iframeRef = useRef(null);
+  const active = PHASES[phase];
+
+  useEffect(() => {
+    const onMsg = (e) => {
+      if (!e.data || e.data.type !== 'omniscape-tab') return;
+      const idx = PHASE_INDEX[e.data.phase];
+      if (idx != null) setPhase(idx);
+    };
+    window.addEventListener('message', onMsg);
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
+  const setPhaseRemote = (idx) => {
+    setPhase(idx);
+    const win = iframeRef.current && iframeRef.current.contentWindow;
+    if (win) win.postMessage({ type: 'omniscape-set-tab', phase: PHASES[idx].id }, '*');
+  };
+
+  return (
+    <div className="os-explorer not-prose">
+      <div className="os-explorer-device">
+        <div className="os-cc-frame-wrap">
+          <div className="os-cc-frame-label">
+            <span>Control Center v13</span>
+            <span className="os-cc-frame-badge">Canonical mockup</span>
+          </div>
+          <iframe
+            ref={iframeRef}
+            src="/control-center-mockup.html?embed=1"
+            title="OmniScape Control Center — interactive mockup"
+            className="os-cc-frame"
+            loading="lazy"
+          />
+        </div>
+      </div>
+      <div className={'os-explorer-read ' + active.cls}>
+        <div className="os-xr-phasebar" role="tablist" aria-label="Workflow phases">
+          {PHASES.map((p, i) => (
+            <button
+              key={p.id}
+              type="button"
+              role="tab"
+              aria-selected={phase === i}
+              data-active={phase === i}
+              className={'os-xr-phase ' + p.cls}
+              onClick={() => setPhaseRemote(i)}
+            >
+              <span className="os-xr-num">0{i + 1}</span>
+              <span className="os-xr-name">{p.name}</span>
+              <span className="os-xr-q">{p.q}</span>
+            </button>
+          ))}
+        </div>
+        <div className="os-xr-body">
+          <p className="os-xr-kicker">{active.kicker}</p>
+          <h3 className="os-xr-title">{active.title}</h3>
+          <p className="os-xr-desc">{active.desc}</p>
+          <p className="os-xr-hint">Click tabs in the panel — or use the phase buttons above — to explore each layer.</p>
+          <div className="os-xr-controls">
+            {active.controls.map((c) => (
+              <div className="os-xr-ctrl" key={c.n}>
+                <span className="os-xr-ctrl-name">
+                  {c.n}
+                  {c.beta ? <span className="os-xr-beta">BETA</span> : null}
+                  {c.v3 ? <span className="os-xr-beta">v3.0</span> : null}
+                </span>
+                <span className="os-xr-ctrl-loc">{c.loc}</span>
+                <span className="os-xr-ctrl-desc">{c.d}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 /* ---- OsRevealBoot — scroll reveal (mint dev does not load reveal.js) -- */
-export const OsRevealBoot = () => {
+const OsRevealBoot = () => {
   useEffect(() => {
     if (typeof window === 'undefined' || typeof document === 'undefined') return undefined;
 
@@ -759,4 +909,14 @@ export const OsRevealBoot = () => {
   return null;
 };
 
-export default WorkflowSpectrum;
+return {
+  HeroPanel,
+  CinematicHero,
+  WorkflowSpectrum,
+  IntentTile,
+  DeterminismDemo,
+  PhaseTag,
+  OsRevealBoot,
+  ControlCenterExplorer,
+};
+})();
