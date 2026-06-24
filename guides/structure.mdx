@@ -1,0 +1,77 @@
+---
+title: "Structure — connect and enclose"
+sidebarTitle: "Structure"
+description: "The OmniScape Structure tab: roads with style and terrain handling, a road hierarchy of arterial/collector/local, concave-hull walls with gates and towers, and the optional landscape bake."
+keywords: ["OmniScape structure", "roads", "walls", "road hierarchy", "gates", "towers", "landscape bake"]
+---
+
+<span className="os-tag os-phase-structure">Structure · How does it connect?</span>
+
+Structure ties the settlement together — roads that read like a real network, and walls that enclose irregular sites with gates and towers.
+
+## Roads
+
+Enable **Generate roads**, then shape them.
+
+<AccordionGroup>
+  <Accordion title="Style — straight, curved, natural" icon="spline">
+    Planned, sweeping, or worn. The horizontal character of the path.
+  </Accordion>
+  <Accordion title="Terrain — follow, contour, level" icon="mountain">
+    **Follow** traces hills; **Contour** caps grade on steep slopes; **Level** flattens each segment for gentle ground. Three sliders — ground follow, max climb, road banking — sit in the main Road tab; cut & fill and smoothing live in advanced tuning. <span className="os-tag os-phase-structure">v3.0</span>
+  </Accordion>
+  <Accordion title="Road hierarchy — arterial, collector, local" icon="git-fork">
+    Roads split into three classes, each with its own width, mesh assignment, and terrain mode. Optional Blueprint spawn along splines for props or brushes. <span className="os-tag os-phase-structure">v3.0</span>
+  </Accordion>
+  <Accordion title="Junctions & intersections" icon="circle-dot">
+    Junction cleanup trims ends at intersections by default. Add an **intersection mesh** and tune **radius scale** for deliberate hub pads.
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+  Prefer **road assets** (weighted meshes per segment). Visual width and tiling are separate from road **clearance** — width scale changes the look, not the exclusion zone.
+</Note>
+
+## Walls
+
+Enable **Generate walls** to enclose the settlement.
+
+| Control | Effect |
+|---|---|
+| **Perimeter fit** | Hug the footprint hull ↔ expand toward a grand radius ring. |
+| **Shape** | **Angular** · **Natural** (readable default) · **Organic** (weathered). |
+| **Coverage** | Full loop, or partial for ruins and gaps. |
+| **Gates** | Auto · Anchors · Evenly spaced. |
+| **Pillars** | Corners only, or spaced along the wall. |
+| **Towers / bastions** | Snap to the sharpest corners first for a fortified silhouette. <span className="os-tag os-phase-structure">v3.0</span> |
+
+Walls keep separate weighted lists for segments, pillars, and gates. In v3, the perimeter hugs irregular sites with a **concave hull** rather than a simple bounding ring.
+
+<Warning>
+  A **full perimeter** needs a layout that closes. If yours doesn't, use **partial** coverage or adjust nodes and roads until it does.
+</Warning>
+
+## Landscape bake
+
+<span className="os-tag os-phase-ambient">Beta</span> An optional **landscape paint bake** paints additive layer weights from roads, walls, building pads, and settlement bounds. It runs as a **separate editor action** after layout — so you can rerun or undo it — not as part of the main Generate pass. Enable **Beta** in the status bar first, then pick target layers in the Structure → Landscape tray.
+
+| Roads | Range | Default |
+|---|---|---|
+| Road width | ≥ 50 | 400 |
+| Junction radius scale | 0.25 – 3 | 1 |
+
+| Walls | Range | Default |
+|---|---|---|
+| Perimeter fit | 0 – 1 | 1 |
+| Coverage (partial) | 0.05 – 1 | 0.75 |
+| Height | ≥ 50 | 400 |
+| Thickness | ≥ 10 | 200 |
+
+<CardGroup cols={2}>
+  <Card title="Next: Ambient" icon="trees" href="/guides/ambient">
+    Add the life — flora, fauna, and audio.
+  </Card>
+  <Card title="Road & wall recipes" icon="palette" href="/guides/creative-direction">
+    Fortress rings, planned grids, ruined enclosures.
+  </Card>
+</CardGroup>

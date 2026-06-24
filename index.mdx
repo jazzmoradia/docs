@@ -1,56 +1,198 @@
 ---
-title: "OmniScape — Procedural Settlements for Unreal Engine"
-sidebarTitle: "Home"
-description: "Generate convincing towns, fortresses, and villages in Unreal Engine 5.5+ using your own art. One actor, one seed, hand-placed quality."
+title: "OmniScape — Procedural settlements for Unreal Engine"
+description: "Deterministic procedural settlement generation for Unreal Engine 5.5+. One actor, one Control Center, your art. Layout, streets, buildings, walls, and ambient detail from a single seed."
+keywords: ["OmniScape", "Unreal Engine", "procedural settlement", "city generator", "BYOA", "deterministic", "Control Center", "Fab"]
+mode: "custom"
 ---
 
-OmniScape is a procedural settlement generator for Unreal Engine 5.5+ that turns your existing meshes and Blueprints into complete, believable towns, fortresses, and villages — laid out, streeted, walled, and detailed from a single actor and a single seed. You stay in control of the art; OmniScape handles everything about how that art is arranged.
+import { CinematicHero, WorkflowSpectrum, IntentTile, DeterminismDemo, OsRevealBoot } from "/snippets/omniscape.jsx";
+import { ControlCenterExplorer } from "/snippets/control-center-explorer.jsx";
 
-<CardGroup cols={2}>
-  <Card title="Get OmniScape" icon="bag-shopping" href="https://fab.com/s/4aeff49faf04">
-    Purchase OmniScape on Fab and add it to your Unreal Engine project today.
-  </Card>
-  <Card title="Quick Start" icon="rocket" href="/get-started/quick-start">
-    Place your first generator, assign your art, and generate a settlement in minutes.
-  </Card>
-  <Card title="Explore Guides" icon="map" href="/guides/control-center">
-    Deep-dive into the Control Center, presets, layout patterns, and every tab.
-  </Card>
-  <Card title="Get Help" icon="life-ring" href="/help/troubleshooting">
-    Troubleshooting, FAQs, and links to the community support thread.
-  </Card>
-</CardGroup>
+<div className="os-landing">
 
-## How it works
+<OsRevealBoot />
 
-OmniScape follows a straightforward handshake between your art and its layout engine. Understanding these three points covers most of what the tool does.
+{/* ════════════════════════ CINEMATIC HERO ════════════════════════ */}
+<CinematicHero />
 
-<Steps>
-  <Step title="You bring the art">
-    Assign your Static Meshes or Blueprint classes to the **Large**, **Medium**, and **Small** building tiers in the Build tab. Add road meshes, wall pieces, flora, and props as needed — or leave any layer empty to skip it entirely.
-  </Step>
-  <Step title="OmniScape handles the layout">
-    One click on **Generate** and OmniScape places zones, roads, buildings, walls, flora, fauna, and ambient audio across the settlement footprint. Five layout patterns, three road elevation modes, and a full wall system give you broad creative range without manual placement.
-  </Step>
-  <Step title="Same seed, same result">
-    Every machine that runs the same seed and settings produces the exact same layout. Hand the level to a collaborator, re-generate after changing a mesh, or version the seed in source control — the outcome is always deterministic.
-  </Step>
-</Steps>
+{/* ════════════════════════ THREE PILLARS ════════════════════════ */}
+<section className="os-section os-section--tight">
+  <div className="os-wrap">
+    <div className="os-det os-reveal">
+      <div className="os-det-cell">
+        <div className="os-num">// DETERMINISTIC</div>
+        <h3>Same seed, same place</h3>
+        <p>Same seed and settings produce the same layout on every machine and in every cooked build. Lock a composition and trust it through ship.</p>
+      </div>
+      <div className="os-det-cell">
+        <div className="os-num">// BYOA</div>
+        <h3>Your art, any style</h3>
+        <p>Medieval, sci-fi, desert, ruins — assign your own meshes and Blueprints. Presets store the numbers; you bring the look.</p>
+      </div>
+      <div className="os-det-cell">
+        <div className="os-num">// ONE PANEL</div>
+        <h3>No graph to wire</h3>
+        <p>Everything routes through a single Control Center. No PCG graph to author, no node spaghetti — just settlements and results.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-## Where do you want to start?
+{/* ════════════════════════ CONTROL CENTER EXPLORER ════════════════════════ */}
+<section className="os-section" id="control-center">
+  <div className="os-wrap">
+    <div className="os-section-head os-reveal">
+      <p className="os-eyebrow">The Control Center</p>
+      <h2 className="os-h2">The whole product lives in one panel.</h2>
+      <p className="os-lead">
+        Four tabs, in workflow order. Click through them and watch the panel re-emphasise the layer each tab owns —
+        this is how you map a capability to its place in the UI before you ever open the editor.
+      </p>
+    </div>
+    <div>
+      <ControlCenterExplorer />
+    </div>
+  </div>
+</section>
 
-<CardGroup cols={3}>
-  <Card title="Just Bought" icon="box-open" href="/get-started/quick-start">
-    Start here. Place the Generator, assign your first assets, and get something on screen fast.
-  </Card>
-  <Card title="Active User" icon="sliders" href="/guides/control-center">
-    Dig into the Control Center tabs — Layout, Build, Structure, Ambient, and Export.
-  </Card>
-  <Card title="Creative Explorer" icon="compass-drafting" href="/guides/presets">
-    Browse the twelve archetype presets and learn how to build and save your own.
-  </Card>
-</CardGroup>
+{/* ════════════════════════ WORKFLOW SPECTRUM ════════════════════════ */}
+<section className="os-section os-section--tight">
+  <div className="os-wrap">
+    <div className="os-section-head os-section-head--center os-reveal">
+      <p className="os-eyebrow">A model you can hold in your head</p>
+      <h2 className="os-h2">Layout → Build → Structure → Ambient</h2>
+      <p className="os-lead">Four questions, answered in order. Tab order is workflow order — it never changes.</p>
+    </div>
+    <div className="os-reveal">
+      <WorkflowSpectrum />
+    </div>
+  </div>
+</section>
 
-<Note>
-  **Ready to purchase?** Pick up OmniScape on [Fab](https://fab.com/s/4aeff49faf04). Want to see it in action first? Watch the [demo video](https://youtu.be/xFo9JeM7dgc) for a full walkthrough of a settlement being built from scratch.
-</Note>
+{/* ════════════════════════ PRINCIPLE BAND ════════════════════════ */}
+<section className="os-section os-principle">
+  <div className="os-wrap os-reveal">
+    <blockquote>Presets store the <em>numbers</em>. You bring the <em>art</em>.</blockquote>
+    <cite>OmniScape product principle</cite>
+  </div>
+</section>
+
+{/* ════════════════════════ DETERMINISM DEMO ════════════════════════ */}
+<section className="os-section">
+  <div className="os-wrap">
+    <div className="os-grid os-grid--2" style={{ alignItems: "center", gap: "48px" }}>
+      <div className="os-reveal">
+        <p className="os-eyebrow">Determinism you can trust</p>
+        <h2 className="os-h2">Reproducible by design.</h2>
+        <p className="os-lead">
+          Variation comes from one number — the seed. Toggle a single layer and the others never reshuffle. Hand the
+          same seed to a teammate, or cook it into a build, and the settlement comes out identical.
+        </p>
+        <div className="os-cta-row">
+          <a className="os-btn os-btn--ghost" href="/get-started/first-settlement">Generate your first settlement →</a>
+        </div>
+      </div>
+      <div className="os-reveal" style={{ transitionDelay: "0.1s" }}>
+        <DeterminismDemo />
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* ════════════════════════ CREATIVE INTENTS ════════════════════════ */}
+<section className="os-section">
+  <div className="os-wrap">
+    <div className="os-section-head os-section-head--center os-reveal">
+      <p className="os-eyebrow">From one generator</p>
+      <h2 className="os-h2">Many settlements, one instrument.</h2>
+      <p className="os-lead">
+        Pattern, density, roads, and walls combine into wildly different reads. Start from an intent — then steer.
+      </p>
+    </div>
+    <div className="os-grid os-grid--3 os-reveal">
+      <IntentTile variant="fortress" seed={22222} kicker="Fortress & core" title="Citadel and keep" desc="A dominant centre, ring of defence, aligned gate spokes." />
+      <IntentTile variant="planned" seed={44444} kicker="Planned city" title="Urban grid" desc="Block discipline, storefront rhythm, deliberate junctions." />
+      <IntentTile variant="hillside" seed={33333} kicker="Ridge & mountain" title="Hillside hamlet" desc="Clusters that cling to slopes; paths that feel walked-in." />
+      <IntentTile variant="ruins" seed={70707} kicker="Ruins & decay" title="Broken enclosure" desc="Partial walls, negative space, nature encroaching." />
+      <IntentTile variant="county" seed={66666} kicker="Rural & scatter" title="Farm country" desc="Loose yards, county routes, lived-in edges." />
+      <IntentTile variant="town" seed={90210} kicker="Oasis & vignette" title="One contained stop" desc="A camp or caravanserai, staged inside a volume." />
+    </div>
+    <div className="os-reveal" style={{ marginTop: "26px", textAlign: "center" }}>
+      <a className="os-btn os-btn--ghost" href="/guides/creative-direction">See the art-direction recipes →</a>
+    </div>
+  </div>
+</section>
+
+{/* ════════════════════════ WHAT YOU ADD / WHAT IT ADDS ════════════════════════ */}
+<section className="os-section os-section--tight">
+  <div className="os-wrap">
+    <div className="os-grid os-grid--2 os-reveal">
+      <div className="os-card">
+        <div className="os-card-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="m21 16-9 5-9-5V8l9-5 9 5z"/><path d="m3 8 9 5 9-5"/><path d="M12 13v8"/></svg>
+        </div>
+        <h3>You add</h3>
+        <p>Meshes or Blueprints for large, medium, and small buildings — plus optional roads, walls, and environment kits. Your art, your scale, your style.</p>
+      </div>
+      <div className="os-card">
+        <div className="os-card-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg>
+        </div>
+        <h3>OmniScape adds</h3>
+        <p>Layout, zones, roads, walls, terrain placement, ambient flora and audio, and PCG export data — composed with hand-placed quality from one Generator.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* ════════════════════════ AUDIENCE PATHS ════════════════════════ */}
+<section className="os-section">
+  <div className="os-wrap">
+    <div className="os-section-head os-section-head--center os-reveal">
+      <p className="os-eyebrow">What should you do next?</p>
+      <h2 className="os-h2">Pick your path.</h2>
+    </div>
+    <div className="os-grid os-grid--4 os-reveal">
+      <a className="os-path" href="/overview/what-you-get">
+        <span className="os-k">Considering it</span>
+        <h3>Will it fit my project?<span className="os-arrow">→</span></h3>
+        <p>See exactly what you get, what you bring, and the engine versions supported.</p>
+      </a>
+      <a className="os-path" href="/get-started/quickstart">
+        <span className="os-k">Just bought</span>
+        <h3>Get me generating<span className="os-arrow">→</span></h3>
+        <p>Five steps to your first settlement — and the one rule you must not miss.</p>
+      </a>
+      <a className="os-path" href="/guides/control-center">
+        <span className="os-k">Active user</span>
+        <h3>Where is this control?<span className="os-arrow">→</span></h3>
+        <p>Tour the Control Center tab by tab and find every dial fast.</p>
+      </a>
+      <a className="os-path" href="/guides/creative-direction">
+        <span className="os-k">Creative explorer</span>
+        <h3>Show me what's possible<span className="os-arrow">→</span></h3>
+        <p>Fortress, planned town, hillside hamlet, ruins — recipes to steer the look.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+{/* ════════════════════════ FINAL CTA ════════════════════════ */}
+<section className="os-section">
+  <div className="os-wrap">
+    <div className="os-finalcta os-reveal">
+      <h2>Generate your first settlement today.</h2>
+      <p>OmniScape ships on Fab for Unreal Engine 5.5 and newer. Bring your kit; bring your seed.</p>
+      <div className="os-cta-row os-cta-row--center">
+        <a className="os-btn os-btn--primary" href="https://fab.com/s/4aeff49faf04">Get OmniScape on Fab</a>
+        <a className="os-btn os-btn--ghost" href="/get-started/quickstart">Read the quick start →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div className="os-landing-foot">
+  OmniScape · © Jasmin Moradia · Deterministic settlement generation for Unreal Engine
+</div>
+
+</div>

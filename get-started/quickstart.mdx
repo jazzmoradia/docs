@@ -1,0 +1,50 @@
+---
+title: "Quick start"
+sidebarTitle: "Quick start"
+description: "Generate your first OmniScape settlement in a few minutes — place the Generator, add a Large asset, pick a pattern, generate, and save to level."
+keywords: ["OmniScape quick start", "first settlement", "Unreal Engine", "getting started", "generate"]
+---
+
+Five steps from install to a generated settlement. Budget about five minutes.
+
+<Steps>
+  <Step title="Open the Control Center" icon="layout-panel-left">
+    **Window → OmniScape** (or the toolbar button) opens the dockable **Control Center**. Everything routes through this panel.
+  </Step>
+  <Step title="Place the Generator" icon="map-pin">
+    Click **Place OmniScape Generator**. The actor drops into your level and links to the panel. The settlement is centred on this actor — move it and regenerate to relocate.
+  </Step>
+  <Step title="Add at least one Large asset" icon="box">
+    Go to the **Build** tab and assign a **Large** building (a static mesh or Blueprint). Large is the one tier OmniScape needs — it places one landmark per node. Without it, nothing spawns.
+  </Step>
+  <Step title="Pick a pattern, then Generate" icon="play">
+    Choose a layout pattern (or load a [preset](/guides/presets)) on the **Layout** tab, then click **Generate**. Watch the 2D preview resolve into nodes, roads, and footprints.
+  </Step>
+  <Step title="Save to Level" icon="save">
+    Click **Save to Level** (or save the level) so the settlement survives reload and packaging.
+  </Step>
+</Steps>
+
+<Warning>
+  **The one rule:** if it looks right in the editor but vanishes in a build, you almost certainly didn't **Save to Level** after generating. [Why this matters →](/get-started/save-to-level)
+</Warning>
+
+## Explore from here
+
+- **Randomize seed** to flip through variations — same seed always returns the same layout.
+- Add **Medium** and **Small** assets for fabric and filler.
+- Turn on **roads** and **walls** under [Structure](/guides/structure).
+- Tune the look with the [creative-direction recipes](/guides/creative-direction).
+
+<CardGroup cols={2}>
+  <Card title="Walk through a first settlement" icon="footprints" href="/get-started/first-settlement">
+    A guided first run, with what each Generate pass actually does.
+  </Card>
+  <Card title="Tour the Control Center" icon="compass" href="/guides/control-center">
+    Find every control and what question it answers.
+  </Card>
+</CardGroup>
+
+<Note>
+  Need a hand? The fastest help is the [support thread](https://gist.github.com/jazzmoradia/6c4383fb51914f9bf083ccd472ee6b12) — monitored around the clock. Most issues turn out to be save flow, collision, or a single setting.
+</Note>

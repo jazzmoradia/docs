@@ -1,0 +1,73 @@
+---
+title: "Changelog"
+sidebarTitle: "Changelog"
+description: "OmniScape release notes — the v3.0 generator rebuild with Atlas, semantic zones, road hierarchy and beta pillars, plus the 2.x history."
+keywords: ["OmniScape changelog", "release notes", "v3.0", "Atlas", "version history", "updates"]
+---
+
+<Update label="Coming soon" description="v3.0.0" tags={["Major", "v3.0"]}>
+  ## The v3 generator
+
+  Every part of the generator was rebuilt — layout patterns, roads, walls, terrain placement, and environment scattering. Results read like real places from the first generate. New Generators default to **v3**; existing scenes stay on **Classic (v2)** so no seeds are ever broken. Opt in per-actor in **Details → Generation Algorithm**.
+
+  ### Atlas — import any real place
+  Search a city, neighbourhood, or landmark in the Control Center, fetch real street data, and use it as your layout skeleton. Import offline `.osm`/`.geojson`, or trace a **screenshot**. Choose **Inspired / Guided / Faithful** fidelity and **Real World** or **Fit to Settlement** scale. [Atlas guide →](/guides/atlas)
+
+  ### 12 preset archetypes
+  Fortified citadels, planned cities, organic hamlets, coastal villages, ruined settlements, sacred precincts, and more. Load, assign meshes, generate. [Preset catalog →](/guides/presets)
+
+  ### Semantic zones
+  Coherent district types — residential, market, sacred, civic — assigned across the settlement and inherited by buildings, flora, fauna, and PCG export. Zone colours appear in the preview legend.
+
+  ### Road hierarchy
+  Roads split into **Arterial**, **Collector**, and **Local** classes, each with its own width, mesh, and terrain mode (Level / Follow / Contour). Optional Blueprint spawn along splines.
+
+  ### Smarter walls
+  Perimeters hug irregular sites with a concave hull rather than a bounding ring. Gates space evenly around the full perimeter; towers and bastions snap to the sharpest corners.
+
+  ### Stable vs Beta
+  Stable covers a complete settlement. Switch to **Beta** in the status bar to unlock five pillars — **Fauna**, **Ambient Audio**, **Landscape Bake**, **PCG Hand-off**, and road landscape deform.
+
+  ### Also
+  - **Terrain settle** waits for landscape collision to stabilise before placement (Auto).
+  - Single codebase validated on **UE 5.5, 5.7, and 5.8**.
+  - **Community Discord** join link in the Control Center title bar.
+</Update>
+
+<Update label="April 2026" description="v2.7.0" tags={["Feature"]}>
+  - **Live layout preview in the viewport** — read streets, blocks, and footprint hints directly in the level viewport before spawning full meshes. Turn it on and tune it from the Generator **Details** panel.
+</Update>
+
+<Update label="April 2026" description="v2.6.1" tags={["Fix", "Stability"]}>
+  - **Presets packaged with Fab / RunUAT builds** — fixes an empty preset list after marketplace install.
+  - **Block-all collision on generated meshes** — roads, intersection pads, walls, pillars, and gates now interact with gameplay.
+  - **Terrain snapping** falls back to the Visibility channel when World Static misses.
+  - **Stability** — guards against bad traces during PIE and world transitions.
+</Update>
+
+<Update label="April 2026" description="v2.5" tags={["Feature"]}>
+  - **New generation algorithm** — smarter, more realistic road networks with gap-stitching, junction trimming, and clean intersections. The original algorithm remains available via a Details toggle for seed compatibility.
+  - **Live layout preview** — the settlement map updates in real time as you change settings.
+  - **Wall system** — fully procedural perimeter walls with shape, style, coverage, terrain mode, gates, pillars, and separate asset lists.
+  - **Improved Control Center** — cleaner tabs, wider fields, consistent controls, refreshed typography.
+  - **Shipped presets** — flagship starters, one per pattern.
+</Update>
+
+<Update label="March 2026" description="v2.0" tags={["Major"]}>
+  - **OmniScape Control Center** — a dockable panel replaces manual Details work: collapsible sections, preset management, and all controls in one place.
+  - **2D live preview** — real-time canvas with pan, zoom, and a colour-coded legend.
+  - **Save to Level** — one click persists generated content for cooked builds.
+  - **Parallel Grid mode** for the Axial pattern.
+</Update>
+
+<Update label="March 2026" description="v1.7" tags={["Feature"]}>
+  - **Edge Density** sprawl fill between clusters and roads.
+  - **Roadside placement** — plots along roads with variable frontage and depth.
+  - **Presets** — load parameter snapshots; built-in starters.
+  - **Blueprint events** — `OnSettlementGenerated` / `OnSettlementCleared`.
+  - **Per-node building overrides** on anchor actors (Cluster mode).
+</Update>
+
+<Note>
+  Fab currently ships **2.7.0**. The **3.0.0** entry above describes features in development.
+</Note>

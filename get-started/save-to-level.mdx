@@ -1,0 +1,54 @@
+---
+title: "The one rule: Save to Level"
+sidebarTitle: "Save to Level"
+description: "The single rule new OmniScape users must not miss — save the level after generating so your settlement survives reload and packaging."
+keywords: ["OmniScape save to level", "settlement disappears", "bake", "packaging", "cook", "Unreal Engine"]
+---
+
+If you remember one thing from your first day with OmniScape, remember this.
+
+<Warning>
+  **Save to Level after every Generate you want to keep.** Generated content lives in memory until it's written into the map. Skip the save and it vanishes on reload — and won't appear in a cooked build.
+</Warning>
+
+## Why it works this way
+
+Generation creates real actors and instanced components in your level. Like anything you place by hand, they only persist once the level is saved. **Save to Level** flags and saves the dirty packages for you in one click, so the settlement is part of the map from then on.
+
+This is also what makes OmniScape ship-ready: players never run the Control Center. They load a level that already contains your saved meshes and instanced components.
+
+## The bake-first workflow
+
+<Steps>
+  <Step title="Generate in the editor" icon="play">
+    Tune with the preview, then Generate the full settlement.
+  </Step>
+  <Step title="Save to Level" icon="save">
+    Click **Save to Level** (or save the level). The content is now persisted.
+  </Step>
+  <Step title="Cook" icon="package">
+    Package normally. No runtime generation, no first-frame hitch.
+  </Step>
+</Steps>
+
+## The most common "bug" that isn't
+
+<AccordionGroup>
+  <Accordion title="It looked right in the editor but the build is empty">
+    The level wasn't saved after generating. Generate again and **Save to Level**.
+  </Accordion>
+  <Accordion title="It disappeared after I reloaded the map">
+    Same cause — unsaved generated content is dropped on reload. Save after each keeper generate.
+  </Accordion>
+  <Accordion title="I moved the Generator and it looks wrong">
+    The settlement is centred on the actor. Move it, **Generate** again, then **Save to Level**.
+  </Accordion>
+</AccordionGroup>
+
+<Tip>
+  Shipping a game that generates at runtime instead? That's supported for special cases — see [Blueprint & runtime](/guides/blueprint-and-runtime). For everything else, bake-first is the recommended path.
+</Tip>
+
+<Note>
+  Still stuck? Describe your engine version and what you clicked on the [support thread](https://gist.github.com/jazzmoradia/6c4383fb51914f9bf083ccd472ee6b12) — a screenshot helps.
+</Note>

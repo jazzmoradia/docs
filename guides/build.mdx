@@ -1,0 +1,77 @@
+---
+title: "Build — bring your own buildings"
+sidebarTitle: "Build"
+description: "The OmniScape Build tab: assign your meshes and Blueprints per tier, set weights and scale, choose Cluster or Roadside placement, and fill gaps with Edge Density sprawl."
+keywords: ["OmniScape build", "building tiers", "large medium small", "cluster roadside", "edge density", "BYOA", "weights"]
+---
+
+<span className="os-tag os-phase-build">Build · What?</span>
+
+Build is where your art lives. Assign meshes or Blueprints per tier; OmniScape places them with hand-built rhythm. Presets store the numbers — you bring the kit.
+
+## Tiers
+
+| Tier | Role |
+|---|---|
+| **Large** | One landmark **per node** — the silhouette. Required for anything to spawn. |
+| **Medium** | The main fabric around nodes. |
+| **Small** | Filler and edges. |
+| **Sprawl** | Gap-fill controlled by **Edge Density**. |
+
+**Weights** are relative frequency — ratios matter more than raw numbers. A 10 vs 1 weighting just means 10:1 odds within that tier.
+
+## Bring your own art
+
+Each asset slot accepts one of:
+
+<Columns cols={2}>
+  <Card title="Static mesh" icon="box">
+    Instanced where possible — fast and light. The default for most buildings.
+  </Card>
+  <Card title="Blueprint" icon="code">
+    A full actor when you need logic, interaction, or spawned children.
+  </Card>
+</Columns>
+
+Per slot you can also set a **Bounds override** (for a bad pivot or bounds) and a **Spur street slot** for driveway-style frontage.
+
+<Note>
+  When both a Blueprint and a mesh are present on a chosen entry, the **Blueprint wins**; the mesh is the fallback.
+</Note>
+
+## Placement
+
+<Tabs>
+  <Tab title="Cluster (default)">
+    Rings of samples around each node. Reads well for organic cores and hillside clusters. Per-anchor medium/small overrides apply in Cluster mode.
+  </Tab>
+  <Tab title="Roadside">
+    Plots along roads with variable **frontage**, **depth**, and **variation**; buildings face the street. Roadside uses the **global** medium/small lists only.
+  </Tab>
+</Tabs>
+
+Per tier you also get **scale**, **max per node** (medium/small), and an optional **face toward nearest road** toggle.
+
+## Sprawl — Edge Density
+
+**Build → Sprawl → Edge Density** (0 = off) fills the gaps between main clusters and roads with small buildings, respecting the road network so sprawl stays cohesive. This is the artist-facing sprawl control.
+
+| Control | Range | Default |
+|---|---|---|
+| Medium per node | 0 – 100 | 8 |
+| Small per node | 0 – 200 | 16 |
+| Large / medium / small scale | 0.1 – 10 | 1 |
+| Edge density | 0 – 1 | 0 (off) |
+
+<Tip>
+  Density feel as a rule of thumb — **Sparse:** 2–6 medium / 4–12 small per node. **Typical:** 6–12 / 12–24. **Busy:** 12–30 / 24–80.
+</Tip>
+
+<CardGroup cols={2}>
+  <Card title="Next: Structure" icon="route" href="/guides/structure">
+    Connect and enclose with roads and walls.
+  </Card>
+  <Card title="Building recipes" icon="palette" href="/guides/creative-direction">
+    Cluster vs roadside reads by intent.
+  </Card>
+</CardGroup>

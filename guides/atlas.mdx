@@ -1,0 +1,52 @@
+---
+title: "Atlas — import a real place"
+sidebarTitle: "Atlas"
+description: "Atlas imports real-world street data as your OmniScape layout skeleton — search a place by name, import an .osm or .geojson file, or trace a screenshot, then choose how closely generation follows it."
+keywords: ["OmniScape Atlas", "OpenStreetMap", "OSM import", "real world layout", "geojson", "screenshot trace"]
+---
+
+<span className="os-tag os-phase-layout">Layout · canvas fold-corner</span> <span className="os-tag os-phase-layout">v3.0</span>
+
+Atlas bases a settlement on a real location. Open it from the **fold-corner** on the preview canvas (**Control Center → Layout**), and work through three steps.
+
+<Steps>
+  <Step title="Locate" icon="search">
+    Type a city, neighbourhood, or landmark name — or paste a map link — and **Import This Location**. Offline, import an `.osm` or `.geojson` file, or a **screenshot**: a colour- and edge-aware trace converts a map image into usable road geometry.
+  </Step>
+  <Step title="Tune" icon="sliders">
+    Choose how closely generation follows the reference, and at what scale (below).
+  </Step>
+  <Step title="Generate" icon="play">
+    **Generate Settlement** — your buildings, walls, and ambient layers compose on the imported skeleton.
+  </Step>
+</Steps>
+
+## Fidelity
+
+| Level | What it does |
+|---|---|
+| **Inspired** | Real-world shape as a loose influence; full procedural freedom. |
+| **Guided** | Blends imported roads with procedural infill inside the coverage area. |
+| **Faithful** | Stays as close to the source geometry as possible. |
+
+## Import scale & quality
+
+- **Import Scale** brings data in at **Real World** size or automatically **Fit to Settlement**.
+- Every import reports a clear **Ready / Limited / Failed** status. Failed imports are refused with an actionable message; screenshot imports always produce at least a usable result.
+
+<Warning>
+  OSM data requires attribution — **© OpenStreetMap contributors** — shown after import. Keep it when you publish imagery derived from real data.
+</Warning>
+
+<Note>
+  Use **Control Center → Layout → Atlas** for the creative workflow. The actor's **Details → Atlas** holds diagnostics and advanced import settings only.
+</Note>
+
+<CardGroup cols={2}>
+  <Card title="Back to Layout" icon="grid-2x2" href="/guides/layout">
+    Patterns, districts, and zones for procedural layouts.
+  </Card>
+  <Card title="Creative direction" icon="palette" href="/guides/creative-direction">
+    Combine a real skeleton with an art-direction recipe.
+  </Card>
+</CardGroup>

@@ -1,112 +1,62 @@
 ---
-title: "What's Included with OmniScape: Plugin, Presets, and API"
-sidebarTitle: "What's Included"
-description: "OmniScape ships with a Control Center plugin, twelve archetype presets, Blueprint API, PCG integration, Atlas real-world reference, and full documentation."
+title: "What you get with OmniScape"
+sidebarTitle: "What you get"
+description: "What you bring versus what OmniScape builds — plus the full feature set, from layout patterns and road hierarchy to walls, flora, and PCG hand-off."
+keywords: ["OmniScape features", "what you get", "Unreal procedural city", "BYOA", "layout patterns", "wall system"]
 ---
 
-Purchasing OmniScape on Fab gives you the complete plugin — the Control Center editor panel, all built-in presets, the Blueprint and C++ API, the PCG Hand-off component, and the full documentation suite. Everything you need to generate settlements is in the box; only your art assets are not.
+OmniScape is a partnership: you bring the art and the intent, OmniScape brings the spatial composition.
+
+## You bring, OmniScape builds
+
+<Columns cols={2}>
+  <Card title="You add" icon="box">
+    Meshes or Blueprints for **large / medium / small** buildings, and optionally roads, walls, and environment kits. Your scale, your style.
+  </Card>
+  <Card title="OmniScape adds" icon="building-2">
+    Layout, zones, roads, walls, terrain placement, PCG export data, terrain paint bake, ambient flora and audio, and instanced environment — from one Generator.
+  </Card>
+</Columns>
 
 <Note>
-  The current version available on Fab is **2.7.0**. Features marked **v3.0** below are in active development. If a control described here is missing in your build, check your download version or ask on the [support thread](https://gist.github.com/jazzmoradia/6c4383fb51914f9bf083ccd472ee6b12).
+  **Fab currently ships 2.7.0.** Features marked **v3.0** below — Atlas, twelve presets, semantic zones, road hierarchy, smarter walls, and the Fauna / Audio / Landscape / PCG beta pillars — are in development for the 3.0 release. Don't assume a v3.0 feature exists in your current Fab download unless it's labeled in your build.
 </Note>
 
-## The Control Center plugin
+## Core feature set
 
-The Control Center is an editor-side panel — opened from **Window → OmniScape** or the toolbar — that manages every aspect of generation. It links to the **OmniScape Generator** actor in your level and exposes four main tabs: **Layout**, **Build**, **Structure**, and **Ambient**, plus export and bake controls.
+| Feature | What it does |
+|---|---|
+| **Control Center** | One dockable panel — all controls, presets, 2D preview, generate, clear, and seed. |
+| **Layout patterns** | Radial, Voronoi, Perlin, Axial, and Organic — each with direct per-pattern tuning. |
+| **Placement modes** | Cluster (rings around nodes) or Roadside (buildings face and plot along roads). |
+| **2D live preview** | The settlement map updates as you tune — roads, blocks, and footprints before you generate. |
+| **Viewport preview** | Read streets and footprint hints directly in the level viewport before a full pass. |
+| **Wall system** | Procedural perimeter walls — shape, coverage, gates, pillars, separate asset lists. |
+| **Flora layers** | Vegetation, rock, and debris scatter; optional Foliage Type slot for harvest workflows. |
+| **Anchors & volumes** | Fix layout nodes by hand; define inclusion / exclusion regions with spline volumes. |
+| **Blueprint events** | `OnSettlementGenerated` / `OnSettlementCleared`, hookable from Blueprint or C++. |
+| **Deterministic seeds** | Same seed + settings = same result; toggling one layer never reshuffles the others. |
 
-Key capabilities surfaced by the Control Center:
+### New in v3.0
 
-- **Five layout patterns** — Radial, Voronoi, Perlin, Axial/Grid, Organic
-- **Zone density and footprint controls** with volume and anchor overrides
-- **Three-tier building assignment** — Large, Medium, Small; accepts any Static Mesh or Blueprint class
-- **Road system** with Follow, Contour, and Level terrain-elevation modes
-- **Wall system** — full and partial circuits, gates, pillars, shape styles
-- **Ambient layers** — flora (Foliage Types), fauna (Blueprint actors), ambient audio
-- **Landscape paint bake** for material blending at generation time
-- **PCG export** to hand layout data off to external PCG graphs
-- **Save to Level** — freezes generated instances as normal level actors, ready to cook
+| Feature | What it does |
+|---|---|
+| **Atlas** <span className="os-tag os-phase-layout">v3.0</span> | Import any real place — by name, `.osm`/`.geojson` file, or screenshot — as your layout skeleton. |
+| **12 preset archetypes** <span className="os-tag os-phase-layout">v3.0</span> | Citadels, planned cities, hamlets, coastal villages, ruins, sacred precincts, and more. |
+| **Semantic zones** <span className="os-tag os-phase-layout">v3.0</span> | District types (residential, market, sacred, civic) inherited by buildings, flora, fauna, and PCG. |
+| **Road hierarchy** <span className="os-tag os-phase-structure">v3.0</span> | Arterial / Collector / Local classes with independent width, mesh, and terrain mode. |
+| **Smarter walls** <span className="os-tag os-phase-structure">v3.0</span> | Concave-hull perimeters that hug irregular sites; evenly spaced gates; corner towers. |
+| **Beta pillars** <span className="os-tag os-phase-ambient">v3.0</span> | Fauna, Ambient Audio, Landscape Bake, PCG Hand-off, and road landscape deform. |
 
-The Control Center is **editor-only** and is not included in cooked builds. See [Compatibility](/overview/compatibility) for details on what ships in packaged games.
+## Ship games with it
 
-## Twelve archetype presets
-
-OmniScape ships with twelve named presets that cover the most common settlement archetypes. Each preset configures layout pattern, zone density, road style, wall type, and ambient density — it does **not** overwrite your mesh assignments.
-
-<Tabs>
-  <Tab title="Fortress & Defensive">
-    Presets optimised for walled compounds, military outposts, and keep layouts. High wall density, gated entry points, compact inner zones.
-  </Tab>
-  <Tab title="Urban">
-    Dense grid or radial street networks with high building coverage. Suited to city districts, market towns, and urban centres.
-  </Tab>
-  <Tab title="Rural & Village">
-    Organic or Perlin layouts with lower density, wider spacing, and ambient flora weighting. Suited to hamlets, farmsteads, and roadside settlements.
-  </Tab>
-  <Tab title="Hills & Landmark">
-    Layouts tuned for uneven terrain and focal-point compositions. Elevation modes and anchor usage lean heavily on natural contour following.
-  </Tab>
-</Tabs>
-
-<Tip>
-  Presets are a starting point, not a destination. Load one to get sensible defaults, then adjust density, swap the layout pattern, or change the wall style to suit your project. Save your own preset at any time from the Control Center header.
-</Tip>
-
-<Note>
-  **v3.0:** The full set of twelve presets and improved preset categories arrive in version 3.0. Version 2.7.0 ships a subset of these archetypes.
-</Note>
-
-## Blueprint & C++ API
-
-OmniScape exposes a generation API for both Blueprint and C++ workflows.
+Generate in the editor → **Save to Level** → cook. Players never need the Control Center — they see saved meshes and instanced components like any other placed content.
 
 <CardGroup cols={2}>
-  <Card title="Blueprint API" icon="diagram-project" href="/guides/blueprint-and-runtime">
-    Call generation, reseed, clear, and export functions from any Blueprint actor or level script. Suitable for in-game generation, runtime procedural worlds, and editor utility widgets.
+  <Card title="Check compatibility" icon="circle-check" href="/overview/compatibility">
+    Engine versions, platforms, and packaging.
   </Card>
-  <Card title="C++ API" icon="code" href="/guides/blueprint-and-runtime">
-    The same surface is available in C++ for projects that manage generation from game modules or need tighter integration with save systems and streaming.
-  </Card>
-</CardGroup>
-
-The API lets you change the seed, trigger generation, and read back placement data at runtime — enabling use cases like procedural world servers, roguelike map generation, and player-driven settlement growth.
-
-## PCG Hand-off component
-
-If your project already uses Unreal's **Procedural Content Generation (PCG)** framework, the PCG Hand-off component lets OmniScape export its layout data — zone boundaries, road splines, building positions — as PCG attribute sets that downstream PCG graphs can consume.
-
-This is entirely optional. OmniScape does not require PCG to generate settlements; the Hand-off component is there if you want to extend or post-process the output inside your own PCG pipeline.
-
-## Atlas wizard
-
-<Note>
-  **v3.0 feature.** The Atlas wizard is in active development and is not available in the current Fab release (2.7.0).
-</Note>
-
-The Atlas wizard, accessed from **Control Center → Layout → Atlas**, lets you load a real-world street map reference from **OpenStreetMap** data and use it to seed OmniScape's layout. The generated settlement follows the broad proportions and road topology of the reference location, giving you a grounded starting point for historically or geographically inspired environments.
-
-## Documentation
-
-Your purchase includes access to two companion documents:
-
-<CardGroup cols={2}>
-  <Card title="User Guide" icon="book-open" href="/guides/control-center">
-    Full reference for every Control Center tab, setting, and workflow. The document you're reading now.
-  </Card>
-  <Card title="Art Direction Companion" icon="palette" href="/guides/creative-overview">
-    Guidance on mesh preparation, LOD expectations, collision setup, and design patterns for each settlement archetype.
+  <Card title="Get it on Fab" icon="store" href="https://fab.com/s/4aeff49faf04">
+    OmniScape for Unreal Engine 5.5+.
   </Card>
 </CardGroup>
-
-## What's not included
-
-OmniScape is a layout and instancing tool. The following are outside its scope and remain your responsibility:
-
-- **Your art assets** — building meshes, road pieces, wall sets, foliage, fauna Blueprints, audio cues
-- **Sky, lighting, and post-process** — sky sphere actors, directional lights, post-process volumes, fog
-- **Materials, Nanite, and Lumen** — material assignments on your meshes, Nanite mesh settings, Lumen scene setup
-- **Gameplay code** — logic inside your Blueprint actors is untouched by generation
-- **Character scale** — OmniScape places at the scale of your meshes; character capsule sizing is your project's concern
-
-<Card title="Get OmniScape on Fab" icon="bag-shopping" href="https://fab.com/s/4aeff49faf04">
-  Purchase includes the plugin, all presets, the API, and full documentation. Compatible with Unreal Engine 5.5 and newer.
-</Card>

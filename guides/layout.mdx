@@ -1,0 +1,83 @@
+---
+title: "Layout — where the settlement lives"
+sidebarTitle: "Layout"
+description: "The OmniScape Layout tab: choose a pattern, set settlement size and node count, subdivide into districts, assign semantic zones, and shape the footprint with volumes and anchors."
+keywords: ["OmniScape layout", "patterns", "radial voronoi perlin axial organic", "districts", "zones", "num nodes"]
+---
+
+<span className="os-tag os-phase-layout">Layout · Where?</span>
+
+Layout sets the silhouette — the first read of the place from above. Pattern, size, districts, and the zones every later layer inherits all live here.
+
+## Choose a pattern
+
+The pattern is the big shape. Pick the read you want.
+
+| Pattern | Vibe |
+|---|---|
+| **Radial** | Rings from a centre — forts, temples, ceremonial cores. |
+| **Voronoi districts** | Organic neighbourhoods and blocks. |
+| **Perlin** | Irregular clusters; good on uneven ground. |
+| **Axial / grid** | Planned streets; enable **Parallel grid** for true Cartesian blocks. |
+| **Organic cluster** | Scattered hamlets and loose villages. |
+
+Pattern sliders appear per style, grouped by a simple grammar:
+
+- **Structure** — count and topology (rings, axes, cells).
+- **Scale** — size and spacing.
+- **Character** — order ↔ chaos (geometric patterns share **Regularity**; Perlin keeps **Roughness**, Organic keeps **Grouping**).
+
+<Note>
+  Perlin samples an abstract 2D noise field — **not** real landscape height. It shapes where nodes cluster, not how they sit on terrain.
+</Note>
+
+## Size, nodes, districts, zones
+
+<AccordionGroup>
+  <Accordion title="Settlement size & Num Nodes" icon="ruler">
+    **Settlement radius** is the extent from the Generator (cm). **Num Nodes** is how many landmark nodes the pattern places — separate from district count.
+  </Accordion>
+  <Accordion title="Districts" icon="layout-grid">
+    **Districts** subdivide the settlement into macro regions without moving individual nodes. New Generators default to **1** (a hamlet); presets often use more for towns and cities. <span className="os-tag os-phase-layout">v3.0</span>
+  </Accordion>
+  <Accordion title="Zones table" icon="tags">
+    Weighted district tags — Residential, Market, Sacred, Civic — assigned to nodes. Buildings, flora, fauna, and PCG export all inherit these tags. A per-anchor **zone override** always wins. Zone colours appear in the preview legend. <span className="os-tag os-phase-layout">v3.0</span>
+  </Accordion>
+</AccordionGroup>
+
+## Shape the footprint by hand
+
+- **Spline volumes** — define **inclusion** (spawn only inside) or **exclusion** (block inside) regions. Reach them from the canvas edge dock.
+- **Anchors** — drop fixed nodes, optionally with a landmark mesh, influence radius, and per-anchor building lists.
+
+[Full guide: Volumes & anchors →](/guides/volumes-and-anchors)
+
+## Atlas — import a real place
+
+The **Atlas** wizard lives on the canvas fold-corner: search a place by name, import an `.osm`/`.geojson` file, or trace a screenshot — then choose how closely generation follows the reference.
+
+[Full guide: Atlas →](/guides/atlas) <span className="os-tag os-phase-layout">v3.0</span>
+
+## Editor limits
+
+| Control | Range | Default |
+|---|---|---|
+| Settlement radius | min 500 · no hard max | 10,000 |
+| Num nodes | 1 – 50 | 5 |
+| Districts | 1 – 16 | 1 |
+| Overlap padding | ≥ 0 | 100 |
+| Max building slope | 0° – 89° | 30° |
+| Edge density (sprawl) | 0 – 1 | 0 (off) |
+
+<Tip>
+  Huge radius with very few nodes can read empty. Add nodes or a touch of **Edge Density** (on the [Build](/guides/build) tab) before fighting the seed; raise **Districts** when you need clearer wards or cells.
+</Tip>
+
+<CardGroup cols={2}>
+  <Card title="Next: Build" icon="boxes" href="/guides/build">
+    Assign the buildings that fill your layout.
+  </Card>
+  <Card title="Steer the silhouette" icon="palette" href="/guides/creative-direction">
+    Pattern and district recipes by intent.
+  </Card>
+</CardGroup>

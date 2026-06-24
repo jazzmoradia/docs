@@ -1,89 +1,57 @@
 ---
-title: "OmniScape Requirements: Engine, Platform, and Mesh Setup"
+title: "Compatibility & requirements"
 sidebarTitle: "Compatibility"
-description: "OmniScape requires Unreal Engine 5.5 or newer. Works with any art style, Static Meshes, Blueprints, and Foliage Types. Control Center is editor-only."
+description: "Unreal Engine versions, platforms, optional engine plugins, and packaging notes for OmniScape."
+keywords: ["OmniScape compatibility", "Unreal Engine 5.5", "5.8", "platforms", "packaging", "requirements"]
 ---
 
-OmniScape is built for **Unreal Engine 5.5 and newer**. It works with any art style and imposes no constraints on your mesh pipeline beyond standard Unreal asset requirements. If your meshes work elsewhere in your project, they'll work with OmniScape.
+## Engine versions
 
-## Engine version
+OmniScape runs on a single codebase validated across modern Unreal Engine releases.
 
-| Requirement | Detail |
+<Info>
+  **Unreal Engine 5.5 – 5.8.** The Control Center is an editor tab; generated content cooks like any other placed actor or instanced component.
+</Info>
+
+| | |
 |---|---|
-| **Minimum engine version** | Unreal Engine 5.5 |
-| **Recommended** | Latest stable 5.5.x or newer |
-| **Earlier versions (5.3, 5.4)** | Not supported |
+| **Minimum engine** | Unreal Engine 5.5 |
+| **Validated** | UE 5.5, 5.7, and 5.8 (v3.0) |
+| **Control Center** | Editor-only (Slate panel) |
+| **Generated content** | Cooks normally once saved to the level |
 
-If you're upgrading an existing project to 5.5 specifically to use OmniScape, the [Unreal Engine migration guide](https://dev.epicgames.com/documentation/en-us/unreal-engine/upgrading-projects-in-unreal-engine) covers the standard steps. OmniScape has no additional migration requirements beyond the engine upgrade itself.
+## Optional engine plugins
 
-## Platform targets
+Core generation never depends on optional modules. OmniScape compiles and runs without them, lighting up extra capability when they're present.
 
-OmniScape's platform coverage follows the published plugin list on Fab.
-
-<CardGroup cols={2}>
-  <Card title="Desktop" icon="desktop" href="https://fab.com/s/4aeff49faf04">
-    Windows, macOS, and Linux targets are fully supported for both editor use and cooked builds.
-  </Card>
-  <Card title="Mobile" icon="mobile" href="https://fab.com/s/4aeff49faf04">
-    Mobile platforms (iOS, Android) are supported where the plugin list indicates they are enabled. Check the Fab listing for the current platform matrix.
-  </Card>
-</CardGroup>
-
-The **Control Center panel is editor-only** and is stripped from cooked builds automatically. The generated content — instanced meshes, spline actors, Blueprint actors — cooks exactly like any other level content. Players in shipped games do not need the plugin installed.
-
-## Asset compatibility
-
-OmniScape accepts the three standard Unreal asset types for generation slots:
-
-<Tabs>
-  <Tab title="Static Meshes">
-    Any Static Mesh asset works in the Large, Medium, and Small building tiers, as well as road, wall, and pillar slots. No special import settings are required beyond the collision notes below.
-  </Tab>
-  <Tab title="Blueprint Classes">
-    Any Blueprint class that extends `Actor` can be assigned to building tiers. OmniScape spawns and places these actors at generation time. Gameplay logic inside the Blueprint is not invoked during generation — it runs as normal once the level is played.
-  </Tab>
-  <Tab title="Foliage Types">
-    Foliage Type assets are used in the Ambient tab's flora layer. Any Foliage Type configured for your meshes works. OmniScape distributes these using standard Instanced Static Mesh spawning, so HISM performance budgets apply normally.
-  </Tab>
-</Tabs>
-
-## Collision requirements
-
-OmniScape uses collision for terrain-following road elevation and for surface placement of ambient layers. Two requirements apply:
-
-- **CPU collision must be enabled** on any Static Mesh placed on walkable terrain surfaces. This is Unreal's standard "Complex Collision" or a simplified convex hull — either works. GPU-only or no-collision meshes will cause placement and elevation queries to miss.
-- **World Static collision channel** must be active on terrain and ground meshes. OmniScape queries this channel during road contouring and ambient scatter. If your terrain uses a custom channel, roads may not follow terrain correctly.
-
-<Warning>
-  If roads appear to hover above or sink into your terrain, the most common cause is missing CPU collision on the landscape or ground mesh. Check **Asset Details → Collision Complexity** on the asset in question.
-</Warning>
-
-## Optional module dependencies
-
-OmniScape's core generation does not require any optional Unreal modules. The plugin compiles and runs without them. However, three modules unlock additional features when present:
-
-| Module | What it enables | Required? |
+| Plugin | Unlocks | Required? |
 |---|---|---|
-| **PCG (Procedural Content Generation)** | PCG Hand-off component for exporting layout data to external PCG graphs | Optional |
-| **MetaSounds** | Full MetaSounds graph support in the Ambient audio layer | Optional (standard Sound Cues work without it) |
-| **Landscape** | Landscape paint bake in the Structure tab | Optional (no effect if your scene has no Landscape actor) |
+| **PCG** | PCG Hand-off export <span className="os-tag os-phase-ambient">Beta</span> | No |
+| **MetaSounds** | Ambisonic ambient audio modes <span className="os-tag os-phase-ambient">Beta</span> | No — falls back to positional audio |
+| **Landscape** | Landscape paint bake & road deform <span className="os-tag os-phase-ambient">Beta</span> | No |
 
-If a module is absent, the relevant UI section in the Control Center is hidden or disabled. No errors are thrown and no other features are affected.
+## Platforms
 
-## Editor vs. cooked build summary
+Targets match the published plugin list (desktop and mobile where enabled). Because the Control Center is editor-only, your **saved** settlement content packages like any other level content.
 
-| Component | Editor | Cooked build |
-|---|---|---|
-| Control Center panel | ✅ Present | ❌ Stripped (editor-only) |
-| OmniScape Generator actor | ✅ Active | ✅ Present (inert after Save to Level) |
-| Generated instances and actors | ✅ Live | ✅ Cook as normal level content |
-| Blueprint API | ✅ Available | ✅ Available for runtime generation |
-| Preset files | ✅ Available | ❌ Not needed in cooked build |
+## Packaging at a glance
+
+<Steps>
+  <Step title="Generate in the editor">
+    Tune with the live preview, then click **Generate** when the composition is right.
+  </Step>
+  <Step title="Save to Level">
+    Persist the generated actors and instanced components into the map.
+  </Step>
+  <Step title="Cook">
+    Package as normal. Players see the saved content — no Control Center, no runtime generation required.
+  </Step>
+</Steps>
 
 <Tip>
-  After generating, use **Save to Level** (or simply save the level) to convert generated content into standard level actors. From that point on, the level is self-contained and packages without the Control Center.
+  Runtime generation from Blueprint is supported for special cases, but **bake-first** is recommended for shipped games. See [Blueprint & runtime](/guides/blueprint-and-runtime).
 </Tip>
 
 <Note>
-  Not sure whether your setup is compatible? Check the full platform and engine matrix on the [Fab listing](https://fab.com/s/4aeff49faf04), or post your question on the [community support thread](https://gist.github.com/jazzmoradia/6c4383fb51914f9bf083ccd472ee6b12) — the maintainer and other users are active there.
+  **Fab currently ships 2.7.0.** Engine validation up to 5.8 and the v3 feature set ship with the **3.0.0** release.
 </Note>

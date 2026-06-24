@@ -1,110 +1,80 @@
 ---
-title: "Presets: Start Fast with OmniScape's Archetype Settlements"
+title: "Presets"
 sidebarTitle: "Presets"
-description: "OmniScape ships twelve archetype presets across fortress, urban, rural, hills, and landmark categories. Load one, assign your art, and generate."
+description: "OmniScape presets are parameter-only archetype starters. Load one of twelve built-in settlements, assign your meshes, and generate. Presets store numbers and toggles, never your mesh lists."
+keywords: ["OmniScape presets", "archetypes", "citadel", "planned city", "hamlet", "preset library", "parameters"]
 ---
 
-Presets aren't finished settlements — they're opinionated starting points. Each one encodes a specific character: a tight fortified hilltop, a sprawling rural village, a landmark-anchored town. Loading a preset gets you to a meaningful result in seconds, giving you a concrete baseline to react to rather than a blank configuration to build from scratch. From there, you assign your own art, adjust what doesn't fit, and generate.
+<span className="os-tag os-phase-layout">Layout · preset row</span>
 
----
+A preset is a **parameter snapshot** — settlement config, pattern tuning, roads, walls, building counts, flora, zone distribution, and districts. Load a baseline, assign your art, then **Generate**.
 
-## What's in a preset
+<Note>
+  Presets store **numbers and toggles**, never your mesh lists. Volumes, anchors, road asset lists, and wall mesh lists also stay out — assign your kit before or after loading.
+</Note>
 
-A preset stores **numbers and toggles** — the full configuration state of the generator at the time it was saved.
+## Using presets
 
-<CardGroup cols={2}>
-  <Card title="Stored in a preset" icon="circle-check">
-    - Settlement config (radius, node count, pattern)
-    - Road settings (style, terrain mode, width, junction settings)
-    - Wall settings (perimeter fit, shape, coverage, gates)
-    - Building counts and ratios
-    - Flora sample counts
-    - Zone table configuration
-  </Card>
-  <Card title="Not stored in a preset" icon="circle-xmark">
-    - Mesh lists (building, road, wall, pillar, gate)
-    - Road asset list and intersection mesh
-    - Wall segment, pillar, and gate mesh lists
-    - Volumes and anchors
-  </Card>
-</CardGroup>
-
-This means you can freely load presets without worrying about losing your art assignments — your meshes stay in place. What changes is the configuration that shapes the layout.
-
----
-
-## The twelve archetype presets
-
-OmniScape ships twelve presets covering five broad categories. They live in **Config/Presets/** in the plugin content folder.
-
-| Category | Character |
-|----------|-----------|
-| **Fortified** | Walled keeps, garrison towns, defensive hilltops |
-| **Urban** | Dense street networks, large node counts, formal layouts |
-| **Rural** | Loose clusters, low density, natural road styles |
-| **Hills** | Terrain-aware configurations using Contour mode and curved/natural roads |
-| **Landmark** | Single dominant anchor nodes with surrounding support settlements |
-
-These are starting points, not constraints. Every value they set can be changed after loading.
-
----
-
-## Loading a preset
+From the **preset row** in the Control Center you can load, save, update, rename, and delete.
 
 <Steps>
-  <Step title="Open the preset dropdown">
-    Select your OmniScape generator and find the **Presets** dropdown in the Control Center panel.
+  <Step title="Load a baseline">
+    Pick an archetype from the dropdown. Built-in presets open with the current road stack (Legacy off) so everyone targets the same baseline.
   </Step>
-  <Step title="Choose an archetype">
-    Select a preset from the list. The generator configuration updates immediately — you'll see values change in the panel.
+  <Step title="Assign your meshes">
+    Drop your buildings, roads, walls, and environment kits into the tabs.
   </Step>
-  <Step title="Assign your art">
-    Add your building, road, and wall meshes to the relevant lists. The preset has left all mesh slots empty.
-  </Step>
-  <Step title="Generate">
-    Click Generate. Use the result as your baseline and iterate from there.
+  <Step title="Generate, then tune">
+    Generate, then adjust. **Baseline revert** restores the state from when you opened the Generator.
   </Step>
 </Steps>
 
+## The twelve archetypes <span className="os-tag os-phase-layout">v3.0</span>
+
+<Tabs>
+  <Tab title="Fortified & defence">
+    | Preset | Character |
+    |---|---|
+    | **Citadel and Keep** | Concentric rings, angular curtain wall, ten towers, military keep core. |
+    | **Medieval Walled Town** | Dense walled old town — market, residential, and sacred zones; organic curtain wall. |
+  </Tab>
+  <Tab title="Urban & planned">
+    | Preset | Character |
+    |---|---|
+    | **Urban District Blocks** | Open Voronoi city blocks — civic, commercial, and industrial districts. |
+    | **Colonial Grid Town** | Compact parallel-grid town — civic core, residential blocks. |
+    | **Metropolitan Grid** | Large-scale axial grid — 22 nodes, four zone types, high sprawl. |
+  </Tab>
+  <Tab title="Rural & county">
+    | Preset | Character |
+    |---|---|
+    | **Quiet Hamlet** | A tiny three-node organic cluster — an intimate rural vignette. |
+    | **Farm Country** | Wide scatter hamlets — agricultural, residential, and market zones. |
+    | **Coastal Fishing Village** | Harbor-front organic village — irregular roadside frontage. |
+    | **Desert Trading Post** | Sparse crossroads post — market + residential, worn natural tracks. |
+  </Tab>
+  <Tab title="Hills & landmark">
+    | Preset | Character |
+    |---|---|
+    | **Ridge Village** | Hillside terrace hamlet — contour roads, sacred + market nodes. |
+    | **Ruined Hillside Enclave** | Sparse ruined perimeter on a slope — low density, partial organic wall. |
+    | **Sacred Temple Precinct** | Ceremonial radial — three nodes, sacred core, curved approach roads. |
+  </Tab>
+</Tabs>
+
+<Warning>
+  **Empty preset list after install?** Reinstall or update from [Fab](https://fab.com/s/4aeff49faf04) so the full package — including built-in presets — is present.
+</Warning>
+
 <Tip>
-Load a few different presets back-to-back and hit Generate each time to quickly survey the creative range OmniScape covers. It's a fast way to find the configuration direction that suits your project before you commit to tuning.
+  Built-in presets are tuned for the current road stack. The **intersection mesh** isn't stored inside presets — assign it after loading.
 </Tip>
 
----
-
-## Managing your own presets
-
-Once you've tuned a configuration you want to reuse, save it as a named preset from the same dropdown.
-
-| Action | When to use it |
-|--------|----------------|
-| **Save** | Write the current configuration as a new named preset |
-| **Update** | Overwrite an existing preset with the current configuration |
-| **Rename** | Change a preset's display name without changing its contents |
-| **Delete** | Remove a preset you no longer need |
-
-Saved presets persist across sessions and projects (they live in Config/Presets/ on disk).
-
----
-
-## Baseline revert
-
-The **Baseline Revert** action restores the generator to the state it was in **when you opened the session** — not the plugin default, and not the last saved preset. It's a session-scoped undo for the whole configuration, useful when you've been experimenting and want to get back to where you started.
-
----
-
-## Notes and troubleshooting
-
-<Note>
-**Built-in presets use the current road stack** — Legacy mode is off. If you need to reproduce a layout generated before a plugin update, enable **Legacy Mode** in the Advanced road settings to restore the older road rules for that seed.
-</Note>
-
-<Note>
-**Empty preset list after install?** The built-in presets ship as content files in the full plugin package. If the list is empty, reinstall or update OmniScape from Fab to ensure the complete package — including Config/Presets/ — is present in your project.
-</Note>
-
----
-
-<Card title="Creative Directions" icon="compass" href="/guides/creative-overview">
-  See how to combine road styles, wall configurations, and building ratios to target specific settlement archetypes — from remote hamlets to fortified cities.
-</Card>
+<CardGroup cols={2}>
+  <Card title="Then steer the look" icon="palette" href="/guides/creative-direction">
+    Take a preset further with art-direction recipes.
+  </Card>
+  <Card title="Tour the Control Center" icon="compass" href="/guides/control-center">
+    See where the preset row lives.
+  </Card>
+</CardGroup>

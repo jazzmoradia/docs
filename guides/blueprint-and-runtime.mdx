@@ -1,150 +1,73 @@
 ---
-title: "Blueprint and Runtime: Generate Settlements from Code"
-sidebarTitle: "Blueprint & Runtime"
-description: "Use OmniScape's Blueprint API to generate, clear, and query settlements at runtime. Reference for all events, actions, and runtime packaging options."
+title: "Blueprint & runtime"
+sidebarTitle: "Blueprint & runtime"
+description: "Hook OmniScape from Blueprint or C++ — generation events, actions, seeding, runtime generation with time-sliced spawn, profiles, and packaging guidance."
+keywords: ["OmniScape Blueprint", "runtime generation", "events", "seeding", "time-sliced spawn", "packaging", "GenerateSettlement"]
 ---
 
-OmniScape's Blueprint API gives you full programmatic control over settlement generation — trigger a fresh layout on Begin Play, randomize seeds in response to player choices, clear and regenerate mid-session, or integrate generation into your own loading flow. For fixed, hand-reviewed worlds the **bake-first** workflow (generate in editor, save the level, cook) is almost always the right call: players load pre-built meshes with no hitch and no runtime overhead. The Blueprint API shines when the layout itself must vary at runtime — procedural roguelikes, server-hosted world generation, or any design where the settlement cannot be finalized before shipping.
-
-<Note>
-  The Control Center is an editor-only tool and is not available in packaged games. The Blueprint API described on this page is your runtime interface for everything the Control Center handles in the editor.
-</Note>
-
-## Actions
-
-Call these functions on the **OmniScape Generator** actor. All calls run on the game thread — see [Time-sliced spawn](#time-sliced-spawn) if you need to avoid frame hitches on large settlements.
-
-| Action | Role |
-|---|---|
-| `GenerateSettlement` | Clears any existing settlement, then runs the full generation pipeline. |
-| `CanGenerateSettlement` | Runs preflight checks and returns a validation result without generating. Use this before `GenerateSettlement` to catch configuration problems early. |
-| `GetLastGenerationResult` | Returns the structured `FOmniScapeGenerationResult` outcome from the most recent generation. |
-| `GetLastLayoutValidation` | Returns the road QA snapshot from the most recent generation. |
-| `LoadProfileAndGenerate` | Applies a `RuntimeProfile` data asset to the generator, then immediately calls `GenerateSettlement`. |
-| `CancelGeneration` | Stops an in-progress time-sliced spawn. Has no effect on synchronous generation. |
-| `ClearSettlement` | Removes all content spawned by the generator without triggering a new generation. |
-| `RebuildWallsOnly` | Rebuilds walls from the current layout without re-running the full pipeline. Requires physics and existing road nodes; no-op if those are absent. |
+The Control Center is editor-only, but generation is fully scriptable. For shipped games, **bake-first** is recommended; runtime generation is there for tools and special cases.
 
 ## Events
 
-Bind to these delegates on the generator actor to react to generation lifecycle changes.
-
-| Event | When it fires |
+| Event | Fires when |
 |---|---|
-| `OnSettlementGenerated` | Full generation is complete. Legacy event — prefer `OnSettlementGenerationCompleted` for new work. |
-| `OnSettlementGenerationCompleted` | Full generation is complete, with an `FOmniScapeGenerationResult` payload carrying structured outcome data. |
-| `OnSettlementCleared` | Fires after `ClearSettlement` finishes removing content. |
-| `OnGenerationProgress` | Fires repeatedly during time-sliced spawn, providing a `0`–`1` float you can use to drive a progress bar. Only available when time-sliced spawn is enabled. |
+| **OnSettlementGenerated** | A full generate completes (legacy). |
+| **OnSettlementGenerationCompleted** | A full generate completes, with a structured result. |
+| **OnSettlementCleared** | After the settlement is cleared. |
+| **OnGenerationProgress** | Optional 0–1 progress during time-sliced spawn. |
+| **On Building Spawned** | For Large/Medium/Small/Sprawl **Blueprint** buildings only (not instanced meshes or environment). |
 
-## Seeding at runtime
+## Actions
 
-`GenerationSeed` is an integer property on the generator that drives all variation in a layout. The same seed combined with the same settings always produces the same settlement, making it straightforward to reproduce, save, and share layouts.
+| Action | Role |
+|---|---|
+| **GenerateSettlement** | Clear, then run the full pipeline. |
+| **CanGenerateSettlement** | Preflight check only. |
+| **GetLastGenerationResult** | Structured outcome of the last generate. |
+| **LoadProfileAndGenerate** | Apply a runtime profile, then generate. |
+| **CancelGeneration** | Stop a time-sliced spawn. |
+| **ClearSettlement** | Remove generated content. |
+| **RebuildWallsOnly** | Rebuild walls from the current layout (needs physics + nodes). |
+
+## Seeding
+
+`GenerationSeed` drives all variation. In the editor, type a seed or **Randomize seed**. At runtime, set `GenerationSeed`, then call `GenerateSettlement`. There's no randomize node at runtime — use your own RNG and write the result into `GenerationSeed`.
+
+## Runtime generation
 
 <Steps>
-  <Step title="Set the seed">
-    Write any integer to `GenerationSeed` on the generator actor. Use your own RNG (e.g. `FMath::RandRange`, a seeded stream, or a value derived from a player's save file) — there is no `RandomizeSeed` Blueprint node.
+  <Step title="Preflight">
+    Call **CanGenerateSettlement** first. By default, warnings (such as no Large assets) don't block generation — roads, environment, and walls can still run. Set **Require preflight success** to hard-block.
   </Step>
   <Step title="Generate">
-    Call `GenerateSettlement`. The pipeline uses the seed you set.
+    Set `GenerationSeed`, then call **GenerateSettlement**.
   </Step>
-  <Step title="Record the seed">
-    Read `GenerationSeed` back after generation if you need to display it to players or write it to a save game. The value is unchanged from what you set.
+  <Step title="Avoid the hitch">
+    Enable **Time-sliced spawn** (OmniScape | Runtime) to spread spawning across frames. Time-slicing runs in game worlds only; editor Generate stays a single synchronous call for undo safety.
   </Step>
 </Steps>
-
-<Tip>
-  In the editor, the **Randomize seed** button in the Details panel picks a new random seed for you — useful for quickly previewing variation without writing code.
-</Tip>
-
-## OnBuildingSpawned
-
-The `OnBuildingSpawned` event fires once for every **Blueprint building** that OmniScape spawns — Large, Medium, Small, and Sprawl slots. Use it to attach components, run post-spawn logic, register buildings with a game system, or trigger VFX on placement.
-
-`OnBuildingSpawned` does **not** fire for:
-
-- Buildings placed via HISM (Hierarchical Instanced Static Mesh) — these are batched and have no individual actor to report.
-- Environment actors (flora, fauna, debris layers).
-
-If you need to track every placed mesh including HISM instances, use `GetLastGenerationResult` after `OnSettlementGenerationCompleted` for aggregate counts, or query HISM components directly on the generator.
-
-## Time-sliced spawn
-
-By default, `GenerateSettlement` is **synchronous**: it completes in a single frame. On large settlements this can produce a perceptible hitch. **Time-sliced spawn** spreads actor spawning across multiple frames, keeping the game thread responsive throughout.
-
-<CardGroup cols={2}>
-  <Card title="Enable time-sliced spawn" icon="toggle-on">
-    Open **Project Settings → OmniScape → Runtime** and enable **Time-sliced spawn**. The generator will automatically spread spawn work across frames when called from Blueprint at runtime.
-  </Card>
-  <Card title="Scope and limitations" icon="circle-info">
-    Time-sliced spawn applies to **game worlds only**. Editor Generate (including PIE generation triggered via the Control Center) remains synchronous for undo-stack safety. `CancelGeneration` can interrupt a time-sliced run.
-  </Card>
-</CardGroup>
-
-Use `OnGenerationProgress` to drive loading UI while a time-sliced generation is running, and bind `OnSettlementGenerationCompleted` to know when spawning finishes.
-
-## CanGenerateSettlement and preflight
-
-Call `CanGenerateSettlement` before `GenerateSettlement` to surface configuration problems — missing asset assignments, invalid parameter combinations, or empty building pools — without committing to a full generation pass.
-
-<Accordion title="Default behaviour: warnings do not block generation">
-  Out of the box, preflight warnings are advisory. If your Large building slot is empty, OmniScape logs a warning but proceeds; roads, environment, and walls can still generate successfully. This means a partial result is often better than no result.
-</Accordion>
-
-<Accordion title="Require preflight success: hard-block on warnings">
-  To treat any preflight warning as a hard failure, enable **Require preflight success** on the generator. With this flag set, `GenerateSettlement` will abort (and fire `OnSettlementGenerationCompleted` with a failure result) if `CanGenerateSettlement` returns any warnings. Use this in production flows where a partial settlement is worse than none.
-</Accordion>
-
-Inspect the return value of `CanGenerateSettlement` (or `GetLastLayoutValidation` after generation) to display specific diagnostic messages to level designers or in-editor tooling.
-
-## Profiles and RuntimeProfile
-
-A **RuntimeProfile** is a data asset that stores a snapshot of generation numbers — counts, densities, radii, road parameters — without referencing any meshes or material assets. It is the runtime-safe equivalent of a Control Center preset.
-
-| What RuntimeProfile stores | What it does not store |
-|---|---|
-| Numeric parameters (node count, road width, building counts, etc.) | Mesh references, material overrides, or texture assets |
-| District and pattern settings | Actor class assignments |
-| Wall and flora density values | Any editor-only settings |
-
-Use `LoadProfileAndGenerate` to apply a profile and generate in a single call:
-
-```
-LoadProfileAndGenerate(MyRuntimeProfile)
-  → internally: applies profile numbers to the generator, then calls GenerateSettlement
-```
-
-Profiles are useful when you want to ship multiple settlement "types" (village, city, outpost) as data assets that designers can author and swap without touching Blueprint logic.
-
-## Generate on Begin Play
-
-You can call `GenerateSettlement` from `Begin Play` to build a settlement when a level loads. This pattern works well for levels that are **always generated fresh** at runtime.
 
 <Warning>
-  Do not call `GenerateSettlement` on Begin Play in a level that already contains a **baked settlement** — one where you ran Generate in the editor and saved the actors into the level. Doing so will generate a second settlement on top of the saved one, duplicating content and producing unpredictable results.
-
-  Use one approach per level: either bake-first **or** runtime generate, not both.
+  Use **bake** or **runtime generate**, not both on the same layout. If a level already contains a baked settlement, generating again at runtime can duplicate content — Clear Settlement removes generator-owned instances, not every saved child actor.
 </Warning>
 
-If you need runtime variation in a level that was originally baked, call `ClearSettlement` first to remove the saved content before calling `GenerateSettlement`.
+## Profiles
 
-## Multiplayer and authority
+An optional **RuntimeProfile** data asset copies preset-style numbers (not meshes). **LoadProfileAndGenerate** applies it and generates — handy for runtime difficulty or biome variants over the same kit.
 
-OmniScape does not replicate generation state automatically. For multiplayer games, guard generation calls with `HasAuthority()` so that only the server runs the pipeline.
+## PCG hand-off <span className="os-tag os-phase-ambient">Beta</span>
 
-<Steps>
-  <Step title="Guard with HasAuthority">
-    Wrap your `GenerateSettlement` call in a `HasAuthority` branch. For a level-placed generator in a non-replicated level, every instance has local authority — `HasAuthority` returns `true` on all clients, so each will generate independently.
-  </Step>
-  <Step title="Synchronize the seed">
-    Ensure every client uses the **same `GenerationSeed`** and the **same settings**. OmniScape's generation is deterministic: identical inputs always produce identical layouts, so synchronized seeds are sufficient for matching results without network traffic.
-  </Step>
-  <Step title="Distribute the seed">
-    Replicate the chosen seed from the server to all clients before generation begins, or derive it from shared state (e.g. a match ID or world seed) that all instances already know.
-  </Step>
-</Steps>
+Enable the PCG data provider on the **Ambient** tab to export nodes, roads, walls, footprints, and bounds as tagged point records for your own PCG graphs. Starter JSON contracts ship in `Content/PCG/`.
 
----
+<Note>
+  Multiplayer: most teams ship baked maps. If you generate at runtime, decide who runs it and budget the hitch; keep `GenerationSeed` identical across clients for matching layout, and treat the output like normal placed actors.
+</Note>
 
-<Tip>
-  **Performance rule of thumb:** Even with time-sliced spawn, very large settlements (radius above ~20 000 cm, high node counts, dense building pools) accumulate significant spawn overhead. For any world where the settlement layout is fixed — a named town, a boss arena, a hub level — the **bake-first** workflow eliminates runtime cost entirely. Reserve runtime generation for cases where layout variation is a design requirement.
-</Tip>
+<CardGroup cols={2}>
+  <Card title="Packaging" icon="package" href="/overview/compatibility">
+    The bake-first workflow and platform notes.
+  </Card>
+  <Card title="Ambient & PCG" icon="share-2" href="/guides/ambient">
+    Configure the PCG hand-off provider.
+  </Card>
+</CardGroup>

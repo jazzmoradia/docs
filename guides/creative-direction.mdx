@@ -1,0 +1,103 @@
+---
+title: "Creative direction"
+sidebarTitle: "Creative direction"
+description: "Steer the look of your OmniScape settlement — fortress, planned town, hillside hamlet, rural scatter, ruins, or a single vignette. Composition recipes by intent."
+keywords: ["OmniScape art direction", "creative direction", "settlement recipes", "fortress", "planned city", "ruins", "composition"]
+---
+
+import { IntentTile } from "/snippets/omniscape.jsx";
+
+OmniScape places and instances; you direct the composition. Think in five terms: **silhouette** from above, **rhythm** from spacing, **contrast** between landmarks and filler, **grounding** from terrain, and **story** from gates, walls, and debris.
+
+Start from an intent, then steer the dials below it.
+
+<div className="os-grid os-grid--3 not-prose" style={{ marginBottom: "8px" }}>
+  <IntentTile variant="fortress" seed={22222} kicker="Fortress & core" title="Citadel and keep" desc="Dominant centre, ring of defence." />
+  <IntentTile variant="planned" seed={44444} kicker="Planned city" title="Urban grid" desc="Block discipline, aligned façades." />
+  <IntentTile variant="hillside" seed={33333} kicker="Ridge & mountain" title="Hillside hamlet" desc="Clusters that cling to slopes." />
+  <IntentTile variant="county" seed={66666} kicker="Rural & scatter" title="Farm country" desc="Loose yards, county routes." />
+  <IntentTile variant="ruins" seed={70707} kicker="Ruins & decay" title="Broken enclosure" desc="Partial walls, encroaching nature." />
+  <IntentTile variant="town" seed={90210} kicker="Oasis & vignette" title="Contained stop" desc="A camp staged inside a volume." />
+</div>
+
+## Recipes by intent
+
+<AccordionGroup>
+  <Accordion title="Fortress & ceremonial core" icon="castle">
+    **Goal:** a dominant silhouette — there is a keep and a ring.
+    - **Layout:** Radial / concentric, central district + outer wards, modest radial jitter, aligned gate spokes.
+    - **Build:** Cluster, strong **Large** tier, low **Edge Density** so the core stays legible.
+    - **Roads:** Curved or natural; Follow on uneven ground; width matched to gates.
+    - **Walls:** On · perimeter fit toward the hull · Angular · full loop · gates Auto or Anchors.
+    - **Environment:** Sparse vegetation outside, rocks at the base, light debris inside for life.
+  </Accordion>
+  <Accordion title="Planned city & urban grid" icon="grid-3x3">
+    **Goal:** streets look designed; façades align.
+    - **Layout:** Voronoi for organic blocks, or Axial with **Parallel grid** for true blocks.
+    - **Build:** Roadside · wider plot frontage · orient medium/small to road.
+    - **Roads:** Straight · stable width · intersection mesh + radius scale for clean hubs.
+    - **Walls:** Usually off for modern; on for old town (Natural shape, blended fit).
+    - **Watch:** Roadside ignores per-anchor medium/small lists; expect longer generates at high node counts.
+  </Accordion>
+  <Accordion title="Ridge & mountain village" icon="mountain">
+    **Goal:** the settlement clings to slopes, not a flat disc pasted on terrain.
+    - **Layout:** Perlin / noise-driven; tune feature size and roughness for several small ridge clusters.
+    - **Build:** Cluster often reads better than roadside on steep ground.
+    - **Roads:** Follow · natural or curved · narrower width for paths.
+    - **Environment:** Force upright on trees; rocks near buildings; min distance so canopies don't eat roofs.
+    - **Watch:** Level elevation on hilly ground floats road meshes — use Follow or Contour.
+  </Accordion>
+  <Accordion title="Rural county & scatter" icon="tractor">
+    **Goal:** loose rhythm — yards, side spurs, lived-in edges.
+    - **Layout:** Organic cluster · higher min node distance for spread.
+    - **Build:** Roadside · varied plots · spur slots + driveway for farmsteads.
+    - **Roads:** Natural · Follow · road redundancy up for loops.
+    - **Walls:** Off or partial fence-line.
+    - **Environment:** Rich vegetation; debris layers (Kind = Debris) clustering near homes.
+  </Accordion>
+  <Accordion title="Ruins & decay" icon="building-2">
+    **Goal:** interruption and negative space — broken enclosure, nature reclaiming.
+    - **Layout:** Organic or Perlin · low node count.
+    - **Build:** Lower per-node counts · mixed weights for uneven skylines.
+    - **Walls:** On · **partial coverage** · Organic shape · pillars spaced, not only corners.
+    - **Environment:** Heavy debris · rocks in paths · max distance widened so vegetation encroaches.
+  </Accordion>
+  <Accordion title="Oasis & vignette" icon="tent">
+    **Goal:** one contained shot — a camp, caravanserai, or stop.
+    - **World:** An **inclusion volume** — a small closed loop staging the scene.
+    - **Layout:** Radial or organic inside the volume · 1–3 nodes.
+    - **Build:** Cluster · Large = hero tent or inn · optional anchors.
+    - **Environment:** Rocks and sparse veg at the edge; debris at the core.
+  </Accordion>
+</AccordionGroup>
+
+## Starting bands
+
+| Situation | Radius (cm) | Nodes | Edge density |
+|---|---|---|---|
+| Single landmark / oasis | 1,500 – 5,000 | 1 – 3 | 0 – 0.25 |
+| Hamlet | 4,000 – 9,000 | 2 – 5 | 0.1 – 0.35 |
+| Village / town | 8,000 – 18,000 | 5 – 15 | 0.35 – 0.65 |
+| City / sprawl | 15,000 – 35,000+ | 12 – 40 | 0.5 – 1.0 |
+| Fortified core | any | 1 – 6 | 0 – 0.35 |
+
+## Realism checklist
+
+- **One scale language** — keep radius, road width, and plots in consistent centimetres against a human-scale reference.
+- **Let the ground show** — on hilly sites, set buildings to sit into the slope; drop a foundation mesh to ground them.
+- **Pivot honesty** — fix offset and bounds before blaming placement.
+- **Strategic walls** — assign a tower/bastion mesh and a sensible tower count for a fortified read.
+- **Lock the seed** when the composition works, then iterate materials in Unreal.
+
+<Note>
+  OmniScape composes space; it doesn't replace your sky, lighting, post, fog, or material choices. Spatial composition here — cinematic finish in Unreal's lookdev stack.
+</Note>
+
+<CardGroup cols={2}>
+  <Card title="Start from a preset" icon="bookmark" href="/guides/presets">
+    Twelve archetypes to load, dress, and generate.
+  </Card>
+  <Card title="Import a real place" icon="globe" href="/guides/atlas">
+    Use Atlas to base a layout on the real world.
+  </Card>
+</CardGroup>

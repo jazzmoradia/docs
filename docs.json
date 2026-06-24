@@ -1,34 +1,89 @@
 {
   "$schema": "https://mintlify.com/docs.json",
+  "theme": "aspen",
   "name": "OmniScape",
-  "theme": "willow",
+  "description": "Deterministic procedural settlement generation for Unreal Engine. One actor, one Control Center, your art.",
   "colors": {
-    "primary": "#ef7025",
-    "light": "#eec9bc",
-    "dark": "#4fa1ab"
+    "primary": "#A8742A",
+    "light": "#8A5E1F",
+    "dark": "#CCA060"
   },
-  "favicon": "/favicon.svg",
+  "appearance": {
+    "default": "light",
+    "strict": true
+  },
+  "fonts": {
+    "heading": {
+      "family": "Outfit",
+      "weight": 600
+    },
+    "body": {
+      "family": "Outfit",
+      "weight": 400
+    }
+  },
+  "icons": {
+    "library": "lucide"
+  },
   "logo": {
     "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "dark": "/logo/dark.svg",
+    "href": "/"
   },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "https://gist.github.com/jazzmoradia/6c4383fb51914f9bf083ccd472ee6b12"
+  "favicon": "/favicon.svg",
+  "styling": {
+    "eyebrows": "breadcrumbs",
+    "codeblocks": {
+      "theme": {
+        "light": "github-light",
+        "dark": "one-dark-pro"
       }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Get OmniScape",
-      "href": "https://fab.com/s/4aeff49faf04"
+    }
+  },
+  "background": {
+    "decoration": "grid",
+    "color": {
+      "dark": "#08090A",
+      "light": "#F3F1EA"
+    }
+  },
+  "banner": {
+    "content": "OmniScape 3.0 is on the way \u2014 Atlas real-world import, semantic zones, and a fully rebuilt v3 generator. [See what's new](/help/changelog)",
+    "dismissible": true,
+    "color": {
+      "light": "#5A3E18",
+      "dark": "#5A3E18"
     }
   },
   "navigation": {
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Get it on Fab",
+          "icon": "store",
+          "href": "https://fab.com/s/4aeff49faf04"
+        },
+        {
+          "anchor": "Watch the demo",
+          "icon": "play",
+          "href": "https://youtu.be/xFo9JeM7dgc"
+        },
+        {
+          "anchor": "Support thread",
+          "icon": "life-buoy",
+          "href": "https://gist.github.com/jazzmoradia/6c4383fb51914f9bf083ccd472ee6b12"
+        },
+        {
+          "anchor": "Discord",
+          "icon": "message-circle",
+          "href": "https://discord.gg/UjXbjW6gUH"
+        }
+      ]
+    },
     "tabs": [
       {
         "tab": "Overview",
+        "icon": "compass",
         "groups": [
           {
             "group": "Discover OmniScape",
@@ -41,92 +96,130 @@
         ]
       },
       {
-        "tab": "Get Started",
+        "tab": "Get started",
+        "icon": "rocket",
         "groups": [
           {
-            "group": "First Steps",
+            "group": "First steps",
             "pages": [
-              "get-started/quick-start",
+              "get-started/quickstart",
               "get-started/first-settlement",
-              "get-started/saving-and-packaging"
+              "get-started/save-to-level"
             ]
           }
         ]
       },
       {
         "tab": "Guides",
+        "icon": "book-open",
         "groups": [
           {
-            "group": "Control Center",
+            "group": "The Control Center",
             "pages": [
               "guides/control-center",
-              "guides/layout-patterns",
-              "guides/buildings-and-placement",
-              "guides/roads-and-walls",
-              "guides/environment-and-ambience",
-              "guides/volumes-and-anchors",
-              "guides/presets"
+              "guides/layout",
+              "guides/build",
+              "guides/structure",
+              "guides/ambient"
             ]
           },
           {
-            "group": "Creative Directions",
+            "group": "Creative direction",
             "pages": [
-              "guides/creative-overview",
-              "guides/fortress-and-ceremonial",
-              "guides/planned-city",
-              "guides/ridge-village",
-              "guides/rural-and-scatter",
-              "guides/ruins-and-decay",
-              "guides/oasis-and-vignette"
+              "guides/creative-direction",
+              "guides/presets",
+              "guides/atlas"
             ]
           },
           {
             "group": "Advanced",
             "pages": [
-              "guides/blueprint-and-runtime",
-              "guides/atlas-reference",
-              "guides/parameter-reference"
+              "guides/volumes-and-anchors",
+              "guides/blueprint-and-runtime"
             ]
           }
         ]
       },
       {
         "tab": "Help",
+        "icon": "life-buoy",
         "groups": [
           {
             "group": "Support",
             "pages": [
               "help/troubleshooting",
               "help/faq",
-              "help/community"
+              "help/community",
+              "help/changelog"
             ]
           }
         ]
       }
+    ]
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Demo",
+        "icon": "play",
+        "href": "https://youtu.be/xFo9JeM7dgc"
+      },
+      {
+        "type": "discord",
+        "href": "https://discord.gg/UjXbjW6gUH"
+      }
     ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Get OmniScape on Fab",
-          "href": "https://fab.com/s/4aeff49faf04",
-          "icon": "bag-shopping"
-        },
-        {
-          "anchor": "Demo Video",
-          "href": "https://youtu.be/xFo9JeM7dgc",
-          "icon": "circle-play"
-        },
-        {
-          "anchor": "Discord",
-          "href": "https://discord.gg/UjXbjW6gUH",
-          "icon": "discord"
-        }
-      ]
+    "primary": {
+      "type": "button",
+      "label": "Get OmniScape",
+      "href": "https://fab.com/s/4aeff49faf04"
     }
+  },
+  "search": {
+    "prompt": "Search the settlement\u2026"
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "cursor"
+    ]
   },
   "footer": {
     "socials": {
-      "discord": "https://discord.gg/UjXbjW6gUH"
-    }
+      "discord": "https://discord.gg/UjXbjW6gUH",
+      "youtube": "https://youtu.be/xFo9JeM7dgc"
+    },
+    "links": [
+      {
+        "header": "Product",
+        "items": [
+          { "label": "Overview", "href": "/overview/introduction" },
+          { "label": "Quick start", "href": "/get-started/quickstart" },
+          { "label": "Changelog", "href": "/help/changelog" },
+          { "label": "Get it on Fab", "href": "https://fab.com/s/4aeff49faf04" }
+        ]
+      },
+      {
+        "header": "Learn",
+        "items": [
+          { "label": "Control Center", "href": "/guides/control-center" },
+          { "label": "Creative direction", "href": "/guides/creative-direction" },
+          { "label": "Presets", "href": "/guides/presets" },
+          { "label": "Atlas", "href": "/guides/atlas" }
+        ]
+      },
+      {
+        "header": "Support",
+        "items": [
+          { "label": "Troubleshooting", "href": "/help/troubleshooting" },
+          { "label": "FAQ", "href": "/help/faq" },
+          { "label": "Support thread", "href": "https://gist.github.com/jazzmoradia/6c4383fb51914f9bf083ccd472ee6b12" },
+          { "label": "Discord", "href": "https://discord.gg/UjXbjW6gUH" }
+        ]
+      }
+    ]
   }
 }

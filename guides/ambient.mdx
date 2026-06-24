@@ -1,0 +1,73 @@
+---
+title: "Ambient — make it breathe"
+sidebarTitle: "Ambient"
+description: "The OmniScape Ambient tab: flora layers for vegetation, rock and debris, plus the beta pillars — fauna, ambient audio, and PCG hand-off."
+keywords: ["OmniScape ambient", "flora", "vegetation rock debris", "fauna", "ambient audio", "PCG hand-off", "foliage"]
+---
+
+<span className="os-tag os-phase-ambient">Ambient · Does it breathe?</span>
+
+Ambient is the final pass — the detail that turns geometry into a place. Flora runs in Stable mode; fauna, audio, and PCG hand-off live in Beta.
+
+## Flora
+
+A unified **Flora layers** list. Each layer carries a **Kind** chip — **Vegetation**, **Rock**, or **Debris** — that sets its spawn behaviour (no name-based guessing).
+
+Each asset slot accepts one type:
+
+| Asset type | Spawn path | Best for |
+|---|---|---|
+| **Static Mesh** | Generator HISM (fast instancing) | Default trees, rocks, debris |
+| **Foliage Type** | Unreal foliage system | Harvest/interaction logic, Foliage Mode editing |
+| **Blueprint Class** | Spawned actor | Interactive props |
+
+| Control | Role |
+|---|---|
+| Density | Strength of the layer |
+| Min / max distance from buildings | Near ↔ far band |
+| Scale | Uniform size |
+| Force upright | Keep props vertical on slopes (default off) |
+
+<Tip>
+  **Max distance** too small leaves a haircut ring around buildings; too large scatters props everywhere. Tune the band to read as clearing → forest edge → wilds.
+</Tip>
+
+## The beta pillars
+
+Switch **Stable → Beta** in the status bar to unlock these.
+
+<AccordionGroup>
+  <Accordion title="Fauna" icon="rabbit">
+    <span className="os-tag os-phase-ambient">Beta</span> A unified fauna list with archetype placement, distance bands from buildings, and an optional time-of-day bake gate. A global **Max Fauna Actors** budget caps spawn count. Movement settings are Blueprint hints only.
+  </Accordion>
+  <Accordion title="Ambient audio" icon="volume-2">
+    <span className="os-tag os-phase-ambient">Beta</span> Per-zone **audio zones** placed by kind (interior, edge, road, node). **Radius** drives real attenuation; road layers sample along splines. Ambisonic modes need a MetaSound source, otherwise OmniScape plays positional audio.
+  </Accordion>
+  <Accordion title="PCG hand-off" icon="share-2">
+    <span className="os-tag os-phase-ambient">Beta</span> Exports layout points — nodes, roads, walls, footprints, bounds — as tagged PCG point records for your own graphs. Toggle the provider and refresh on generate. Starter JSON contracts ship in `Content/PCG/`; author your `.uasset` graphs in-editor.
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+  PCG export is separate from the **Foliage Type** flora slot. The foliage slot spawns real foliage instances; PCG export hands layout points to external graphs.
+</Note>
+
+| Flora | Range | Default |
+|---|---|---|
+| Samples per layer | 10 – 5000 | 400 |
+| Layer density multiplier | 0.01 – 10 | 1 |
+| Layer scale multiplier | 0.1 – 10 | 1 |
+| Kind | Vegetation / Rock / Debris | Vegetation |
+
+<Tip>
+  Flora samples — **400** suits medium maps; **800–1,500** for dense foliage on large radii; **10–200** for fast iteration while you compose.
+</Tip>
+
+<CardGroup cols={2}>
+  <Card title="Environment recipes" icon="palette" href="/guides/creative-direction">
+    Debris for decay, groves for breath, rocks for grounding.
+  </Card>
+  <Card title="Hand off to PCG" icon="share-2" href="/guides/blueprint-and-runtime">
+    Wire generated data into your own pipelines.
+  </Card>
+</CardGroup>

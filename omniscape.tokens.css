@@ -1,0 +1,400 @@
+/**
+ * OmniScape design tokens — single source for mockup CSS and Slate codegen.
+ *
+ * Edit here, then:
+ *   python3 Tools/gen_tokens.py
+ *
+ * Consumed by: OmniScape_v13_Atlas.html (linked stylesheet), OmniScapeStyle.Tokens.gen.h
+ *
+ * Font calibration (--font-calib-outfit / --font-calib-mono):
+ *   Measured via OmniScapeParity commandlet → Tools/parity/font_calibration.json
+ *   Copy values into this file after ./Tools/parity/run_parity_harness.sh
+ *
+ * UI maintenance (mockup + Slate + IR + visual diff):
+ *   Tools/parity/README.md  |  Docs/OmniScape_SlateSpec.md §22
+ */
+
+/* ─── Local fonts (same binaries as Slate Resources/Fonts/) ─── */
+:root {
+  /* Font calibration: CSS px → Slate pt (see Tools/parity/font_calibration.json) */
+  --font-calib-outfit: 0.70;
+  --font-calib-mono: 0.70;
+  --font-calib-core: 0.86;
+
+  /* Font families */
+  --fu: 'Outfit', 'Segoe UI', Tahoma, Geneva, sans-serif;
+  --fm: 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
+
+  /* Font sizes (mockup CSS px — Slate uses calibrated scale) */
+  --font-size-body: 11px;
+  --font-size-small: 9px;
+  --font-size-dropdown: 9px;
+  --font-size-tiny: 8px;
+  --font-size-title: 10px;
+  --font-size-titlebar: 11px;
+  --font-size-generate: 11px;
+  --font-size-mono-6: 6px;
+  --font-size-mono-status: 9px;
+  --font-size-canvas-stat: 8px;
+  --font-size-canvas-hint: 7px;
+  --font-size-arch: 8px;
+  --font-size-preset: 8px;
+  --font-size-ue-badge: 8px;
+  --font-size-mono-body: 10px;
+
+  /* Letter-spacing (em) → Slate milli-em = round(em * 1000) */
+  --font-tracking-grp-label: 0.02em;
+  --font-tracking-drawer-title: 0.03em;
+  --font-tracking-tray-label: 0.03em;
+  --font-tracking-tray-readout: 0.04em;
+  --font-tracking-section-seg: 0.04em;
+  --font-tracking-community: 0.04em;
+  --font-tracking-ov-chip: 0.05em;
+  --font-tracking-asset-rotate: 0.06em;
+  --font-tracking-arch-caption: 0.048em;
+  --font-tracking-pattern-cap: 0.048em;
+  --font-tracking-pregen-cue: 0.04em;
+  --font-tracking-preset: 0.04em;
+  --font-tracking-spatial-label: 0.04em;
+  --font-tracking-scene-label: 0.04em;
+  --font-tracking-compact-toggle: 0.03em;
+  --font-tracking-engine-toggle: 0.03em;
+  --font-tracking-swatch: 0.03em;
+  --font-tracking-seg-live: 0.04em;
+  --font-tracking-section-badge: 0.04em;
+  --font-tracking-status-beta-chip: 0.06em;
+  --font-tracking-community-prompt-edition: 0.10em;
+  --font-tracking-community-prompt-subtitle: 0.08em;
+  --font-tracking-community-prompt-badge: 0.07em;
+  --font-tracking-community-prompt-brand: -0.015em;
+
+  --font-size-community-prompt-edition: 10px;
+  --font-size-community-prompt-brand: 15px;
+  --font-size-community-prompt-subtitle: 10px;
+  --font-size-community-prompt-badge: 9px;
+  --font-size-community-prompt-note: 12.5px;
+  --font-size-community-prompt-row-q: 14px;
+  --font-size-community-prompt-row-sub: 11.5px;
+  --font-size-community-prompt-pill: 11px;
+  --font-size-community-prompt-footer: 12px;
+  --font-size-community-prompt-footer-hint: 10.5px;
+
+  --r: 3px;
+
+  /* ─── Colors (k* names match OmniScapeColors) ─── */
+  --color-kSurface0: #08090A;
+  --color-kSurface1: #0D0F11;
+  --color-kSurface2: #131618;
+  --color-kSurface3: #191C1F;
+  --color-kSurface4: #1F2326;
+  --color-kSurface5: #252A2D;
+  --color-kSurface6: #2C3135;
+  --color-kSurfaceDeep: #06070A;
+  --color-kCanvasChipBg: #0D0F11D1;
+  --color-kAtlasMapCoordsBg: #0D0F11D9;
+
+  --color-kBorder0: #141719;
+  --color-kBorder1: #1E2327;
+  --color-kBorder2: #272E32;
+  --color-kBorder3: #333C42;
+
+  --color-kAmber: #B8883A;
+  --color-kAmberDark: #5A3E18;
+  --color-kAmberBg: #100D06;
+  --color-kAmberText: #CCA060;
+  --color-kBuildAccent: #C49070;
+
+  --color-kGreen: #4C8E58;
+  --color-kGreenDark: #1C4228;
+  --color-kGreenBg: #070E09;
+  --color-kGreenText: #72AE82;
+
+  --color-kBlue: #5A8AAA;
+  --color-kBlueDark: #1A3A52;
+  --color-kBlueBg: #060D14;
+  --color-kBlueText: #7AB4CC;
+
+  --color-kRed: #8A4444;
+  --color-kRedDark: #4A1A1A;
+  --color-kRedBg: #110606;
+  --color-kCvVolExclText: #CC9999;
+
+  --color-kPillExclusionBg: #120606;
+  --color-kPillExclusionBorder: #3E1618;
+  --color-kPillExclusionText: #BB8080;
+  --color-kPillInclusionBg: #060F08;
+  --color-kPillInclusionBorder: #1A3C20;
+  --color-kPillInclusionText: #70AA78;
+
+  --color-kText0: #D0D4D8;
+  --color-kText1: #8E99A4;
+  --color-kText2: #566068;
+  --color-kText3: #3A444C;
+
+  --color-kPatternCapHoverBg: #04050A;
+
+  /* ─── Community prompt (light popup — mockup v3) ─── */
+  --color-kNotePopBg: #F5F4F1;
+  --color-kNotePopCard: #FFFFFF;
+  --color-kNotePopSep: #E6E3DC;
+  --color-kNotePopSepHd: #ECEAE4;
+  --color-kNotePopText0: #1A1C1F;
+  --color-kNotePopText1: #566068;
+  --color-kNotePopText2: #8E99A4;
+  --color-kNotePopAmberDark: #9A7030;
+  --color-kNotePopGreenDark: #3A7244;
+  --color-kNotePopBlueDark: #426E8C;
+  --color-kNotePopAmberBg: #B8883A14;
+  --color-kNotePopAmberBorder: #B8883A3D;
+  --color-kNotePopAmberHover: #B8883A1F;
+  --color-kNotePopGreenBg: #4C8E5812;
+  --color-kNotePopGreenBorder: #4C8E5838;
+  --color-kNotePopGreenHover: #4C8E581A;
+  --color-kNotePopBlueBg: #5A8AAA12;
+  --color-kNotePopBlueBorder: #5A8AAA38;
+  --color-kNotePopBlueHover: #5A8AAA1A;
+  --color-kNotePopWhite: #FFFFFF;
+
+  /* Derived / semantic (aliases for mockup) */
+  --accent-product: var(--color-kAmber);
+  --accent-layout: var(--color-kAmber);
+  --accent-build: var(--color-kBuildAccent);
+  --accent-structure: var(--color-kBlue);
+  --accent-ambient: var(--color-kGreen);
+  --state-success: var(--color-kGreen);
+  --state-warning: var(--color-kAmber);
+  --state-danger: var(--color-kRed);
+  --state-data: var(--color-kBlue);
+
+  /* Legacy mockup aliases (--sf0 …) */
+  --sf0: var(--color-kSurface0);
+  --sf1: var(--color-kSurface1);
+  --sf2: var(--color-kSurface2);
+  --sf3: var(--color-kSurface3);
+  --sf4: var(--color-kSurface4);
+  --sf5: var(--color-kSurface5);
+  --sf6: var(--color-kSurface6);
+  --sf-deep: var(--color-kSurfaceDeep);
+  --br0: var(--color-kBorder0);
+  --br1: var(--color-kBorder1);
+  --br2: var(--color-kBorder2);
+  --br3: var(--color-kBorder3);
+  --am: var(--color-kAmber);
+  --am-d: var(--color-kAmberDark);
+  --am-b: var(--color-kAmberBg);
+  --am-t: var(--color-kAmberText);
+  /* v12.7 experimental gate aliases */
+  --exp-hint-border: var(--am-d);
+  --exp-badge-bg: color-mix(in srgb, var(--am) 18%, var(--sf3));
+  --exp-muted-saturate: 0.55;
+  --gn: var(--color-kGreen);
+  --gn-d: var(--color-kGreenDark);
+  --gn-b: var(--color-kGreenBg);
+  --gn-t: var(--color-kGreenText);
+  --bl: var(--color-kBlue);
+  --bl-d: var(--color-kBlueDark);
+  --bl-b: var(--color-kBlueBg);
+  --bl-t: var(--color-kBlueText);
+  --re: var(--color-kRed);
+  --re-b: var(--color-kRedBg);
+  --re-d: var(--color-kRedDark);
+  --re-t: var(--color-kCvVolExclText);
+  --build-accent: var(--color-kBuildAccent);
+  --t0: var(--color-kText0);
+  --t1: var(--color-kText1);
+  --t2: var(--color-kText2);
+  --t3: var(--color-kText3);
+
+  /* Font size legacy aliases */
+  --fs-body: var(--font-size-body);
+  --fs-small: var(--font-size-small);
+  --fs-dropdown: var(--font-size-dropdown);
+  --fs-tiny: var(--font-size-tiny);
+  --fs-title: var(--font-size-title);
+  --fs-titlebar: var(--font-size-titlebar);
+  --fs-generate: var(--font-size-generate);
+  --fs-mono-6: var(--font-size-mono-6);
+  --fs-mono-status: var(--font-size-mono-status);
+  --fs-canvas-stat: var(--font-size-canvas-stat);
+  --fs-canvas-hint: var(--font-size-canvas-hint);
+  --fs-arch: var(--font-size-arch);
+  --fs-preset: var(--font-size-preset);
+  --fs-ue-badge: var(--font-size-ue-badge);
+  --fs-mono-body: var(--font-size-mono-body);
+
+  /* ─── Layout (float px) ─── */
+  --layout-PanelWidth: 388px;
+  /*
+   * Parity harness capture widths — must match Playwright screenshot boxes (Tools/parity).
+   * If mockup pane padding or card width changes, re-measure html_*.png widths and update here,
+   * then: python3 Tools/gen_tokens.py + rebuild. See Tools/parity/README.md § Capture alignment.
+   */
+  --layout-ParitySectionCardWidth: 330px;
+  --layout-ParityControlRowWidth: 328px;
+  --layout-ParityTitleBarWidth: 346px;
+  --layout-CornerRadius: 3px;
+  --layout-TitleBarHeight: 32px;
+  --layout-ToolbarButtonHeight: 28px;
+  --layout-StatusBarHeight: 28px;
+  --layout-DropdownTriggerHeight: 22px;
+  --layout-PresetSaveButtonHeight: 22px;
+  --layout-PanelContentMarginH: 10px;
+  --layout-PropRowPadV: 3px;
+  --layout-DropdownTriggerPadH: 7px;
+  --layout-ToolbarSecondaryPadH: 10px;
+  --layout-LegendColumnGap: 10px;
+  --layout-LegendRowGap: 4px;
+  --layout-LegendSwatchLabelGap: 3px;
+  --layout-PropRowLabelWidth: 98px;
+  --layout-MainTabBarHeight: 28px;
+  --layout-MainTabIconSize: 11px;
+  --layout-PropRowPadH: 10px;
+  --layout-PropRowIndLabelWidth: 150px;
+  --layout-PropRowIndLabelPadLeft: 10px;
+  --layout-AnchorOverrideLabelWidth: 52px;
+  --layout-PaneDeckAssetCardGap: 5px;
+  --layout-AddAssetPadV: 5px;
+  --layout-PropRowShellTopGap: 4px;
+  --layout-PanePropRowStackGapV: 2px;
+  --layout-FloraSamplesRowTopPad: 7px;
+  --layout-PillarTabBarHeight: 24px;
+  --layout-FloraSubTabBarHeight: 22px;
+  --layout-PreviewFooterMinHeight: 18px;
+  --layout-PreviewFooterHintMaxWidth: 240px;
+  --layout-PatternArchStripPadH: 8px;
+  --layout-PatternArchStripPadV: 4px;
+  --layout-PatternArchStripGap: 3px;
+  --layout-PatternArchBtnHeight: 56px;
+  --layout-PatternArchCapHeight: 14px;
+  --layout-PatternArchIconSize: 24px;
+  --layout-PatternArchIconPadTop: 1px;
+  --layout-TrayReadoutMinWidth: 30px;
+  --layout-DrawerBadgePadH: 5px;
+  --layout-DrawerBadgePadV: 1px;
+  --layout-DrawerHeaderPadH: 10px;
+  --layout-DrawerHeaderPadV: 5px;
+  --layout-TitleBarPaddingH: 8px;
+  --layout-TitleBarItemGap: 7px;
+  --layout-TitleSepMarginAfter: 6px;
+  --layout-PresetRowPaddingV: 4px;
+  --layout-PresetRowSlotGap: 5px;
+  --layout-ActorComboMinHeight: 22px;
+  --layout-SectionCardFootPadH: 7px;
+  --layout-SectionCardFootPadV: 4px;
+  --layout-SectionCardStackGap: 6px;
+  --layout-PaneDeckPadH: 8px;
+  --layout-PaneDeckPadV: 6px;
+  --layout-SectionCardHeaderPadH: 10px;
+  --layout-SectionCardHeaderPadV: 6px;
+  --layout-SectionCardHeaderMinHeight: 26px;
+  --layout-SectionCardBodyPadV: 4px;
+  --layout-SectionCardBodyPadBottom: 8px;
+  --layout-SectionSegGap: 4px;
+  --layout-SectionSegMinHeight: 22px;
+  --layout-V12CardPreviewWidth: 48px;
+  --layout-V12CardPreviewHeight: 48px;
+  --layout-V12CardMinHeight: 52px;
+  --layout-V12CardHeadControlsReserveWidth: 170px;
+  --layout-V12FloraLayerShellMinHeight: 52px;
+  --layout-V12AudioShellMinHeight: 44px;
+  --layout-V12LiveChipHeight: 16px;
+  --layout-SectionSegMaxWidth: 120px;
+  --layout-SectionSegMaxWidthLive: 136px;
+  --layout-BuildAssetListPad: 6px;
+  --layout-BuildEmptyHintMarginH: 10px;
+  --layout-SectionOffHintMarginH: 10px;
+  --layout-V12WtLabelWidth: 14px;
+  --layout-V12WtValueMinWidth: 28px;
+  --layout-CanvasDiagramHeight: 280px;
+  --layout-CanvasOverlayInset: 6px;
+  --layout-V12ScrollBarThickness: 3px;
+  --layout-GrpLabelAccentWidth: 2px;
+  --layout-GrpLabelAccentHeight: 10px;
+  --layout-GrpLabelAccentGap: 6px;
+
+  /* Community prompt popup (OmniScape_CommunityPrompt.html v3) */
+  --layout-CommunityPromptWidth: 440px;
+  --layout-CommunityPromptHeight: 405px;
+  --layout-CommunityPromptCornerRadius: 10px;
+  --layout-CommunityPromptRowMinHeight: 68px;
+  --layout-CommunityPromptRowPadV: 12px;
+  --layout-CommunityPromptRowPadH: 16px;
+  --layout-CommunityPromptRowIconSize: 34px;
+  --layout-CommunityPromptPillHeight: 28px;
+  --layout-CommunityPromptHeaderMarkSize: 34px;
+  --layout-CommunityPromptAvatarSize: 28px;
+  --layout-CommunityPromptCloseSize: 26px;
+  --layout-CommunityPromptCloseIconSize: 12px;
+  --layout-CommunityPromptBadgePadH: 9px;
+  --layout-CommunityPromptBadgePadV: 3px;
+  --layout-CommunityPromptBadgeRadius: 20px;
+  --layout-CommunityPromptFooterPadT: 11px;
+  --layout-CommunityPromptFooterPadB: 13px;
+  --layout-CommunityPromptFooterPadH: 16px;
+  --layout-CommunityPromptFooterDismissGap: 6px;
+  --layout-CommunityPromptFooterItemGap: 10px;
+  --layout-ParityCommunityPromptWidth: 440px;
+
+  /* Atlas mode (OmniScape_v13_Atlas.html .atlas-* block) */
+  --layout-AtlasCtxStripMinHeight: 28px;
+  --layout-AtlasCtxStripPadH: 10px;
+  --layout-AtlasCtxStripPadV: 6px;
+  --layout-AtlasCtxExitHeight: 18px;
+  --layout-AtlasCtxExitPadH: 8px;
+  --layout-AtlasStepNoSize: 17px;
+  --layout-AtlasStepRailPadH: 10px;
+  --layout-AtlasStepRailPadTop: 8px;
+  --layout-AtlasStepRailPadBottom: 6px;
+  --layout-AtlasSearchHeight: 26px;
+  --layout-AtlasSearchMarginTop: 2px;
+  --layout-AtlasSearchMarginH: 10px;
+  --layout-AtlasSearchMarginBottom: 4px;
+  --layout-AtlasSearchPadH: 8px;
+  --layout-AtlasBtnHeight: 24px;
+  --layout-AtlasBtnPadH: 11px;
+  --layout-AtlasFidHeight: 26px;
+  --layout-AtlasFidGridGap: 4px;
+  --layout-AtlasStepFootPadTop: 8px;
+  --layout-AtlasStepFootPadBottom: 4px;
+  --layout-AtlasFoldSize: 44px;
+  --layout-AtlasViewOptHeight: 16px;
+  --layout-AtlasViewOptPadH: 7px;
+  --layout-AtlasViewOptGap: 2px;
+  --layout-AtlasPreviewChipGap: 3px;
+  --layout-AtlasPreviewChipRowHeight: 16px;
+  --layout-AtlasStepGlowPad: 3px;
+  --layout-ParityAtlasOverlayBarWidth: 280px;
+
+  /* Numeric layout */
+  --numeric-TrayValueBoxWidth: 60px;
+  --numeric-TrayBoundsSpinBoxWidth: 52px;
+  --numeric-SeedFieldWidth: 42px;
+  --numeric-StatusLMSWidth: 72px;
+
+  /* ─── Margins (L T R B or shorthand; names match OmniScapeLayout) ─── */
+  --margin-LayoutDividerMargin: 10px 3px 10px 3px;
+  --margin-ZoneListPad: 10px 4px 10px 2px;
+  --margin-AnchorOverrideListPad: 10px 0px 10px 4px;
+  --margin-AssetListPad: 10px 5px;
+  --margin-PaneDeckAssetListPad: 8px 6px 8px 4px;
+  --margin-PaneDeckAddAssetMargin: 8px 4px 8px 8px;
+  --margin-FeatureCardMargin: 10px 6px;
+  --margin-FeatureCardHeaderPad: 8px 5px;
+  --margin-FeatureCardBodyPad: 0px 4px 0px 6px;
+  --margin-InfoBoxMargin: 10px 5px 10px 8px;
+  --margin-InfoBoxInnerPad: 9px 7px;
+  --margin-GrpLabelPad: 10px 6px 10px 3px;
+  --margin-PcgStatusRowPad: 10px 4px 10px 2px;
+  --margin-PcgAttrStripPad: 10px 2px 10px 6px;
+  --margin-PcgLeadPad: 10px 4px 10px 6px;
+  --margin-PcgDisabledHintMargin: 10px 4px 10px 6px;
+  --margin-StatusPillPad: 6px 2px;
+  --margin-ObjRowPad: 10px 2px;
+  --margin-ValidationRowMargin: 10px 4px 10px 6px;
+  --margin-GhostValidationLinePad: 10px 2px 10px 4px;
+  --margin-TerrainLayerStripPad: 10px 0px 10px 4px;
+  --margin-AmbientAssetListPad: 8px 0px 8px 4px;
+
+  /* Animation */
+  --tfn: cubic-bezier(0.4, 0, 0.2, 1);
+}
