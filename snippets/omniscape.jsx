@@ -5,6 +5,9 @@
  */
 
 export const OmniScapeBundle = (() => {
+/* Mintlify production does not serve root .html assets (404). jsDelivr hosts them from the docs repo. */
+const MOCKUP_SRC = 'https://cdn.jsdelivr.net/gh/jazzmoradia/docs@main/control-center-mockup.html?embed=1';
+
 function mulberry32(a) {
   return function () {
     a |= 0;
@@ -468,7 +471,7 @@ function useReveal(drawFn, deps) {
 const HeroPanel = () => (
   <div className="os-cc-frame-wrap os-cc-frame-wrap--hero">
     <iframe
-      src="/control-center-mockup.html?embed=1"
+      src={MOCKUP_SRC}
       title="OmniScape Control Center"
       className="os-cc-frame"
       loading="eager"
@@ -476,152 +479,27 @@ const HeroPanel = () => (
   </div>
 );
 
-/* ---- CinematicHero — scroll-driven: settlement builds over the Control Center.
- * UI is ALWAYS visible; iso canvas overlays and fades out on scroll. ---------- */
-function getScrollParent(el) {
-  if (!el || typeof window === 'undefined') return null;
-  let node = el.parentElement;
-  while (node && node !== document.body && node !== document.documentElement) {
-    const s = window.getComputedStyle(node);
-    const oy = s.overflowY;
-    if ((oy === 'auto' || oy === 'scroll' || oy === 'overlay') && node.scrollHeight > node.clientHeight + 1) {
-      return node;
-    }
-    node = node.parentElement;
-  }
-  return null;
-}
-
-const CinematicHero = () => {
-  const trackRef = useRef(null);
-  const frameRef = useRef(null);
-  const canvasRef = useRef(null);
-  const [size, setSize] = useState({ w: 388, h: 480 });
-  const [progress, setProgress] = useState(0);
-  const [introP, setIntroP] = useState(0);
-  const [reduced, setReduced] = useState(false);
-  const data = useMemo(() => genVariant(24601, 'town'), []);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const mq = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
-    const apply = () => setReduced(!!(mq && mq.matches));
-    apply();
-    if (mq && mq.addEventListener) { mq.addEventListener('change', apply); return () => mq.removeEventListener('change', apply); }
-    return undefined;
-  }, []);
-
-  /* Auto-play opening build so the hero is alive before scroll */
-  useEffect(() => {
-    if (typeof window === 'undefined' || reduced) return undefined;
-    let start = 0;
-    let raf = 0;
-    const dur = 2800;
-    const tick = (ts) => {
-      if (!start) start = ts;
-      const t = Math.min(1, (ts - start) / dur);
-      setIntroP(0.42 * (1 - Math.pow(1 - t, 3)));
-      if (t < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [reduced]);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return undefined;
-    const m = () => { const el = frameRef.current; if (el) setSize({ w: el.clientWidth, h: el.clientHeight }); };
-    m();
-    let ro;
-    if (typeof ResizeObserver !== 'undefined' && frameRef.current) { ro = new ResizeObserver(m); ro.observe(frameRef.current); }
-    else window.addEventListener('resize', m);
-    return () => { if (ro) ro.disconnect(); else window.removeEventListener('resize', m); };
-  }, []);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return undefined;
-    if (reduced) { setProgress(1); return undefined; }
-    let raf = 0;
-    const measure = () => {
-      const el = trackRef.current;
-      if (!el) return;
-      const r = el.getBoundingClientRect();
-      const vh = window.innerHeight || 640;
-      const denom = r.height - vh;
-      const pr = denom > 0 ? Math.min(1, Math.max(0, -r.top / denom)) : 1;
-      setProgress(pr);
-    };
-    const onScroll = () => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => { raf = 0; measure(); });
-    };
-    measure();
-    const scrollRoot = getScrollParent(trackRef.current);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    if (scrollRoot) scrollRoot.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      if (scrollRoot) scrollRoot.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, [reduced]);
-
-  const motionP = reduced ? 1 : Math.max(introP, progress);
-  const buildP = Math.min(1, motionP / 0.55);
-  useEffect(() => { drawIso(canvasRef.current, data, size, buildP); }, [data, size, buildP]);
-
-  const seg = (a, b) => Math.max(0, Math.min(1, (motionP - a) / (b - a)));
-  /* Device visible on load; canvas only when the build has started */
-  const canvasFade = reduced ? 0 : (buildP > 0.03 ? 1 - seg(0.08, 0.45) : 0);
-  const canvasScale = 1 - 0.04 * seg(0.2, 0.5);
-  const canvasPointer = canvasFade < 0.05 ? 'none' : 'auto';
-  const cueOpacity = reduced ? 0 : Math.max(0, 1 - seg(0.02, 0.14) - introP * 1.2);
-
-  return (
-    <section ref={trackRef} className={'os-cine' + (reduced ? ' os-cine--static' : '')}>
-      <div className="os-cine-stage">
-        <div className="os-cine-inner">
-          <span className="os-cine-eyebrow">Procedural settlements &middot; UE 5.5+</span>
-          <h1 className="os-cine-title">A whole settlement from a <span className="os-grad">single seed</span>.</h1>
-          <p className="os-cine-sub">
-            Watch one take shape &mdash; then steer every layer from a single <strong>Control Center</strong>. Your meshes, your style, the same result every time.
-          </p>
-          <div className="os-cine-frame" ref={frameRef}>
-            <div className="os-cine-device">
-              <div className="os-cc-frame-wrap os-cc-frame-wrap--hero">
-                <iframe
-                  src="/control-center-mockup.html?embed=1"
-                  title="OmniScape Control Center"
-                  className="os-cc-frame"
-                  loading="eager"
-                />
-              </div>
-            </div>
-            <canvas
-              ref={canvasRef}
-              className="os-cine-canvas"
-              style={{
-                opacity: canvasFade,
-                transform: `scale(${canvasScale})`,
-                pointerEvents: canvasPointer,
-              }}
-              aria-hidden={canvasFade < 0.05}
-            />
-          </div>
-          <div className="os-cine-cta">
-            <a className="os-btn os-btn--primary" href="https://fab.com/s/4aeff49faf04">Get it on Fab</a>
-            <a className="os-btn os-btn--ghost" href="#control-center">Explore the Control Center</a>
-          </div>
+/* ---- CinematicHero — headline + live Control Center (device always visible) */
+const CinematicHero = () => (
+  <section className="os-cine os-cine--static">
+    <div className="os-cine-stage">
+      <div className="os-cine-inner">
+        <span className="os-cine-eyebrow">Procedural settlements &middot; UE 5.5+</span>
+        <h1 className="os-cine-title">A whole settlement from a <span className="os-grad">single seed</span>.</h1>
+        <p className="os-cine-sub">
+          Steer every layer from a single <strong>Control Center</strong> &mdash; layout, buildings, roads, walls, and ambient detail. Your meshes, your style, the same result every time.
+        </p>
+        <div className="os-cine-frame">
+          <HeroPanel />
         </div>
-        <div className="os-cine-cue" aria-hidden="true" style={{ opacity: cueOpacity }}>
-          <span>Scroll to build</span>
-          <i />
+        <div className="os-cine-cta">
+          <a className="os-btn os-btn--primary" href="https://fab.com/s/4aeff49faf04">Get it on Fab</a>
+          <a className="os-btn os-btn--ghost" href="#control-center">Explore the Control Center</a>
         </div>
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);
 
 /* ---- WorkflowSpectrum — the mental model as a band ------------------- */
 const SPECTRUM = [
@@ -804,7 +682,7 @@ const ControlCenterExplorer = () => {
           </div>
           <iframe
             ref={iframeRef}
-            src="/control-center-mockup.html?embed=1"
+            src={MOCKUP_SRC}
             title="OmniScape Control Center — interactive mockup"
             className="os-cc-frame"
             loading="lazy"
