@@ -1,7 +1,7 @@
 ---
-title: "OmniScape FAQ: Answers to Common Questions"
+title: "OmniScape FAQ: Common Setup and Workflow Questions"
 sidebarTitle: "FAQ"
-description: "Frequently asked questions about OmniScape installation, workflow, assets, roads, walls, terrain, performance, and packaging."
+description: "Frequently asked questions about OmniScape: installation, editor workflow, asset placement, roads, walls, terrain collision, performance, and packaging."
 ---
 
 This page collects the questions that come up most often on the support thread, organised by topic so you can jump straight to what you need. If your question isn't covered here, drop a comment on the [support thread](https://gist.github.com/jazzmoradia/6c4383fb51914f9bf083ccd472ee6b12) — chances are someone has hit the same thing before.
@@ -191,8 +191,8 @@ This page collects the questions that come up most often on the support thread, 
     **Bake first is almost always the right choice for shipped games.** Generate in the editor, save the level, then cook. Players load pre-built meshes and HISMs with no generation cost at runtime.
 
     Runtime generation (calling `GenerateSettlement` from Blueprint in a cooked build) is useful for:
-    - In-editor tools and level-design utilities
     - Procedural game modes where the layout must differ every session
+    - Server-hosted world generation where the settlement cannot be finalized before shipping
     - Prototyping and testing
 
     If you do use runtime generation, expect a **frame hitch** unless you enable **Time-sliced spawn** (available in game worlds, not in the editor).

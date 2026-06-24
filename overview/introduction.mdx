@@ -1,7 +1,7 @@
 ---
 title: "What is OmniScape? Procedural Settlements Explained"
 sidebarTitle: "Introduction"
-description: "OmniScape generates complete settlements in Unreal Engine from your own meshes and Blueprints. One seed, one Control Center, deterministic results every time."
+description: "OmniScape generates complete settlements in Unreal Engine from your own meshes and Blueprints. One seed, one Control Center, always deterministic."
 ---
 
 OmniScape is a procedural settlement generator for Unreal Engine 5.5+. Drop a single **OmniScape Generator** actor into your level, open the **Control Center**, assign your meshes and Blueprints, hit **Generate** — and a fully laid-out town, fortress, or village appears in seconds. The same seed and settings always produce the same layout, on every machine, every time you run it.
@@ -18,7 +18,7 @@ Every part of OmniScape maps to one of four tabs in the Control Center. Working 
 
 <Steps>
   <Step title="Layout">
-    Choose a layout pattern (Radial, Voronoi, Perlin, Axial/Grid, or Organic), set the settlement footprint, dial in zone density, and optionally load an Atlas reference from real-world OpenStreetMap data.
+    Choose a layout pattern (Radial, Voronoi, Perlin, Axial/Grid, or Organic), set the settlement footprint, and dial in zone density.
   </Step>
   <Step title="Build">
     Assign your meshes or Blueprint classes across three building tiers — Large, Medium, and Small. OmniScape uses these to populate zones according to the layout rules.
@@ -34,14 +34,14 @@ Every part of OmniScape maps to one of four tabs in the Control Center. Working 
 ## What you bring vs. what OmniScape handles
 
 <CardGroup cols={2}>
-  <Card title="You provide" icon="paintbrush">
+  <Card title="You provide" icon="paintbrush" href="/get-started/quick-start">
     - Static Meshes or Blueprint classes for buildings (Large / Medium / Small tiers)
     - Road and wall mesh sets
     - Foliage Types for flora layers
     - Fauna Blueprint actors
     - Ambient audio assets
   </Card>
-  <Card title="OmniScape provides" icon="wand-magic-sparkles">
+  <Card title="OmniScape provides" icon="wand-magic-sparkles" href="/overview/what-you-get">
     - Settlement layout and zone boundaries
     - Road networks with elevation handling
     - Wall circuits with gates and pillars

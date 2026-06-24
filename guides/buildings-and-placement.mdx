@@ -42,6 +42,7 @@ Each tier holds a list of **slots**. Each slot represents one building option th
 |---|---|
 | **Static Mesh** | Geometry-only buildings — no runtime logic needed. OmniScape instances these for performance. |
 | **Blueprint** | Buildings that require logic: doors that open, lights that toggle, interactable props. Spawned as full Actors. |
+| **Foliage Type** | For **flora layers only** — vegetation, rock, and debris in the Ambient tab. Not valid for building tiers (Large, Medium, or Small). |
 
 If you set both a Static Mesh and a Blueprint on the same slot, **the Blueprint takes priority** — the mesh is ignored.
 
@@ -70,7 +71,13 @@ How OmniScape distributes Medium and Small buildings around each node is control
     - Best for: organic layouts (Voronoi, Perlin, Organic), fortified settlements where buildings pack around a keep.
   </Tab>
   <Tab title="Roadside">
-    **Roadside** places buildings as plots along roads, using frontage (how close the building face is to the road), depth (plot length), and variation (stagger and offset) to create a street of properties.
+    **Roadside** places buildings as plots along roads. Each plot has a defined frontage, depth, and variation that controls how the building sits relative to the road edge.
+
+    | Parameter | Range | Default | What it does |
+    |-----------|-------|---------|--------------|
+    | Frontage min / max (cm) | ≥ 200 each | 400 / 2000 | Distance from road edge to the near and far extremes of the plot face |
+    | Depth (cm) | ≥ 100 | 1200 | Plot length — how far the building extends back from the road |
+    | Variation | 0 — 0.5 | 0.15 | Stagger and offset applied per plot — higher = more irregular street line |
 
     - Creates a much more urban, street-facing character than Cluster.
     - **Does not respect per-anchor Medium/Small overrides** — those are Cluster-only. Large landmarks on anchors still apply.

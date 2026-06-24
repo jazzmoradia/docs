@@ -1,7 +1,7 @@
 ---
 title: "OmniScape Parameter Reference: All Controls and Ranges"
 sidebarTitle: "Parameters"
-description: "Complete reference for every OmniScape control: settlement globals, layout patterns, roads, buildings, flora, walls, and ambient audio parameter ranges and defaults."
+description: "Complete reference for every OmniScape parameter: settlement globals, roads, buildings, flora, walls, and layout pattern ranges and defaults."
 ---
 
 This page is the authoritative numeric reference for every control exposed in OmniScape's Control Center and generator Details panel. Each section lists the valid range, default value, and a brief note on what the control does. Use it alongside the Creative Directions guide — which explains *why* you'd want a given value — and the Control Center guide — which explains *where* each control lives in the UI. This page focuses purely on *what* the editor allows.
@@ -214,5 +214,14 @@ These are starting points for emitter radius values to match common spatial zone
 ---
 
 <Note>
-  If a parameter produces unexpected results — walls that don't appear, buildings that don't place, roads that don't connect — check the **Troubleshooting** guide and **FAQ** for common causes. The road QA snapshot from `GetLastLayoutValidation` (Blueprint) or the Control Center's Diagnostics panel is often the fastest way to identify layout-level problems before investigating individual parameter values.
+  If a parameter produces unexpected results — walls that don't appear, buildings that don't place, roads that don't connect — the road QA snapshot from `GetLastLayoutValidation` (Blueprint) or the Control Center's Diagnostics panel is often the fastest way to identify layout-level problems before investigating individual parameter values.
 </Note>
+
+<CardGroup cols={2}>
+  <Card title="Troubleshooting" icon="wrench" href="/help/troubleshooting">
+    Common fixes for spawn, collision, installation, and configuration problems.
+  </Card>
+  <Card title="Blueprint & Runtime" icon="code" href="/guides/blueprint-and-runtime">
+    Use these parameters at runtime via the Blueprint API and RuntimeProfile data assets.
+  </Card>
+</CardGroup>

@@ -90,6 +90,15 @@ Most OmniScape issues come down to one of a handful of things: a missing Large a
   - **Fix option 2:** If Roadside mode is intentional, populate the global M/S lists with the buildings you want near that anchor.
 </Accordion>
 
+<Accordion title="Generate on Begin Play produces duplicate content">
+  If you call `GenerateSettlement` on Begin Play in a level that already contains a **baked settlement** — one where you ran Generate in the editor and saved the actors into the level — OmniScape will generate a second settlement on top of the saved one. The result is duplicated roads, buildings, and walls with unpredictable overlap.
+
+  **Fix:** Use one approach per level — either bake-first **or** runtime generate, never both.
+
+  - If the level must stay baked, remove the `GenerateSettlement` Begin Play call.
+  - If you need runtime generation, call `ClearSettlement` first to remove the saved baked content before calling `GenerateSettlement`.
+</Accordion>
+
 <Accordion title="Preview looks wrong in PIE">
   This is expected behaviour. The in-editor preview (PIE) shows the **last baked/saved layout**, not a live recompute. OmniScape does not regenerate the settlement when you press Play — it renders what is saved in the level.
 
@@ -119,6 +128,19 @@ Most OmniScape issues come down to one of a handful of things: a missing Large a
   <Warning>
     Intersection mesh assignments are **not stored inside presets**. If you load a preset, you must re-assign the intersection mesh and set the radius scale manually after loading.
   </Warning>
+</Accordion>
+
+## Performance
+
+<Accordion title="The editor hitches or freezes during generation">
+  Large settlements are CPU-intensive to generate. If the editor is hitching badly during a Generate pass, reduce the work load:
+
+  - **Reduce radius** — smaller radius means fewer buildings, roads, and placement traces.
+  - **Reduce node count** — fewer active nodes means less work per generate pass.
+  - **Reduce environment/flora samples** — lower the samples-per-layer value in the environment settings.
+  - **Disable Auto mode** — Auto rebuilds the entire settlement on every property change. Turn it off while tuning and click Generate manually when you're ready.
+
+  For very large settlements that you want to iterate on quickly, reduce these settings to a lightweight preview configuration and raise them only for a final-quality generate.
 </Accordion>
 
 ---

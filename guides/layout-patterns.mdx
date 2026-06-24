@@ -1,7 +1,7 @@
 ---
 title: "Layout Patterns: Shape Your Settlement's Structure"
 sidebarTitle: "Layout Patterns"
-description: "Choose from five layout patterns in OmniScape — Radial, Voronoi, Perlin, Axial, and Organic — each with dedicated tuning controls to shape your settlement."
+description: "Understand OmniScape's five layout patterns — Radial, Voronoi, Perlin, Axial, and Organic — and tune each one for your target settlement type."
 ---
 
 Layout patterns are the structural backbone of every OmniScape settlement. The pattern you choose determines how nodes are distributed across the settlement footprint, how roads connect them, and what kind of place the result reads as — a fortified citadel, an organic market town, a frontier hamlet. Getting the pattern right before you place a single building saves a lot of iteration downstream, because road topology, District boundaries, and Roadside building plots all flow directly from it.
@@ -40,7 +40,7 @@ Layout patterns are the structural backbone of every OmniScape settlement. The p
 Radial places nodes in concentric rings radiating outward from a centre point. The resulting road network follows those rings and the spokes between them, giving settlements a strong focal structure — ideal wherever a single landmark (a keep, a cathedral, a central well) should dominate the composition.
 
 | Control | Range | Default | What it does |
-|---------|-------|---------|--------------|
+|---------|-------|---------|--------------| 
 | Ring count | 1 — 20 | 3 | Number of concentric rings of nodes |
 | Ring spacing (cm) | ≥ 200 | 1500 | Distance between rings |
 | Regularity | 0 — 1 | 0.85 | Higher = more precise geometric placement; lower = rings drift and wobble |
@@ -56,7 +56,7 @@ Radial places nodes in concentric rings radiating outward from a centre point. T
 Voronoi subdivides the settlement footprint into organic cells, each cell becoming a neighbourhood with its own character. Roads follow cell boundaries, creating irregular but coherent blocks — the kind of street layout that looks like centuries of organic growth.
 
 | Control | Range | Default | What it does |
-|---------|-------|---------|--------------|
+|---------|-------|---------|--------------| 
 | Regularity | 0 — 1 | 0.15 | Higher = cells become more equal in size and shape |
 | District gap (cm) | ≥ 0 | 200 | Empty buffer between district cells — widens alleys and separates neighbourhoods |
 | District blocks | on / off | on | Subdivides each Voronoi cell into smaller building blocks |
@@ -74,7 +74,7 @@ Road Redundancy is available on Voronoi to add extra cross-connections beyond th
 Perlin uses abstract noise to scatter nodes into irregular clusters. It does **not** sample real terrain height — it samples a noise field that controls cluster density. The result is a settlement that looks like it negotiated with the landscape rather than being imposed on it: dense pockets of buildings with open gaps between them.
 
 | Control | Range | Default | What it does |
-|---------|-------|---------|--------------|
+|---------|-------|---------|--------------| 
 | Feature size | 0 — 1 | 0.45 | Scale of noise features — low = many small pockets, high = fewer large clusters |
 | Roughness | 0 — 1 | 0.55 | How jagged the boundaries between dense and sparse areas feel |
 
@@ -91,7 +91,7 @@ Road Redundancy is available on Perlin. See [Shared Controls](#shared-controls) 
 Axial arranges nodes along a set of radiating axes, producing the kind of regular street grid associated with deliberate urban planning. Enable **Parallel Grid** to switch from radiating spokes to a Cartesian grid of streets.
 
 | Control | Range | Default | What it does |
-|---------|-------|---------|--------------|
+|---------|-------|---------|--------------| 
 | Axis count | 2 — 8 | 4 | Number of main axes (or grid divisions with Parallel Grid on) |
 | Regularity | 0 — 1 | 0.8 | Higher = nodes snap precisely to axes; lower = slight drift introduces imperfection |
 | Parallel grid | on / off | off | Switches from radiating axes to a true Cartesian grid |
@@ -109,7 +109,7 @@ Road Redundancy is **not** available on Axial / Grid — the topology already pr
 Organic Cluster scatters nodes with loose social clustering — nodes prefer to gather in small groups rather than distribute evenly. This produces the kind of unplanned settlement that grew one building at a time: a hamlet, a farmstead cluster, a frontier camp.
 
 | Control | Range | Default | What it does |
-|---------|-------|---------|--------------|
+|---------|-------|---------|--------------| 
 | Spacing (cm) | ≥ 100 | 1500 | Minimum distance between nodes |
 | Grouping | 0 — 1 | 0.6 | Higher = nodes cluster tightly in groups; lower = more even distribution |
 
@@ -121,13 +121,14 @@ Road Redundancy is available on Organic Cluster. See [Shared Controls](#shared-c
 
 These fields appear across all patterns and apply globally to the settlement.
 
-| Field | Meaning |
-|-------|---------|
-| Settlement radius (cm) | Extent of the settlement from the generator actor |
-| Num Nodes | Total count of landmark / anchor nodes the pattern places |
-| Generation seed | Fixed integer for repeatable results; change it to explore variations |
-| Overlap padding (cm) | Extra clearance added between building footprints |
-| Max building slope (°) | Steepest terrain slope on which buildings can be placed |
+| Field | Range | Default | Meaning |
+|-------|-------|---------|---------|
+| Settlement radius (cm) | ≥ 500 | 10000 | Extent of the settlement from the generator actor |
+| Num Nodes | 1 — 50 | 5 | Total count of landmark / anchor nodes the pattern places |
+| Districts (DistrictCount) | 1 — 16 | 1 | Macro regions subdividing the settlement; 1 = single-zone hamlet |
+| Generation seed | — | — | Fixed integer for repeatable results; change it to explore variations |
+| Overlap padding (cm) | ≥ 0 | 100 | Extra clearance added between building footprints |
+| Max building slope (°) | 0 — 89 | 30 | Steepest terrain slope on which buildings can be placed |
 
 ### Road Redundancy
 
@@ -147,7 +148,7 @@ Districts and Zones add a layer of semantic organisation on top of the structura
 
 ### Districts (DistrictCount)
 
-Districts divide the settlement into macro regions. A new generator defaults to **1 district** — effectively a single-zone hamlet. Town and city presets typically use more.
+Districts divide the settlement into macro regions. A new generator defaults to **1 district** (range 1–16) — effectively a single-zone hamlet. Town and city presets typically use more.
 
 - With **Voronoi**, District boundaries align with cell boundaries for a clean neighbourhood separation.
 - With other patterns, Districts subdivide the footprint geometrically.
@@ -201,3 +202,11 @@ Start with Structure to get the right shape, set Scale to match your world unit 
 <Tip>
   The fastest way to understand how patterns combine with Districts and Zones is to load one of the built-in presets (Layout → Presets) and study the settings before changing anything. Presets cover the most common settlement types and make excellent starting points for custom configurations.
 </Tip>
+
+---
+
+## Next Step
+
+<Card title="Buildings and Placement" icon="buildings" href="/guides/buildings-and-placement">
+  With your layout pattern locked in, head to the Build tab to assign your meshes and Blueprints to tiers, set weights, and choose how buildings are placed across the settlement.
+</Card>

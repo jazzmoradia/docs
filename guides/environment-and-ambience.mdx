@@ -1,5 +1,5 @@
 ---
-title: "Environment and Ambience: Flora, Fauna, and Sound"
+title: "Environment and Ambience: Flora, Fauna, and Sound in UE5"
 sidebarTitle: "Environment"
 description: "Populate your OmniScape settlement with vegetation, rocks, debris, fauna, and ambient audio using the layered Ambient tab controls."
 ---
@@ -35,18 +35,18 @@ Each layer slot accepts one of three asset types:
 | **Blueprint Class** | Spawned actor | Interactive props, logic-driven objects |
 
 <Tip>
-Use **Static Mesh** by default and switch to Foliage Type only when you need Unreal's foliage tools (e.g. harvesting, painting override, LOD settings via the Foliage Type asset).
+Use **Static Mesh** by default and switch to Foliage Type only when you need Unreal's foliage tools (e.g. harvesting, painting override, LOD settings via the Foliage Type asset). When multiple types are assigned to the same slot, the generator resolves priority in this order: **Blueprint Class → Foliage Type → Static Mesh**.
 </Tip>
 
 ### Layer controls
 
-| Control | Role |
-|---------|------|
-| **Density** | Overall strength of this layer — how many instances spawn |
-| **Min distance from buildings** | Inner exclusion band; keeps spawns away from structure walls |
-| **Max distance from buildings** | Outer band; use to concentrate flora near or away from buildings |
-| **Scale** | Uniform instance size |
-| **Force upright** | Levels instances on slopes (default off; useful for stumps, boulders) |
+| Control | Range | Role |
+|---------|-------|------|
+| **Density** | 0.01 — 10 | Overall strength of this layer — how many instances spawn |
+| **Min distance from buildings** | — | Inner exclusion band; keeps spawns away from structure walls |
+| **Max distance from buildings** | — | Outer band; use to concentrate flora near or away from buildings |
+| **Scale** | 0.1 — 10 | Uniform instance size multiplier |
+| **Force upright** | on / off | Levels instances on slopes (default off; useful for stumps, boulders) |
 
 <Warning>
 **Max distance too small** creates a visible "haircut ring" of flora that ends abruptly in open ground. **Max distance too large** (or unconstrained) spreads props across the entire settlement without clustering. Dial both values together to get the read you want — tight debris near buildings, open clearings in the middle.
@@ -54,13 +54,14 @@ Use **Static Mesh** by default and switch to Foliage Type only when you need Unr
 
 ### Flora sample counts
 
-The **Flora Samples** value controls how many candidate positions OmniScape evaluates per generation.
+The **Flora Samples** value controls how many candidate positions OmniScape evaluates per generation. The valid range is **10 – 5,000**; the default is 400.
 
 | Use | Sample count |
 |-----|-------------|
 | Fast iteration / preview | 10 — 200 |
 | Medium maps, typical production | 400 (default) |
-| Large radii, dense foliage | 800 — 1,500 |
+| Dense large maps | 800 — 1,500 |
+| Maximum (high-end maps) | up to 5,000 |
 
 <Tip>
 Work at **10–200 samples** while you're placing buildings and tuning layout. Raise to your target count only when you're doing a final pass on flora distribution. This keeps generation times short during iteration.
@@ -144,3 +145,9 @@ The exported point sets include:
 <Note>
 The PCG Hand-off refreshes every time you generate. If your PCG graph caches data between generations, trigger a manual refresh on the PCG component after generating.
 </Note>
+
+---
+
+<Card title="Volumes and Anchors" icon="map-pin" href="/guides/volumes-and-anchors">
+  Take spatial control further — carve exclusion zones, confine spawns to a clearing, and pin specific buildings at exact world positions.
+</Card>
