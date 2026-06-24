@@ -1,0 +1,56 @@
+---
+title: "Quick Start: Your First OmniScape Settlement"
+sidebarTitle: "Quick Start"
+description: "Install OmniScape, place a generator, assign your meshes, and generate your first settlement in Unreal Engine in five steps."
+---
+
+OmniScape turns a single seed and a handful of your own meshes into a full procedural settlement — streets, buildings, walls, and ambient detail — all driven from one Control Center. This page gets you from a fresh install to a generated settlement as fast as possible.
+
+<Steps>
+  <Step title="Install OmniScape from Fab">
+    Purchase OmniScape at [fab.com/s/4aeff49faf04](https://fab.com/s/4aeff49faf04). Once purchased, open the **Epic Games Launcher**, go to **Library → Fab Plugins**, and install OmniScape from there.
+
+    Then enable the plugin inside your project: **Edit → Plugins → OmniScape** → toggle it on → restart the editor when prompted.
+
+    <Note>
+      If your preset list is empty after installing, reinstall or update OmniScape from Fab. The full package — including built-in presets — must be present for the Control Center to populate correctly.
+    </Note>
+  </Step>
+
+  <Step title="Open the Control Center">
+    With the plugin enabled, open the OmniScape Control Center via **Window → OmniScape** in the menu bar, or click the OmniScape icon in the toolbar. The Control Center is your single hub for every generation setting; you'll use it for all remaining steps.
+  </Step>
+
+  <Step title="Place an OmniScape Generator actor">
+    Inside the Control Center, click **Place OmniScape Generator**. This drops a Generator actor into your level at the viewport origin and automatically links it to the open Control Center panel. You can reposition the actor to anchor your settlement anywhere in the world.
+  </Step>
+
+  <Step title="Add at least one Large building asset">
+    Navigate to the **Build** tab in the Control Center. Add at least one **Large** asset — this can be a static mesh or a Blueprint — to the Large building slot. OmniScape requires at least one Large asset to anchor settlement nodes before it can populate medium, small, and ambient content.
+  </Step>
+
+  <Step title="Generate, then Save to Level">
+    Click **Generate** in the Control Center. OmniScape runs a full layout pass — nodes, roads, buildings, environment — and populates your level. When the pass completes, click **Save to Level** (or save the level via **File → Save Current Level**).
+
+    <Warning>
+      **The one rule you must not miss:** after generating, always save the level. Content that looks perfect in the editor will vanish on reload or in a packaged build if you skip this step. If a settlement disappears after reopening a project, a missing save is almost certainly the cause.
+    </Warning>
+  </Step>
+</Steps>
+
+## Before you generate: check your terrain collision
+
+OmniScape places buildings by casting downward traces against your ground mesh. For placement to land correctly, your terrain or ground mesh must have **CPU collision** enabled and aligned with the actual walkable surface. GPU-only collision or a collision mesh that doesn't match the visible surface will cause buildings to float, sink, or be rejected entirely. Check your mesh's collision settings in the Static Mesh Editor before generating on custom terrain.
+
+<Tip>
+  If this is your first time using OmniScape, start with a built-in **preset** in the Control Center. Presets provide a complete, working set of generation parameters so you can see a properly shaped settlement immediately — then swap in your own meshes from there.
+</Tip>
+
+<CardGroup cols={2}>
+  <Card title="Understand What Just Happened" icon="map" href="/get-started/first-settlement">
+    Walk through every phase of the generation pass and learn how nodes, patterns, and seeds shape your layout.
+  </Card>
+  <Card title="Dial In the Look" icon="sliders" href="/guides/control-center">
+    Deep-dive into every Control Center tab — Build, Structure, Environment, and more.
+  </Card>
+</CardGroup>

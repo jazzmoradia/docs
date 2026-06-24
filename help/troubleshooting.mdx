@@ -1,0 +1,133 @@
+---
+title: "OmniScape Troubleshooting: Fix Common Setup Issues"
+sidebarTitle: "Troubleshooting"
+description: "Quick fixes for the most common OmniScape issues — nothing spawning, settlements vanishing, buildings floating, and collision problems."
+---
+
+Most OmniScape issues come down to one of a handful of things: a missing Large asset, an unsaved level, a collision mismatch, or an outdated plugin build. The table below maps symptoms to likely causes, and each accordion walks you through the fix step by step.
+
+## Spawn and generation problems
+
+<Accordion title="Nothing spawns after Generate">
+  Three things to check, in order:
+
+  <Steps>
+    <Step title="Add at least one Large asset">
+      Every node requires at least one Large asset in the **Build** tab. Open your node, go to **Build → Large Assets**, and confirm at least one entry is filled in. Without a Large asset the generator has nothing to place and silently produces an empty result.
+    </Step>
+    <Step title="Verify CPU collision on the ground">
+      OmniScape places buildings using downward traces on the **World Static** channel (with a **Visibility** fallback). Your ground mesh must have **CPU collision** enabled and the collision must align with the visible walkable surface. GPU-only collision is invisible to these traces — the generator will find nothing to land on.
+    </Step>
+    <Step title="Make sure the generator actor is above the ground">
+      The downward traces start from the generator actor's location. If the actor is below the terrain, traces fire downward away from the surface and never return a hit. Move the actor up so it sits clearly above the ground, then regenerate.
+    </Step>
+  </Steps>
+</Accordion>
+
+<Accordion title="Settlement vanishes on reload or in a packaged build">
+  This is the most common cause of lost work, and the fix is simple: **save the level after generating**.
+
+  After you click **Generate**, use **File → Save All** (or the **Save to Level** button in the Control Center) before closing the editor or packaging the project. OmniScape writes the generated meshes and HISMs into the level — if the level is not saved, that data is gone on the next open.
+
+  <Warning>
+    Runtime-generated content that is never saved will not survive a reload or a cooked build. If players should see the settlement on load, generate in the editor and save the level before cooking.
+  </Warning>
+</Accordion>
+
+## Collision and placement problems
+
+<Accordion title="Buildings float or sink into the ground">
+  Floating or sinking almost always means a collision mismatch — the collision shape used for traces does not match the visible walkable surface.
+
+  - **GPU-only collision** is not readable by CPU traces. Open the mesh in the Static Mesh Editor, confirm **Simple Collision** or **Complex as Simple** is set, and make sure **Collision Complexity** is not overriding it at runtime.
+  - **Invisible landscape** or a thin plane with no collision — OmniScape traces will either miss entirely or land on the wrong surface.
+  - **Third-party terrain plugins** sometimes use their own collision representation. Check that their walkable surface is exposed as a **World Static** collision channel with CPU collision enabled.
+
+  Once you correct the collision, regenerate and the buildings should snap to the correct height.
+</Accordion>
+
+<Accordion title="Roads or walls fall through the ground">
+  This is a sign of an outdated plugin build. Current OmniScape releases apply **block-all collision** to all generated roads, walls, pillars, and gates automatically.
+
+  **Fix:** Update OmniScape to the latest version from [Fab](https://fab.com/s/4aeff49faf04), then regenerate your settlement.
+</Accordion>
+
+## Installation problems
+
+<Accordion title="Preset list is empty">
+  Built-in presets ship inside the OmniScape plugin package — they are not downloaded separately. An empty preset list almost always means a partial or outdated install.
+
+  <Steps>
+    <Step title="Update from Fab">
+      Open the Epic Games Launcher, go to your **Fab** library, and install or update OmniScape to the latest version.
+    </Step>
+    <Step title="Restart the editor">
+      Close and reopen Unreal Engine completely so the new plugin files are picked up.
+    </Step>
+    <Step title="Check the preset list again">
+      Open the Control Center. If presets are still missing, try disabling and re-enabling the plugin in **Edit → Plugins**, then restart.
+    </Step>
+  </Steps>
+</Accordion>
+
+<Accordion title="Layout changed after updating OmniScape">
+  OmniScape occasionally improves the road-generation stack between versions. If your settlement looks different after an update, the new road stack is interpreting the same seed slightly differently.
+
+  - **For existing work you need to preserve:** enable **Legacy mode** in the **Advanced** section of your generator settings. Legacy mode restores the older road behaviour so the same seed produces the same layout.
+  - **For new projects:** use the current road stack. Legacy mode exists only to protect work in progress, not as a long-term target.
+
+  <Note>
+    If you are starting a new settlement, leave Legacy mode off. The current stack is actively maintained and will receive future improvements.
+  </Note>
+</Accordion>
+
+## Configuration problems
+
+<Accordion title="Anchor medium/small building lists are ignored">
+  Per-anchor Medium and Small building lists are only respected in **Cluster mode**. In **Roadside mode**, the generator uses the global Medium/Small lists and ignores any per-anchor overrides.
+
+  - **Fix option 1:** Switch the anchor to **Cluster** mode so per-anchor M/S lists are honoured.
+  - **Fix option 2:** If Roadside mode is intentional, populate the global M/S lists with the buildings you want near that anchor.
+</Accordion>
+
+<Accordion title="Preview looks wrong in PIE">
+  This is expected behaviour. The in-editor preview (PIE) shows the **last baked/saved layout**, not a live recompute. OmniScape does not regenerate the settlement when you press Play — it renders what is saved in the level.
+
+  If you want to see updated results in PIE, generate in the editor first, save the level, then press Play.
+
+  <Tip>
+    Use the **Live Preview** mode in the Control Center to iterate on layout without entering PIE. Auto mode updates the preview on every edit, though it can be slow on large maps — disable it while tuning and click Generate manually.
+  </Tip>
+</Accordion>
+
+<Accordion title="Buildings avoid roads in unexpected ways">
+  Building placement respects both **road width** and **overlap/road clearance padding**. If buildings are pulling much further back from roads than expected, or refusing to place in areas that look clear, check both values:
+
+  - **Road width** — increase to keep more space around roads; decrease to allow buildings closer to the kerb.
+  - **Overlap padding / road clearance** — controls how close building footprints can come to road edges and each other.
+
+  These two settings interact. Reduce one or both to allow denser placement near roads.
+</Accordion>
+
+<Accordion title="Intersection mesh not showing up">
+  Intersection meshes have three requirements that all need to be met:
+
+  1. **Current pipeline** — intersection mesh support requires an up-to-date OmniScape build. Update from Fab if you are unsure.
+  2. **Assigned mesh** — go to your road settings and assign an intersection mesh in the dedicated slot.
+  3. **Intersection radius scale** — set this value above zero in the road settings. A value of zero suppresses intersection meshes entirely.
+
+  <Warning>
+    Intersection mesh assignments are **not stored inside presets**. If you load a preset, you must re-assign the intersection mesh and set the radius scale manually after loading.
+  </Warning>
+</Accordion>
+
+---
+
+<CardGroup cols={2}>
+  <Card title="Ask in the support thread" icon="comments" href="https://gist.github.com/jazzmoradia/6c4383fb51914f9bf083ccd472ee6b12">
+    Post your question in the gist comments — answers stay searchable for everyone and are monitored around the clock.
+  </Card>
+  <Card title="Full FAQ" icon="circle-question" href="/help/faq">
+    Browse answers to frequently asked questions about installation, workflow, assets, roads, terrain, performance, and packaging.
+  </Card>
+</CardGroup>

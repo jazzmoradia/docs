@@ -1,0 +1,103 @@
+---
+title: "Volumes and Anchors: Precise Spatial Control in OmniScape"
+sidebarTitle: "Volumes & Anchors"
+description: "Use OmniScape Volumes to exclude or include regions, and Anchors to fix node positions, assign landmark buildings, and drive wall gates."
+---
+
+Procedural generation works best when you can guide it. **Volumes** let you carve out regions the generator must respect — keep buildings off a cliff edge, restrict a camp to its clearing, block a sacred grove. **Anchors** let you pin specific nodes in space and force particular buildings at those positions — a keep on the hilltop, the inn beside the gate, a well at the market square. Together they give you precise spatial authorship over an otherwise procedural layout.
+
+---
+
+## Volumes
+
+OmniScape Volumes are spline-closed actors that define regions of interest — either zones the generator should avoid entirely, or zones it should stay exclusively within.
+
+### How to add a volume
+
+<Steps>
+  <Step title="Place the volume actor">
+    In the editor, place an **OmniScape Volume** actor into your level from the Place Actors panel or via the context menu.
+  </Step>
+  <Step title="Shape and close the spline">
+    Select the volume and edit its spline to cover the region you want to control. **Close the spline** — an open spline has no interior and will have no effect.
+  </Step>
+  <Step title="Set the volume type">
+    Choose **Exclusion** or **Inclusion** on the volume actor.
+  </Step>
+  <Step title="Register the volume on the generator">
+    Select your OmniScape generator actor and add the volume to the **Spline Volumes** array.
+  </Step>
+  <Step title="Generate">
+    Click Generate. The volume is now active.
+  </Step>
+</Steps>
+
+<Warning>
+A volume that is **not assigned to the generator's Spline Volumes array** has no effect, even if it's closed and correctly typed. Always confirm the volume appears in the list before generating.
+</Warning>
+
+### Volume types
+
+<CardGroup cols={2}>
+  <Card title="Exclusion" icon="ban">
+    Blocks all spawns inside the spline boundary. Use this for terrain features the generator shouldn't touch — water bodies, cliff edges, pre-placed set-pieces, sacred or off-limits areas.
+  </Card>
+  <Card title="Inclusion" icon="check">
+    Restricts all spawns to inside the spline boundary. Use this to confine a settlement to a specific platform — a quarry floor, a staged camp clearing, an interior courtyard.
+  </Card>
+</CardGroup>
+
+You can use multiple volumes of either type simultaneously. Exclusions take priority within overlapping regions.
+
+---
+
+## Anchors
+
+OmniScape Anchors are placed actors that fix a node at an exact world position. The generator treats anchored nodes as solved first — it places them at the anchor location, assigns any landmark building you've specified, then fills the remaining nodes procedurally up to the **Num Nodes** count.
+
+### How to add anchors
+
+<Steps>
+  <Step title="Place anchor actors">
+    Place one or more **OmniScape Anchor** actors in the level, positioning them exactly where you want nodes to appear.
+  </Step>
+  <Step title="Configure each anchor (optional)">
+    On each anchor actor, you can set:
+    - **Landmark Mesh / Blueprint** — the large building forced at this node
+    - **Influence** — how strongly this anchor pulls surrounding road and node layout toward it
+    - **Per-anchor Medium / Small lists** — override building lists for this node (Cluster mode only; see below)
+  </Step>
+  <Step title="Register anchors on the generator">
+    Add your anchor actors to the **Manual Anchors** array on the generator.
+  </Step>
+  <Step title="Generate">
+    Click Generate. Anchored nodes are placed first; the pattern fills remaining nodes around them.
+  </Step>
+</Steps>
+
+### What anchors control
+
+| Setting | Effect |
+|---------|--------|
+| **Position** | Node is fixed at the anchor actor's world location |
+| **Landmark mesh / Blueprint** | Forces a specific large building at this node regardless of the procedural pool |
+| **Influence** | Biases nearby nodes and roads toward this anchor |
+| **Per-anchor M/S lists** | Overrides medium and small building lists for this node specifically |
+
+### Cluster mode vs Roadside mode
+
+<Note>
+**Per-anchor Medium / Small lists only apply in Cluster mode.** In Roadside mode, all nodes use the global Medium and Small lists — per-anchor overrides are ignored. If you need fine-grained per-node building control, make sure your generator is set to Cluster mode.
+</Note>
+
+A **Landmark mesh or Blueprint** set on an anchor still drives that node's large building in both modes — the restriction applies only to the M/S list overrides.
+
+### Anchors and wall gates
+
+When your wall's **Gate Mode** is set to **Anchors**, OmniScape places gates at points where the wall ring intersects the influence of named anchors. This gives you direct authorial control over gate positions — place an anchor at your main entrance and the gate follows.
+
+---
+
+<Tip>
+Anchors are the right tool for **fixed set-pieces** in an otherwise procedural settlement — a keep on the northern hill, an inn just inside the main gate, a smithy at the market square. Set their landmark buildings, place them once, and let the generator fill everything else around them. You get authorship where it matters and variation everywhere else.
+</Tip>

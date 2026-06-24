@@ -1,0 +1,160 @@
+---
+title: "OmniScape Control Center: Your Settlement Dashboard"
+sidebarTitle: "Control Center"
+description: "The OmniScape Control Center is a single dockable panel where you configure every aspect of your settlement — layout, buildings, roads, walls, and environment."
+---
+
+The OmniScape Control Center is the single dockable panel through which every part of a settlement is configured. Whether you're shaping the macro layout of districts, assigning building meshes to tiers, carving roads and walls, or layering ambient flora and audio, every control lives here. Opening it once and working through its four tabs is all you need to go from a blank level to a fully generated settlement.
+
+## The Four Tabs
+
+<CardGroup cols={2}>
+  <Card title="Layout" icon="map">
+    Settlement size, Num Nodes, pattern selection, per-pattern tuning, Districts, the Zones table, volumes, anchors, and the optional Atlas wizard.
+  </Card>
+  <Card title="Build" icon="buildings">
+    Building lists per tier, weights, scales, Cluster and Roadside placement modes, Edge Density (sprawl), and per-tier facing options.
+  </Card>
+  <Card title="Structure" icon="road">
+    Road generation, wall placement, and the optional Landscape paint bake (beta).
+  </Card>
+  <Card title="Ambient" icon="trees">
+    Flora layers (vegetation, rock, debris), optional Fauna, Audio, and PCG Hand-off. Fauna, audio, and PCG export require Beta mode.
+  </Card>
+</CardGroup>
+
+---
+
+## Opening and Docking the Panel
+
+Open the Control Center from the Unreal Engine menu bar:
+
+**Window → OmniScape → Control Center**
+
+You can also click the **OmniScape** icon in the level editor toolbar if it has been added. The panel is fully dockable — drag its tab to attach it alongside the Details panel, Outliner, or any other editor panel you prefer. Your layout is remembered between sessions.
+
+<Tip>
+  Docking the Control Center next to the Viewport lets you watch the canvas update in real time as you adjust settings without switching focus.
+</Tip>
+
+---
+
+## The Canvas
+
+The canvas occupies the upper portion of the Control Center and acts as a live map of your settlement. It displays:
+
+- **Nodes** — the landmark points that anchor building placement and road topology
+- **Roads** — the generated road network connecting those nodes
+- **Walls** — the perimeter or internal wall lines, when enabled
+
+**Navigating the canvas:**
+
+| Action | Input |
+|--------|-------|
+| Pan | Middle-mouse drag, or click and drag on an empty area |
+| Zoom | Scroll wheel |
+| Reset view | Right-click → **Reset View**, or press **F** with the canvas focused |
+
+The canvas is a planning view, not a rendered preview — it shows topology and structure, not final geometry.
+
+---
+
+## Live Preview vs Auto-Generate
+
+OmniScape offers two modes for seeing your changes reflected in the level.
+
+**Live Preview** redraws the canvas representation shortly after you change a setting. It keeps Undo/Redo in sync and is lightweight enough to leave on at all times. Note that the canvas pauses its recompute during a full generation pass, and in Play-in-Editor (PIE) you may see the last baked layout rather than a live update.
+
+**Auto-Generate** respawns full geometry in the level on every edit — every slider nudge, every weight change. This is accurate but expensive, especially in large settlements.
+
+<Warning>
+  Leaving Auto-Generate enabled while tuning settings can cause repeated full rebuilds that stall the editor. Use it sparingly on large settlements.
+</Warning>
+
+**Recommended workflow:**
+
+<Steps>
+  <Step title="Tune with Live Preview">
+    Adjust settings freely. The canvas gives you instant structural feedback without generating geometry.
+  </Step>
+  <Step title="Generate when ready">
+    Click **Generate** once you're satisfied with the canvas result. A single deliberate generate is far faster than Auto-Generate thrashing through every intermediate state.
+  </Step>
+  <Step title="Iterate">
+    Tweak, preview, then generate again. Undo/Redo work across both the canvas and the level.
+  </Step>
+</Steps>
+
+---
+
+## Stable vs Beta Modes
+
+Not all features in OmniScape are production-ready. The **Stable / Beta** toggle lets you opt in to experimental functionality without it interfering with your main pipeline.
+
+**Stable mode** covers everything you need for a complete settlement:
+
+- Layout patterns, Districts, Zones
+- Road and wall generation
+- Building placement (all tiers, Cluster and Roadside)
+- Flora layers (vegetation, rock, debris)
+
+**Beta mode** unlocks additional experimental features:
+
+| Beta Feature | Notes |
+|--------------|-------|
+| Fauna placement | Animal / NPC ambient population |
+| Landscape paint bake | Auto-paints terrain under the settlement (Structure tab) |
+| PCG Hand-off | Exports node graph for Procedural Content Generation integration |
+| Ambient audio | Spatial audio emitter placement |
+| Road landscape deform | Conforms roads to landscape topology |
+
+**Switching modes:**
+
+- Click the **Stable** indicator in the **status bar** (bottom-right of the Control Center) to toggle to Beta.
+- Or open **Details → Experimental Features** and enable the toggle there.
+
+<Note>
+  Beta features may produce unexpected results or change between OmniScape releases. Always test beta output before committing it to a shipped build.
+</Note>
+
+---
+
+## Recommended Workflow Order
+
+The four tabs follow a natural creative sequence. While you can revisit any tab at any time, working through them in order prevents downstream settings from being overwritten by upstream changes.
+
+<Steps>
+  <Step title="Layout">
+    Establish the settlement's footprint, pattern, Districts, and Zones. Everything else builds on top of this topology.
+  </Step>
+  <Step title="Build">
+    Assign building assets to tiers, set weights and scales, choose Cluster or Roadside placement, and dial in Edge Density for sprawl.
+  </Step>
+  <Step title="Structure">
+    Configure roads, walls, and (optionally, in Beta) the landscape paint bake.
+  </Step>
+  <Step title="Ambient">
+    Add flora layers, and optionally fauna, audio, and PCG hand-off if you're working in Beta mode.
+  </Step>
+</Steps>
+
+Changes in Layout can affect road topology, which affects Roadside building placement, which in turn affects where flora is seeded — so when you go back to Layout to adjust the radius or node count, plan to re-check the downstream tabs.
+
+---
+
+## Dive Deeper
+
+<CardGroup cols={2}>
+  <Card title="Layout Patterns" icon="map-pin" href="/guides/layout-patterns">
+    Choose and tune your settlement's structural pattern — Radial, Voronoi, Perlin, Axial, or Organic.
+  </Card>
+  <Card title="Buildings and Placement" icon="buildings" href="/guides/buildings-and-placement">
+    Assign your meshes and Blueprints to tiers, set weights, and control how buildings are placed.
+  </Card>
+  <Card title="Roads and Walls" icon="road" href="/guides/roads-and-walls">
+    Shape the road network and perimeter walls that give your settlement its infrastructure.
+  </Card>
+  <Card title="Ambient Layers" icon="leaf" href="/guides/environment-and-ambience">
+    Layer vegetation, rock, debris, fauna, and audio over your generated settlement.
+  </Card>
+</CardGroup>

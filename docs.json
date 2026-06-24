@@ -1,38 +1,13 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "OmniScape",
+  "theme": "willow",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#ef7025",
+    "light": "#eec9bc",
+    "dark": "#4fa1ab"
   },
   "favicon": "/favicon.svg",
-  "navigation": {
-    "pages": [
-      {
-        "group": "Getting Started",
-        "pages": [
-          "index",
-          "quickstart"
-        ]
-      }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
   "logo": {
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"
@@ -41,32 +16,117 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "https://gist.github.com/jazzmoradia/6c4383fb51914f9bf083ccd472ee6b12"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
+      "label": "Get OmniScape",
+      "href": "https://fab.com/s/4aeff49faf04"
     }
   },
-  "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
-    ]
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Overview",
+        "groups": [
+          {
+            "group": "Discover OmniScape",
+            "pages": [
+              "overview/introduction",
+              "overview/what-you-get",
+              "overview/compatibility"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Get Started",
+        "groups": [
+          {
+            "group": "First Steps",
+            "pages": [
+              "get-started/quick-start",
+              "get-started/first-settlement",
+              "get-started/saving-and-packaging"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Control Center",
+            "pages": [
+              "guides/control-center",
+              "guides/layout-patterns",
+              "guides/buildings-and-placement",
+              "guides/roads-and-walls",
+              "guides/environment-and-ambience",
+              "guides/volumes-and-anchors",
+              "guides/presets"
+            ]
+          },
+          {
+            "group": "Creative Directions",
+            "pages": [
+              "guides/creative-overview",
+              "guides/fortress-and-ceremonial",
+              "guides/planned-city",
+              "guides/ridge-village",
+              "guides/rural-and-scatter",
+              "guides/ruins-and-decay",
+              "guides/oasis-and-vignette"
+            ]
+          },
+          {
+            "group": "Advanced",
+            "pages": [
+              "guides/blueprint-and-runtime",
+              "guides/atlas-reference",
+              "guides/parameter-reference"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Help",
+        "groups": [
+          {
+            "group": "Support",
+            "pages": [
+              "help/troubleshooting",
+              "help/faq",
+              "help/community"
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Get OmniScape on Fab",
+          "href": "https://fab.com/s/4aeff49faf04",
+          "icon": "bag-shopping"
+        },
+        {
+          "anchor": "Demo Video",
+          "href": "https://youtu.be/xFo9JeM7dgc",
+          "icon": "circle-play"
+        },
+        {
+          "anchor": "Discord",
+          "href": "https://discord.gg/UjXbjW6gUH",
+          "icon": "discord"
+        }
+      ]
+    }
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "discord": "https://discord.gg/UjXbjW6gUH"
     }
   }
 }

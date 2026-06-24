@@ -1,0 +1,71 @@
+---
+title: "Fortress and Ceremonial Core: Build Power and Defence"
+sidebarTitle: "Fortress"
+description: "Create a dominant settlement with a keep, walls, and approach roads that reads as powerful and defensible from both map view and street level."
+---
+
+The fortress and ceremonial core is the simplest compositional statement in OmniScape: one thing dominates, and everything else serves it. From the map view you want a single clear read — there is a keep, and there is a ring. Walls, gate spokes, and a strong central silhouette do all the storytelling. The challenge isn't adding complexity; it's resisting the urge to dilute the hierarchy before the composition has a chance to land.
+
+## Starting bands
+
+These ranges give you a workable canvas. A smaller radius keeps things tight and readable; a larger one demands more nodes or a touch of Edge Density to fill the space meaningfully.
+
+| Parameter | Suggested range |
+|---|---|
+| Settlement radius | 6,000 — 18,000 cm |
+| District count | 2 — 5 |
+| Num Nodes | 3 — 12 total |
+| Edge Density | 0 — 0.35 |
+| Road width | 300 — 1,400 cm (town street → boulevard) |
+
+---
+
+## Signature moves
+
+### Layout
+
+Choose **Radial or Concentric** pattern. This gives you a central district surrounded by outer wards, which is exactly the plan that reads as "keep and ring" from above. Set a moderate ring count with clear ring spacing — the gap between the inner ward and the outer wall is the moat of white space that makes the keep feel defended. Align your gate spokes to the cardinal or diagonal axes so approach roads read as intentional, not accidental.
+
+### Build legibility
+
+**Keep Edge Density low** — somewhere in the 0 to 0.35 range — so the core stays legible. Sprawl is the enemy of a fortress composition. Secondary fabric between nodes diffuses the eye's path toward the centre; at this intent, you want the eye to arrive at the keep with nothing in the way.
+
+### Buildings
+
+Use **Cluster** placement mode. Give the Large tier strong weight so your keep or citadel always wins the prime node — when you look at the plan, one mass should be obviously dominant. If your façades should face a plaza or ceremonial forecourt rather than a road, turn **Orient Large to Road** off. Medium and Small buildings become the ring of lesser structures that reinforce the centre's scale.
+
+### Roads
+
+Choose **Curved or Natural** road style, and switch to **Follow** elevation mode on any uneven ground so the approach roads trace the slope toward the gate rather than floating above it. Match road width to the gates in your wall kit — a boulevard-width approach (1,200–1,400 cm) reads as a processional route; narrower side streets (300–500 cm) imply service and garrison access.
+
+### Walls
+
+Turn walls **on**. Set **Perimeter Fit** toward Hull so the wall line hugs the outer edge of your district. Set **Shape** to Angular — angular walls read as engineered and intentional; organic curves feel like natural features, not fortifications. Use **Full Perimeter** coverage, and let the gate system handle openings automatically, or place anchors at the points where your spoke roads hit the perimeter. Without a closed perimeter, the fortress reading collapses.
+
+### Environment
+
+Keep vegetation **sparse outside** the walls — open ground in front of a fortification is a deliberate defensive choice (clear line of sight). Place rocks at the wall base to ground the structure in the landscape. Inside the compound, add a light debris layer using **Flora Kind = Debris** to suggest the lived-in texture of a garrison — scattered crates, rubble, wear — without requiring extra asset packs.
+
+---
+
+## Watchouts
+
+<Warning>
+**Empty rings** — A large radius with very few nodes can feel like a parking lot with a keep in the middle. Before you fight the seed, try adding nodes first, or nudge Edge Density up slightly (to around 0.2) to introduce secondary fabric. Only iterate seeds once the node count feels right.
+
+**Unclosed perimeter** — Full Perimeter wall coverage requires a layout that geometrically closes. If your perimeter has gaps, the wall generator has nothing to close on. Check that your layout and radius combination produces a continuous outer boundary before enabling Full Perimeter.
+
+**District overload** — More than 5 districts at a small radius produces crowded rings with no breathing room between them. Raise Districts only when you want distinct wards or cells that benefit from a clear boundary, not to fill space.
+</Warning>
+
+---
+
+<Tip>
+**Raise Districts when you need clearer wards.** If the inner keep ward blurs into the outer garrison zone, increment District count by one — it subdivides the plan without moving nodes, giving each zone a crisp boundary. And if an empty-feeling ring is frustrating you, add a node or two before changing the seed: a fresh seed on an under-populated plan just moves the emptiness around.
+</Tip>
+
+---
+
+<Card title="Apply to your presets" icon="sliders" href="/guides/presets">
+  See how these moves map onto OmniScape's built-in fortress presets, and learn how to save your own.
+</Card>

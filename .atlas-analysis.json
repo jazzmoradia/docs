@@ -1,0 +1,121 @@
+{
+  "projectType": "general",
+  "projectName": "OmniScape",
+  "projectDescription": "A procedural settlement generator for Unreal Engine 5.5+ that turns your own meshes and Blueprints into complete, deterministic towns, fortresses, and villages from a single Control Center and seed.",
+  "theme": "willow",
+  "primaryColor": "#ef7025",
+  "lightColor": "#eec9bc",
+  "darkColor": "#4fa1ab",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Overview",
+        "groups": [
+          {
+            "group": "Discover OmniScape",
+            "pages": [
+              "overview/introduction",
+              "overview/what-you-get",
+              "overview/compatibility"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Get Started",
+        "groups": [
+          {
+            "group": "First Steps",
+            "pages": [
+              "get-started/quick-start",
+              "get-started/first-settlement",
+              "get-started/saving-and-packaging"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Control Center",
+            "pages": [
+              "guides/control-center",
+              "guides/layout-patterns",
+              "guides/buildings-and-placement",
+              "guides/roads-and-walls",
+              "guides/environment-and-ambience",
+              "guides/volumes-and-anchors",
+              "guides/presets"
+            ]
+          },
+          {
+            "group": "Creative Directions",
+            "pages": [
+              "guides/creative-overview",
+              "guides/fortress-and-ceremonial",
+              "guides/planned-city",
+              "guides/ridge-village",
+              "guides/rural-and-scatter",
+              "guides/ruins-and-decay",
+              "guides/oasis-and-vignette"
+            ]
+          },
+          {
+            "group": "Advanced",
+            "pages": [
+              "guides/blueprint-and-runtime",
+              "guides/atlas-reference",
+              "guides/parameter-reference"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Help",
+        "groups": [
+          {
+            "group": "Support",
+            "pages": [
+              "help/troubleshooting",
+              "help/faq",
+              "help/community"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "One actor, one Control Center — no PCG graph required",
+    "Deterministic generation: same seed + same settings = same layout on every machine",
+    "Bring-your-own-art (BYOA) — assign any meshes or Blueprints across Large, Medium, and Small building tiers",
+    "Five layout patterns: Radial, Voronoi, Perlin, Axial/Grid, Organic",
+    "Roads with terrain-following elevation modes (Follow, Contour, Level)",
+    "Full and partial wall system with gates, pillars, and shape styles",
+    "Flora, fauna, and ambient audio layers in the Ambient tab",
+    "Volumes and anchors for precise spatial control",
+    "Twelve archetype presets (fortress, urban, rural, hills, landmark) as starting points",
+    "Atlas wizard for real-world layout reference from OpenStreetMap",
+    "Blueprint and runtime API for in-game generation",
+    "PCG Hand-off for exporting layout data to external PCG graphs"
+  ],
+  "publicApiSurface": [
+    "GenerateSettlement (Blueprint action)",
+    "ClearSettlement (Blueprint action)",
+    "CanGenerateSettlement (Blueprint preflight check)",
+    "GetLastGenerationResult (Blueprint query)",
+    "GetLastLayoutValidation (Blueprint query)",
+    "LoadProfileAndGenerate (Blueprint action)",
+    "CancelGeneration (Blueprint action)",
+    "RebuildWallsOnly (Blueprint action)",
+    "OnSettlementGenerated (Blueprint event)",
+    "OnSettlementGenerationCompleted (Blueprint event with FOmniScapeGenerationResult)",
+    "OnSettlementCleared (Blueprint event)",
+    "OnGenerationProgress (Blueprint event, 0–1 during time-sliced spawn)",
+    "OnBuildingSpawned (Blueprint hook, Large/Medium/Small/Sprawl Blueprint buildings)",
+    "GenerationSeed (UProperty, integer)",
+    "UOmniScapePCGDataComponent (PCG Hand-off data component)",
+    "RuntimeProfile (data asset for LoadProfileAndGenerate)"
+  ]
+}

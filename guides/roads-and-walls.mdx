@@ -1,0 +1,158 @@
+---
+title: "Roads and Walls: Connect and Enclose Your Settlement"
+sidebarTitle: "Roads & Walls"
+description: "Configure OmniScape road styles, terrain elevation modes, and wall systems to give your settlement structure, flow, and enclosure."
+---
+
+Roads give your settlement its skeleton — they determine how traffic flows, how districts connect, and how the ground reads from above. Walls give it presence and boundary, turning a scatter of buildings into a place with an inside and an outside. Together they're the two most visible structural systems in OmniScape, and getting them right shapes everything else.
+
+## Roads
+
+### Enabling roads
+
+Open the **Structure** tab on your OmniScape generator and toggle **Generate Roads** on. The road network generates from the node graph, connecting settlements according to your style and terrain settings.
+
+### Road styles
+
+The style controls the horizontal character of the road path.
+
+| Style | Character |
+|-------|-----------|
+| **Straight** | Planned, direct routes — good for grids, military roads, and formal urban layouts |
+| **Curved** | Sweeping arcs that feel designed — town boulevards, estate approaches |
+| **Natural** | Worn, organic paths that follow the landscape — villages, trails, rural routes |
+
+<Tip>
+Pair **Natural** with **Contour** terrain mode on hilly sites for roads that read as genuinely worn into the hillside.
+</Tip>
+
+### Terrain modes
+
+Terrain mode controls how the road responds vertically to the landscape beneath it.
+
+| Mode | Behaviour | Best for |
+|------|-----------|----------|
+| **Follow** | Traces the terrain surface, including hills and dips | Hilly or varied ground — the default safe choice |
+| **Contour** (v3) | Caps the maximum grade on steep slopes via switchbacks and level pads | Steep sites where Follow produces too-sharp climbs |
+| **Level** | Flattens each road segment to a single elevation | Genuinely flat ground only |
+
+<Warning>
+**Level roads float on hills.** If your settlement sits on any meaningful slope, Level mode will produce roads that hover above the terrain surface. Use **Follow** or **Contour** instead. On steep sites, **Contour + Natural** style is a reliable combination.
+</Warning>
+
+Advanced road tuning exposes additional controls: cut & fill depth, sample spacing, and smoothing pass count. These live under the **Advanced** section of the Road tab and are worth revisiting once your basic layout is locked.
+
+### Road width
+
+OmniScape separates **clearance** (the space the road reserves in the layout) from **visual width** (how wide the mesh actually looks). They are independent — changing the visual width scale or tiling does not affect building placement or road clearance.
+
+<Tip>
+If buildings are crowding the road, increase **Width** (clearance). If you just want the mesh to look wider or narrower, adjust **Width Scale** and **Tiling** without touching clearance.
+</Tip>
+
+**Width bands for art direction:**
+
+| Read | Band (cm) |
+|------|-----------|
+| Footpath / trail | 80 — 250 |
+| Town street | 300 — 700 |
+| Main road / boulevard | 700 — 1,400 |
+
+### Road assets
+
+Rather than a single mesh repeated along every road, OmniScape supports a **weighted road asset list** — multiple meshes with relative weights, giving you variation across the network. Assign your assets in the Road Assets list and adjust weights to control how often each appears.
+
+Blueprint entries in the asset list can spawn actors at spline points when **Blueprint Spawn Mode** is set to anything other than None. Use this for props, Shader World brushes, or other spline-driven actors.
+
+<Note>
+Single road mesh mode still works for setups that don't need variation — it's not deprecated, just less flexible.
+</Note>
+
+### Intersection meshes
+
+By default, OmniScape trims road ends cleanly at junctions. To create deliberate hub pads at intersections:
+
+1. Assign an **Intersection Mesh** in the Road settings.
+2. Adjust **Radius Scale** to size the pad relative to the roads meeting at that junction.
+
+This works well for market squares, toll gates, or any junction you want to read as a landmark.
+
+---
+
+## Walls
+
+### Enabling walls
+
+Toggle **Generate Walls** on in the **Structure** tab. The wall ring is generated around the settlement footprint according to your perimeter, shape, and coverage settings.
+
+### Perimeter fit
+
+**Perimeter Fit** slides between two extremes:
+
+| Value | Result |
+|-------|--------|
+| **0** | Wall hugs the building footprint tightly |
+| **1** | Wall sits at the full settlement radius — a grand enclosing ring |
+
+Values in between give you controlled setback. Use a low value for dense walled towns; use a high value for keeps or fortresses where the wall ring is part of the composition.
+
+### Shape styles
+
+| Style | Character |
+|-------|-----------|
+| **Angular** | Crisp, geometric — fortifications, planned enclosures |
+| **Natural** | Light variation, readable silhouette — the default for most settlements |
+| **Organic** | Weathered, irregular — ruins, ancient walls, grown-over enclosures |
+
+**Control point count** (8–96, default 36) sets the polygon density of the wall ring. Lower values give a chunky, faceted silhouette; higher values smooth it out.
+
+### Full vs partial coverage
+
+- **Full** closes the wall ring into a complete loop.
+- **Partial** breaks the ring — useful for ruins, incomplete construction, or settlements that are only partially enclosed. Coverage (0.05–1.0, default 0.75) controls what fraction of the perimeter is filled.
+
+<Warning>
+**Full perimeter requires a closable layout.** If your node arrangement or road network prevents a clean closure, OmniScape may produce a broken ring even with Full selected. If that happens, switch to **Partial** or adjust your nodes and roads until the layout can close cleanly.
+</Warning>
+
+### Gates
+
+| Mode | Behaviour |
+|------|-----------|
+| **Auto** | OmniScape places gates at road intersections with the wall |
+| **Anchors** | Gates appear at anchor positions where the wall crosses |
+| **Evenly spaced** | Fixed gate count (0–32) distributed around the perimeter |
+
+### Pillars
+
+Pillars can appear at **corners only** for a clean, restrained look, or **spaced along the wall** for a rhythmic defensive silhouette. Assign pillar meshes in the Pillars weighted list alongside your wall segment meshes.
+
+### Optional v3 wall assets
+
+<Accordion title="Tower / bastion mesh and foundation / plinth mesh">
+These assets are optional and not required for the standard wall look.
+
+- **Tower / bastion mesh + count** — snaps tower actors to the sharpest corners of the wall ring first, then distributes remaining count around the perimeter.
+- **Foundation / plinth mesh** — places a base mesh under buildings on sloped ground, hiding the gap between building and terrain.
+- **Per-class road meshes** (Arterial / Collector / Local) — lets you assign different meshes to road segments by their classification in the hierarchy.
+
+None of these are required. Add them when you want extra fidelity or when your art direction calls for distinct corner towers.
+</Accordion>
+
+---
+
+## Landscape Bake (Beta)
+
+OmniScape can optionally paint additive landscape layer weights based on the generated layout — roads, walls, building pads, and the settlement boundary all contribute to named paint layers.
+
+<Note>
+Landscape bake is a **Beta feature**. Enable Beta mode in the status bar (bottom-right of the editor) before running it. The bake runs as a **separate editor action after generation** — it does not happen automatically when you click Generate.
+</Note>
+
+This is useful for driving material blends (dirt paths, cobblestone, cleared ground) directly from the layout without manual painting.
+
+---
+
+<Tip>
+Use **Rebuild Walls Only** (when available from the generator actions) to iterate on wall settings — shape, coverage, gates, pillar placement — without triggering a full settlement regeneration. This makes wall art direction significantly faster.
+</Tip>

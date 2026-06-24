@@ -1,0 +1,77 @@
+---
+title: "Understanding Your First Generated Settlement"
+sidebarTitle: "First Settlement"
+description: "Learn what OmniScape builds during a Generate pass, how nodes and patterns shape your layout, and how to tune your first result."
+---
+
+Clicking **Generate** kicks off a coordinated, multi-phase build process that goes from an empty level to a complete settlement in seconds. This page explains exactly what happened during that pass, why your settlement is shaped the way it is, and the handful of controls worth adjusting first when you want a different result.
+
+## What just generated
+
+OmniScape runs each phase in a fixed order during a single Generate pass. Understanding the sequence makes it much easier to predict how a settings change will affect the output.
+
+**1 — Landmark nodes**
+OmniScape first lays down the landmark nodes that define the skeleton of your settlement. Their positions are driven by your chosen pattern and, optionally, by manual anchors you placed before generating. Everything else — roads, buildings, walls — grows outward from these nodes.
+
+**2 — Roads**
+Once nodes are placed, OmniScape builds a pattern-specific road network connecting them, then runs junction cleanup to resolve intersections cleanly. If you enabled intersection meshes in the Structure tab, those are placed at road hubs during this phase. Roads are optional: you can turn them off entirely in the Structure tab if your settlement doesn't need streets.
+
+**3 — Node tweaks**
+With a road network in place, OmniScape nudges large building positions off road centrelines so buildings sit on plots rather than in the middle of streets.
+
+**4 — Buildings**
+Buildings populate in priority order: one **Large** asset per node first, then **Medium** and **Small** assets in either **Cluster** or **Roadside** mode depending on your Structure settings. The optional **Edge Density** parameter controls how much sprawl extends toward the settlement boundary.
+
+**5 — Environment and ambient detail**
+Vegetation, rocks, debris, optional fauna, and optional audio zones fill in around the built structures. Each element respects distance rules, zone boundaries, and slope limits — so steep ground stays clear of props that wouldn't make sense there.
+
+**6 — Walls, landscape bake, and PCG**
+If walls are enabled, they generate last, wrapping the settlement perimeter. PCG export data refreshes automatically at the end of every generation pass. Note that the **landscape paint bake** is a separate editor action — it does not run automatically during Generate.
+
+---
+
+## The shape of your settlement
+
+Your settlement's layout is controlled by three interconnected concepts: **nodes**, **patterns**, and the **seed**.
+
+- **Nodes** are the anchor points OmniScape places first. Large buildings sit at nodes; everything else clusters around them. Node count, spacing, and arrangement all follow the active pattern.
+- **Patterns** define the overall topology — a grid town feels different from a radial village or a scattered frontier outpost because each pattern positions nodes and roads differently.
+- **The seed** is a single integer that drives all the randomness in a pass. One seed plus one set of settings always produces the same layout, on any machine, every time. This means you can hand a colleague a seed and settings file and get a pixel-identical result. Change the seed to get a completely new variation of the same pattern.
+
+---
+
+## Your first tuning moves
+
+These are the fastest adjustments to try when your first result isn't quite right:
+
+**Change the seed**
+Click **Randomize Seed** in the Control Center. Each new seed gives you a fresh spatial variation without touching any other setting. Run through a few seeds before changing anything else — sometimes the layout you want is just a seed away.
+
+**Adjust Settlement Radius**
+Increase the radius for a more spread-out town; decrease it for a dense cluster. This is usually the second knob to reach for after the seed.
+
+**Add or remove Large building meshes**
+Large assets anchor every node, so their variety and size directly shape how the settlement reads. Add more Large meshes to increase visual variation, or remove some to keep a tighter, more consistent silhouette.
+
+**Enable or disable roads in the Structure tab**
+Turning roads on or off changes not just the visible streets but also how Medium and Small buildings cluster. Toggle roads to quickly compare a street-grid settlement against a more organic, roadless layout.
+
+---
+
+## Live preview vs. Generate
+
+The Control Center gives you two ways to see the effect of a settings change before committing to a full Generate pass:
+
+- **Preview mode** updates visual guides and bounding overlays in the viewport as you adjust settings. It is lightweight — it recalculates layout geometry without actually spawning any meshes into the level. Use preview while you're exploring parameters.
+- **Auto-generate** respawns the full mesh geometry on every single settings change. It's useful for quick experiments on very small settlements but becomes heavy fast on anything large. **Leave Auto-generate off while you're tuning** — trigger Generate manually when you're ready to see a full result.
+- **Generate** runs the complete six-phase pass described above and places real content into your level.
+
+<Tip>
+  Before running a full redo with different settings, click **Clear Settlement** first. This removes all previously generated content cleanly so the new pass starts from scratch rather than layering on top of existing meshes.
+</Tip>
+
+---
+
+<Card title="Deep Dive: Control Center" icon="sliders" href="/guides/control-center">
+  Explore every tab — Build, Structure, Environment, Walls, and Advanced — with full parameter reference and tuning guidance.
+</Card>

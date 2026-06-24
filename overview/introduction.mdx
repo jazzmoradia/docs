@@ -1,0 +1,78 @@
+---
+title: "What is OmniScape? Procedural Settlements Explained"
+sidebarTitle: "Introduction"
+description: "OmniScape generates complete settlements in Unreal Engine from your own meshes and Blueprints. One seed, one Control Center, deterministic results every time."
+---
+
+OmniScape is a procedural settlement generator for Unreal Engine 5.5+. Drop a single **OmniScape Generator** actor into your level, open the **Control Center**, assign your meshes and Blueprints, hit **Generate** — and a fully laid-out town, fortress, or village appears in seconds. The same seed and settings always produce the same layout, on every machine, every time you run it.
+
+## The problem it solves
+
+Manually placing an entire settlement — getting road networks to feel organic, wall circuits to close properly, building density to read at distance — takes days. Procedural approaches can shorten that, but most require deep PCG graph knowledge or hard-coded art, forcing you to choose between flexibility and control.
+
+OmniScape is designed for artists and level designers who want to **work with their own content** and make creative decisions at the level of style and mood, not node graphs. You stay in Unreal's familiar actor workflow. OmniScape handles the combinatorial heavy lifting.
+
+## The core mental model
+
+Every part of OmniScape maps to one of four tabs in the Control Center. Working through them in order is the natural flow for building a new settlement.
+
+<Steps>
+  <Step title="Layout">
+    Choose a layout pattern (Radial, Voronoi, Perlin, Axial/Grid, or Organic), set the settlement footprint, dial in zone density, and optionally load an Atlas reference from real-world OpenStreetMap data.
+  </Step>
+  <Step title="Build">
+    Assign your meshes or Blueprint classes across three building tiers — Large, Medium, and Small. OmniScape uses these to populate zones according to the layout rules.
+  </Step>
+  <Step title="Structure">
+    Enable roads and assign road meshes. Choose a terrain-following elevation mode (Follow, Contour, or Level). Add a full or partial wall circuit with gates, pillar styles, and shape options. Optionally bake a landscape paint layer.
+  </Step>
+  <Step title="Ambient">
+    Layer in flora (Foliage Types), fauna (Blueprint actors), and ambient audio. Ambient pillars let you concentrate environmental detail in specific areas.
+  </Step>
+</Steps>
+
+## What you bring vs. what OmniScape handles
+
+<CardGroup cols={2}>
+  <Card title="You provide" icon="paintbrush">
+    - Static Meshes or Blueprint classes for buildings (Large / Medium / Small tiers)
+    - Road and wall mesh sets
+    - Foliage Types for flora layers
+    - Fauna Blueprint actors
+    - Ambient audio assets
+  </Card>
+  <Card title="OmniScape provides" icon="wand-magic-sparkles">
+    - Settlement layout and zone boundaries
+    - Road networks with elevation handling
+    - Wall circuits with gates and pillars
+    - Building placement and instancing
+    - Flora, fauna, and audio distribution
+    - PCG export data and landscape paint bake
+  </Card>
+</CardGroup>
+
+## Key differentiators
+
+<Accordion title="Deterministic generation">
+  The same seed and the same Control Center settings produce identical output on every machine. That means you can version seeds in source control, share layouts with collaborators, and confidently re-generate after swapping a mesh — the structure never drifts.
+</Accordion>
+
+<Accordion title="Bring your own art (BYOA)">
+  OmniScape has no bundled building meshes you're expected to use. Any Static Mesh or Blueprint class works in any tier. Presets store numbers and toggle states — not mesh assignments — so loading a preset never overwrites your art choices.
+</Accordion>
+
+<Accordion title="No PCG graph required">
+  You don't need to open or understand Unreal's PCG editor to use OmniScape. Everything is configured through the Control Center panel. If you *want* to pipe layout data into your own PCG graphs, the PCG Hand-off component makes that possible — but it's optional.
+</Accordion>
+
+<Accordion title="Hand-placed quality from procedural speed">
+  Five layout patterns, three elevation modes, zone density controls, and volume/anchor overrides give you enough levers to reach results that read as deliberately designed rather than algorithmically dropped. Volumes let you carve out exact areas; anchors let you pin specific buildings to specific spots.
+</Accordion>
+
+## What OmniScape does not do
+
+OmniScape places and instances content. It does not replace or configure sky actors, lighting setups, post-process volumes, fog, materials, Nanite settings, Lumen settings, character scale logic, or gameplay code inside your Blueprints. Those remain entirely your responsibility and your creative choice.
+
+<Card title="Ready to generate your first settlement?" icon="rocket" href="/get-started/quick-start">
+  The Quick Start walks you through placing the Generator, assigning a single Large building mesh, and running your first generation — start to finish in under ten minutes.
+</Card>

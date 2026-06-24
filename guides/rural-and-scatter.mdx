@@ -1,0 +1,68 @@
+---
+title: "Rural County and Scatter: Lived-In Edges and Farmsteads"
+sidebarTitle: "Rural & Scatter"
+description: "Create loose, organic rural settlements with yards, county roads, farmstead spurs, and rich vegetation using OmniScape's Organic cluster pattern."
+---
+
+A rural county settlement earns its mood from looseness. Nothing is quite where you'd expect it; roads meander and double back; a farmstead sits fifty metres off the main track with a worn spur connecting it. The eye reads "home" rather than "plan." Getting there in OmniScape means embracing organic spread, turning road redundancy up so secondary loops form naturally, and using debris and vegetation layers to put texture in the spaces between buildings.
+
+## Starting bands
+
+Rural settlements benefit from generous radius — the whole point is that things are spread out. Let Min Node Distance push nodes apart so you get hamlet-scale groupings rather than one central mass.
+
+| Parameter | Suggested range |
+|---|---|
+| Settlement radius | 12,000 — 28,000 cm |
+| Min Node Distance (Organic) | High vs default — more spread |
+| Edge Density | Mid–high (0.35 — 0.75) for gap-fill loops |
+| Road Redundancy | Higher — use patterns that support secondary loops |
+
+---
+
+## Signature moves
+
+### Layout and pattern
+
+Use **Organic Cluster** layout. Set **Min Node Distance** higher than the default — this is what pushes nodes apart into discrete hamlet groupings rather than one tight centre. Increase **Cluster Tightness** to mid or high so each group reads as a cohesive farmstead or small hamlet rather than a scatter of unrelated buildings. The result is a plan that looks like several distinct households connected by a county road network, which is exactly the rural mental model.
+
+Avoid Radial or Axial patterns — they impose symmetry that immediately reads as "designed," which kills the rural atmosphere.
+
+### Buildings
+
+Use **Roadside** placement mode for the main farm buildings so they present to the track — a farmhouse facing the road with its yard behind is a deeply recognisable rural archetype. Use **varied Plot dimensions** so neighbouring farmsteads don't look like repeating stamps.
+
+The feature that most distinguishes a rural composition from other types is **Spur Streets**: enable spurs and connect a **Driveway** and a **Building** to each spur slot. This produces the classic farmstead pattern — a secondary track turns off the main road, leads into a yard, and terminates at the main farm building. No other composition type uses this as deliberately, and it does more to sell "rural county" than almost any other single setting.
+
+### Roads
+
+Choose **Natural** road style and **Follow** elevation mode. Natural roads meander slightly rather than ruling straight, which reads as routes that formed organically over time rather than being engineered. Raise **Road Redundancy** so secondary loops and dead-end tracks form — a road network with redundancy has the occasional shortcut, the back lane, the loop around the field edge, all of which reinforce the lived-in quality.
+
+Walls should be **off** or at most a partial **fence-line** treatment — rural boundaries are hedgerows and post fences, not stone perimeters.
+
+### Environment
+
+Give yourself a rich vegetation layer. Rural settlements are embedded in landscape, not separate from it — trees grow into yards, hedgerows follow field edges, and vegetation fills every gap between structures. Use **multiple debris layers** with **Flora Kind = Debris** and set the Cluster Distance for debris layers to near-building ranges. This puts broken carts, scattered firewood, and equipment clutter in the spaces immediately around farmsteads, which reads as occupation rather than abandonment.
+
+---
+
+## Watchouts
+
+<Warning>
+**Generate time at high density** — Edge Density in the mid-to-high range combined with high node counts and rich flora samples creates long generate times. When exploring a rural composition, iterate with a lower Flora Samples value to check the road and building layout first. Once you're happy with the structure, raise Flora Samples for the final generate.
+
+**Cluster Tightness vs Min Node Distance** — These two settings push against each other. Very high Min Node Distance spreads nodes far apart; very high Cluster Tightness then tries to pack buildings tightly around each node. This can produce isolated dense clusters with huge empty gaps between them. Find the balance that gives you readable hamlet groups without making the road connections between them feel like cross-country treks.
+
+**Spur configuration** — Spur streets only produce the farmstead pattern if both the Driveway and the Building slots are populated. An empty spur slot generates a dead-end track with nothing at the end, which reads as an unfinished road rather than a farmstead.
+</Warning>
+
+---
+
+<Tip>
+For a hamlet-within-a-county feel, combine a small tight cluster (high tightness, 2–3 nodes) at the centre of your radius with a looser scatter of farmstead spurs at the edges. The result reads like a village green with outlying farms — a recognisable rural settlement pattern achieved entirely through node and cluster settings, not manual placement.
+</Tip>
+
+---
+
+<Card title="Apply to your presets" icon="sliders" href="/guides/presets">
+  See how these moves map onto OmniScape's built-in rural and scatter presets, and learn how to save your own.
+</Card>

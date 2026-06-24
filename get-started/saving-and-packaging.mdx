@@ -1,0 +1,74 @@
+---
+title: "Save, Package, and Ship Settlements with OmniScape"
+sidebarTitle: "Saving & Packaging"
+description: "Learn how to save generated settlements so they survive reload, and how to package your Unreal Engine project with OmniScape content for players."
+---
+
+OmniScape gives you two distinct paths to get a settlement into a shipped game: **bake-first**, where you generate in the editor, save the level, and cook everything as normal Unreal content; and **runtime generation**, where a Blueprint call builds the settlement on the fly inside a cooked build. For the vast majority of projects, bake-first is the right choice — it's faster at runtime, requires no editor tooling in the shipped build, and gives you full control over exactly what players see. Runtime generation is the right choice when the layout genuinely needs to be different every time a player loads the game.
+
+---
+
+## Bake-first (recommended for shipped games)
+
+Bake-first is a three-step workflow: generate in the editor, save the level, cook.
+
+<Steps>
+  <Step title="Generate your settlement in the editor">
+    Open the Control Center, configure your settings, and click **Generate**. OmniScape runs the full layout pass and populates the level with meshes and HISMs. Review the result in the viewport — use **Randomize Seed** or adjust parameters and regenerate until the layout is right.
+  </Step>
+
+  <Step title="Save to Level">
+    Click **Save to Level** in the Control Center, or save the level via **File → Save Current Level**. This persists all generated actors and instances as ordinary level content. From this point forward, the settlement is standard Unreal data — no OmniScape runtime is needed to display it.
+
+    <Warning>
+      **The most common cause of lost settlements is skipping this step.** If your settlement looks correct in the editor but disappears after a reload or in a packaged build, it was not saved. Always save the level immediately after generating and before cooking.
+    </Warning>
+  </Step>
+
+  <Step title="Cook and package as normal">
+    Run **File → Package Project** (or your pipeline's cook command) as you would for any Unreal project. Players load and see the saved mesh and HISM content directly — there is no generation pass at runtime and no performance hitch on level load. The OmniScape Control Center is an editor-only tool; players do not need it installed.
+  </Step>
+</Steps>
+
+---
+
+## Runtime generation
+
+Runtime generation is the right fit when you need settlements to be procedurally different for each player session — roguelite games, randomized open worlds, procedural tooling, or content that must vary at startup.
+
+**How to call it from Blueprint:**
+
+1. Get a reference to your **OmniScape Generator** actor in the level.
+2. Set the **GenerationSeed** property to your desired integer (or randomize it at startup).
+3. Call **GenerateSettlement** on the actor. OmniScape runs the full generation pass inside the cooked build without needing the Control Center.
+
+<Note>
+  Expect a **frame hitch** on large settlements when `GenerateSettlement` executes. For large or complex layouts, enable **Time-sliced spawn** in the Generator's settings to spread the spawning work across multiple frames and avoid a single large stall.
+</Note>
+
+<Note>
+  Before calling `GenerateSettlement`, call **CanGenerateSettlement** on the Generator actor. This preflight check confirms that the Generator has valid settings and required assets before the pass begins, helping you catch configuration issues at startup rather than mid-generation.
+</Note>
+
+<Warning>
+  **Do not combine a baked settlement with a runtime `GenerateSettlement` call on Begin Play.** If the level already contains saved (baked) settlement content and you trigger generation at runtime, OmniScape will run a new pass on top of the existing content, duplicating meshes and instances. Use one approach or the other — not both in the same level.
+</Warning>
+
+---
+
+## Authority and multiplayer
+
+If your project uses multiplayer, treat settlement generation as a **server-authoritative operation**:
+
+- Wrap your `GenerateSettlement` call with a **`HasAuthority()`** guard so only the server runs the generation pass. Clients receive the spawned actors through normal replication.
+- Make sure the **GenerationSeed** is identical across the server and all clients before any generation runs. A mismatched seed produces a different layout on each machine, breaking any position-based game logic that depends on settlement structure.
+
+---
+
+<Tip>
+  Once your settlement composition looks right, **lock the seed** in the Control Center. You can then freely iterate on materials, textures, and Blueprints in Unreal without triggering a regeneration — the layout stays stable while you polish the visuals.
+</Tip>
+
+<Card title="Something went wrong?" icon="circle-exclamation" href="/help/troubleshooting">
+  Visit the Troubleshooting guide for solutions to disappearing settlements, floating buildings, empty preset lists, and other common issues.
+</Card>

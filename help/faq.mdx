@@ -1,0 +1,259 @@
+---
+title: "OmniScape FAQ: Answers to Common Questions"
+sidebarTitle: "FAQ"
+description: "Frequently asked questions about OmniScape installation, workflow, assets, roads, walls, terrain, performance, and packaging."
+---
+
+This page collects the questions that come up most often on the support thread, organised by topic so you can jump straight to what you need. If your question isn't covered here, drop a comment on the [support thread](https://gist.github.com/jazzmoradia/6c4383fb51914f9bf083ccd472ee6b12) — chances are someone has hit the same thing before.
+
+## Installation & Upgrades
+
+<AccordionGroup>
+  <Accordion title="My built-in presets are missing">
+    Built-in presets are bundled inside the OmniScape plugin package — they are not a separate download. If the preset list is empty, the most likely cause is a partial or outdated install.
+
+    Update or reinstall OmniScape from [Fab](https://fab.com/s/4aeff49faf04), then fully restart the Unreal Editor. The preset list should populate on next launch.
+  </Accordion>
+
+  <Accordion title="My layout changed after updating OmniScape">
+    Improvements to the road-generation stack can cause the same seed to produce a slightly different layout in newer versions. To restore the original behaviour for existing work, enable **Legacy mode** in the **Advanced** section of your generator — this switches back to the older road rules for that seed.
+
+    For new projects, leave Legacy mode off. The current road stack is the actively maintained path and will receive future improvements.
+  </Accordion>
+
+  <Accordion title="I'm working from source / making C++ edits — anything to know?">
+    OmniScape's internal structs and class layouts can change between releases. After any such change:
+
+    - **Close the editor completely** before rebuilding.
+    - Do a **full rebuild** — do not rely on Live Coding for plugin internals.
+
+    Live Coding works well for game-module iteration, but plugin-level struct changes require a clean compile to avoid subtle crashes or mismatched memory layouts.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Editor Workflow
+
+<AccordionGroup>
+  <Accordion title="What's the difference between Generate, Auto, and Preview?">
+    - **Generate** — triggers a full settlement bake. Use this for heavy maps or whenever you want a deliberate, final result. It can be slow on large configurations.
+    - **Auto** — rebuilds the entire settlement on every property edit. Useful for quick iteration on small maps, but can cause hitches on large ones. Disable Auto while tuning performance-sensitive settings.
+    - **Preview** — a lightweight visual update that reflects layout changes without a full bake. Use Preview to get a feel for road layout and density before committing to a full Generate.
+  </Accordion>
+
+  <Accordion title="My settlement disappeared after I closed and reopened the level">
+    You need to **save the level after generating**. OmniScape writes the settlement into the level — if you close without saving, that data is lost.
+
+    After generating, use **File → Save All** or the **Save to Level** button in the Control Center before closing the editor or packaging your project.
+  </Accordion>
+
+  <Accordion title="I moved the generator actor — now the settlement looks wrong">
+    The settlement is always centred on the OmniScape generator actor. After moving the actor, you must **regenerate** to rebuild the settlement around the new position.
+
+    Move the actor, then click Generate (or trigger via Blueprint if you are using runtime generation).
+  </Accordion>
+
+  <Accordion title="Undo doesn't seem to work correctly with OmniScape">
+    OmniScape's generated content does not integrate with Unreal's standard undo stack in the same way hand-placed actors do. If the preview looks out of sync after undoing:
+
+    - Tweak any generator value slightly to force a preview refresh, or
+    - Click **Generate** to rebuild from the current settings.
+
+    This is expected behaviour — treat Generate as your "commit" step rather than relying on undo to walk back changes.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Assets & Placement
+
+<AccordionGroup>
+  <Accordion title="Nothing generates even though the generator is set up">
+    Every node requires at least one **Large asset** assigned in the **Build** tab. Large assets are not optional — the generator cannot produce output for a node that has no Large assets defined, and it will not warn you explicitly.
+
+    Open your node, go to **Build → Large Assets**, and add at least one entry.
+  </Accordion>
+
+  <Accordion title="Very few medium or small buildings are appearing">
+    Several settings interact to control M/S building density. Check each of these:
+
+    - **Counts** — the M/S count fields set a target number; if they are low, output will be sparse.
+    - **Cluster vs Roadside mode** — in Cluster mode, M/S buildings fill in around Large buildings. In Roadside mode, they line the roads. Make sure the mode matches what you intend.
+    - **Density** — a low density value limits how many buildings the generator attempts to place.
+    - **Overlap padding and road clearance** — if these values are large, the generator rejects placements that would otherwise succeed. Reduce them to allow denser packing.
+  </Accordion>
+
+  <Accordion title="Can I use the same mesh in two different tiers?">
+    Yes. Placing the same mesh in both a Large and a Medium tier (for example) is perfectly valid. The generator treats each tier independently, so the mesh will be sampled with the weight you assign in each tier separately.
+  </Accordion>
+
+  <Accordion title="I have a Blueprint and a Static Mesh on the same asset row — which one wins?">
+    **Blueprint wins.** When the generator picks that row, it spawns the Blueprint actor. The Static Mesh on the same row acts as a fallback — it is used only if no Blueprint is assigned for the chosen entry.
+
+    Use this pattern when you want actor-based behaviour for most placements but want a lightweight mesh fallback for variety or performance reasons.
+  </Accordion>
+
+  <Accordion title="What are the different flora asset types and when should I use each?">
+    OmniScape supports three flora asset types with different behaviours:
+
+    | Type | How it spawns | Best for |
+    |------|--------------|----------|
+    | **Static Mesh** | Generator's own HISM (Hierarchical Instanced Static Mesh) | Default choice — fast, low overhead |
+    | **Foliage Type** | Unreal's Foliage system | Harvest, interaction, Foliage Mode editing |
+    | **Blueprint** | Spawned as actors | Custom logic, animated plants, pickups |
+
+    When multiple types are defined for the same flora slot, the priority order is **Blueprint → Foliage Type → Static Mesh**.
+  </Accordion>
+
+  <Accordion title="A building's footprint looks wrong — it's colliding with things it shouldn't">
+    Use the **Bounds Override** setting on the affected asset entry. This lets you manually specify the footprint dimensions OmniScape uses for clearance calculations, overriding the automatic bounds derived from the mesh. Useful for meshes with oversized collision boxes, decorative overhangs, or LOD meshes with unusual extents.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Roads & Walls
+
+<AccordionGroup>
+  <Accordion title="What are the optional v3.0 asset slots?">
+    OmniScape v3.0 adds several optional mesh slots across the road and layout systems. All of them are additive — **empty slots are silently skipped**, so you only need to fill in what you want:
+
+    - **Per-class road meshes** — assign different meshes for Arterial, Collector, and Local road classes.
+    - **Tower / Bastion + count** — place defensive towers or bastions in wall segments, with a count per segment.
+    - **Foundation / Plinth** — add a base mesh beneath buildings in the Layout node.
+  </Accordion>
+
+  <Accordion title="My intersection mesh isn't showing up">
+    Intersection meshes require three things to work:
+
+    1. **Current OmniScape build** — update from Fab if you haven't recently.
+    2. **An assigned mesh** in the intersection mesh slot in your road settings.
+    3. **Intersection radius scale** set to a value above zero.
+
+    <Warning>
+      Intersection mesh assignments are **not saved inside presets**. After loading any preset, re-assign the intersection mesh and set the radius scale manually.
+    </Warning>
+  </Accordion>
+
+  <Accordion title="I only changed the walls — do I need to run a full Generate?">
+    Not always. Try **Rebuild Walls Only** first — it regenerates just the wall system without touching the rest of the settlement, which is significantly faster. If the result still looks stale (walls not aligning with roads, gaps appearing), run a full **Generate** to ensure everything is consistent.
+  </Accordion>
+
+  <Accordion title="What is Legacy road mode?">
+    Legacy mode restores the older road-generation rules that were used before OmniScape's current road stack. Its purpose is to let you reproduce a specific layout you generated with an older version of the plugin, using the same seed.
+
+    For new projects, always use the current road stack. Legacy mode is a preservation tool, not a recommended default.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Terrain & Collision
+
+<AccordionGroup>
+  <Accordion title="I'm using a third-party terrain plugin — what do I need to check?">
+    OmniScape's placement traces use the **World Static** collision channel (with a **Visibility** fallback). Your third-party terrain must:
+
+    - Expose **CPU collision** (not GPU-only).
+    - Register on the **World Static** channel.
+    - Have collision that matches the **visible walkable surface** — if the collision shape is offset from the rendered surface, buildings will float or sink.
+
+    Check the terrain plugin's documentation for how to enable or expose CPU collision.
+  </Accordion>
+
+  <Accordion title="Generated roads and walls have no collision">
+    Current OmniScape builds apply **block-all collision** to all generated roads, walls, pillars, and gates automatically. If your generated geometry has no collision, you are on an older build.
+
+    Update OmniScape from [Fab](https://fab.com/s/4aeff49faf04) to restore block-all collision on generated meshes.
+  </Accordion>
+
+  <Accordion title="Can I add custom collision to generated content?">
+    Yes. OmniScape does not prevent you from adding your own collision volumes or collision meshes after generation. Place blocking volumes, custom collision meshes, or invisible walls as normal after the settlement has been generated and saved — they will coexist with the generated content.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Performance
+
+<AccordionGroup>
+  <Accordion title="The editor hitches or freezes during generation">
+    Generation is CPU-intensive. To reduce hitch severity:
+
+    - **Reduce radius** — smaller generation radius means fewer buildings, roads, and traces.
+    - **Reduce node count** — fewer active nodes = less work per generate pass.
+    - **Reduce environment samples** — lower this value in the environment/flora settings.
+    - **Disable Auto mode** — Auto rebuilds everything on every property change. Turn it off while tuning and click Generate manually when you're ready.
+  </Accordion>
+
+  <Accordion title="Should I use runtime generation or bake first?">
+    **Bake first is almost always the right choice for shipped games.** Generate in the editor, save the level, then cook. Players load pre-built meshes and HISMs with no generation cost at runtime.
+
+    Runtime generation (calling `GenerateSettlement` from Blueprint in a cooked build) is useful for:
+    - In-editor tools and level-design utilities
+    - Procedural game modes where the layout must differ every session
+    - Prototyping and testing
+
+    If you do use runtime generation, expect a **frame hitch** unless you enable **Time-sliced spawn** (available in game worlds, not in the editor).
+  </Accordion>
+
+  <Accordion title="How does OmniScape work in multiplayer?">
+    Most shipped multiplayer games use **baked settlements** — generate in the editor, save the level, and all clients load the same saved content. This is the simplest and most performant approach.
+
+    If you generate at runtime in multiplayer:
+    - Whoever calls `GenerateSettlement` bears the hitch cost on their machine.
+    - Keep `GenerationSeed` identical across all clients to produce the same layout on each.
+    - Treat the output like any normal placed actor — replication rules apply as usual.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Packaging & Runtime
+
+<AccordionGroup>
+  <Accordion title="What is the recommended workflow for shipping a game with OmniScape?">
+    The bake-first workflow is recommended for shipped games:
+
+    <Steps>
+      <Step title="Generate in the editor">
+        Set up your generator, click **Generate**, and review the result.
+      </Step>
+      <Step title="Save the level">
+        Use **File → Save All** or the **Save to Level** button. This writes the generated content into the level asset.
+      </Step>
+      <Step title="Cook the project">
+        Package or cook as normal. Players load the saved meshes and HISMs — no generation cost, no hitch.
+      </Step>
+    </Steps>
+
+    The Control Center is an editor-only tool and is not present in cooked builds, which is fine — the saved settlement doesn't need it.
+  </Accordion>
+
+  <Accordion title="Can I call GenerateSettlement at runtime in a cooked build?">
+    Yes. `GenerateSettlement` works in cooked builds and can be called from Blueprint. Keep in mind:
+
+    - The **Control Center** is not available in cooked builds — you must drive generation entirely through Blueprint or C++.
+    - Expect a **frame hitch** on generation. Enable **Time-sliced spawn** to spread the cost across frames (game worlds only).
+    - Set `GenerationSeed` before calling `GenerateSettlement` if you want a specific or reproducible layout.
+  </Accordion>
+
+  <Accordion title="Can I generate the settlement on Begin Play?">
+    Yes, but only for levels that **do not already contain a baked settlement**. If the level was saved with a generated settlement in it, calling `GenerateSettlement` on Begin Play will generate a second copy on top of the existing one, duplicating all the content.
+
+    Use Begin Play generation only for levels that are intentionally empty of pre-baked content.
+  </Accordion>
+
+  <Accordion title="How do I randomize the settlement layout at runtime?">
+    Set `GenerationSeed` to your desired value (or to a random integer), then call `GenerateSettlement`. The seed fully determines the layout — the same seed on the same generator settings always produces the same result.
+
+    For multiplayer, make sure all clients use the same seed before generating.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+<Card title="Still stuck? Ask in the support thread" icon="comments" href="https://gist.github.com/jazzmoradia/6c4383fb51914f9bf083ccd472ee6b12">
+  Post your question in the gist comments. Answers stay searchable for everyone and the thread is monitored around the clock, including evenings and weekends.
+</Card>
