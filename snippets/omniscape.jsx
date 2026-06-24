@@ -17,6 +17,12 @@ function patchMockupHtml(html) {
   if (!/<body[^>]*class=\"[^\"]*embed/.test(out)) {
     out = out.replace('<body>', '<body class="embed">');
   }
+  /* Relative assets resolve against the Mintlify page host and 404 — force CDN URLs */
+  out = out.replace(
+    /href=\"omniscape\.tokens\.css\"/g,
+    'href="https://cdn.jsdelivr.net/gh/jazzmoradia/docs@main/omniscape.tokens.css"'
+  );
+  out = out.replace('<script src="OmniScape_AtlasPreview.js"></script>', '');
   return out;
 }
 
