@@ -5,8 +5,71 @@
  */
 
 export const OmniScapeBundle = (() => {
-/* Mintlify production does not serve root .html assets (404). jsDelivr hosts them from the docs repo. */
-const MOCKUP_SRC = 'https://cdn.jsdelivr.net/gh/jazzmoradia/docs@main/control-center-mockup.html?embed=1';
+/* Fetched and injected via srcDoc — Mintlify prod 404s root .html; CDNs serve text/plain. */
+const MOCKUP_FETCH_URL = 'https://cdn.jsdelivr.net/gh/jazzmoradia/docs@main/control-center-mockup.html';
+
+function patchMockupHtml(html) {
+  let out = html;
+  out = out.replace(
+    "if (params.get('embed') === '1') document.body.classList.add('embed');",
+    "document.body.classList.add('embed');"
+  );
+  if (!/<body[^>]*class=\"[^\"]*embed/.test(out)) {
+    out = out.replace('<body>', '<body class="embed">');
+  }
+  return out;
+}
+
+const MockupFrame = ({ className = 'os-cc-frame', title = 'OmniScape Control Center', loading = 'eager', iframeRef = null }) => {
+  const [srcDoc, setSrcDoc] = useState('');
+  const [status, setStatus] = useState('loading');
+  const localRef = useRef(null);
+  const ref = iframeRef || localRef;
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    let cancelled = false;
+    fetch(MOCKUP_FETCH_URL)
+      .then((r) => {
+        if (!r.ok) throw new Error(String(r.status));
+        return r.text();
+      })
+      .then((html) => {
+        if (cancelled) return;
+        setSrcDoc(patchMockupHtml(html));
+        setStatus('ready');
+      })
+      .catch(() => {
+        if (!cancelled) setStatus('error');
+      });
+    return () => { cancelled = true; };
+  }, []);
+
+  return (
+    <div className="os-cc-frame-host">
+      {status === 'loading' ? (
+        <div className="os-cc-frame-loading" aria-hidden="true">
+          <span>Loading Control Center…</span>
+        </div>
+      ) : null}
+      {status === 'error' ? (
+        <div className="os-cc-frame-fallback">
+          <p>Could not load the interactive mockup.</p>
+          <a href={MOCKUP_FETCH_URL} target="_blank" rel="noopener noreferrer">Open Control Center mockup</a>
+        </div>
+      ) : null}
+      {status === 'ready' ? (
+        <iframe
+          ref={ref}
+          srcDoc={srcDoc}
+          title={title}
+          className={className}
+          loading={loading}
+        />
+      ) : null}
+    </div>
+  );
+};
 
 function mulberry32(a) {
   return function () {
@@ -470,12 +533,7 @@ function useReveal(drawFn, deps) {
 /* ---- HeroPanel — canonical v13 mockup (live iframe) ------------------ */
 const HeroPanel = () => (
   <div className="os-cc-frame-wrap os-cc-frame-wrap--hero">
-    <iframe
-      src={MOCKUP_SRC}
-      title="OmniScape Control Center"
-      className="os-cc-frame"
-      loading="eager"
-    />
+    <MockupFrame title="OmniScape Control Center" loading="eager" />
   </div>
 );
 
@@ -680,11 +738,9 @@ const ControlCenterExplorer = () => {
             <span>Control Center v13</span>
             <span className="os-cc-frame-badge">Canonical mockup</span>
           </div>
-          <iframe
-            ref={iframeRef}
-            src={MOCKUP_SRC}
+          <MockupFrame
+            iframeRef={iframeRef}
             title="OmniScape Control Center — interactive mockup"
-            className="os-cc-frame"
             loading="lazy"
           />
         </div>

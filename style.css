@@ -417,6 +417,38 @@
   border: none;
   background: var(--os-dk0);
 }
+.os-cc-frame-host {
+  position: relative;
+  width: 100%;
+  min-height: inherit;
+}
+.os-cc-frame-loading,
+.os-cc-frame-fallback {
+  display: grid;
+  place-items: center;
+  min-height: clamp(420px, 58vh, 520px);
+  padding: 24px;
+  background: var(--os-dk0);
+  border-radius: inherit;
+  text-align: center;
+}
+.os-cc-frame-loading span {
+  font-family: var(--os-fm);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--os-dk-t2);
+}
+.os-cc-frame-fallback p {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: var(--os-dk-t1);
+}
+.os-cc-frame-fallback a {
+  color: var(--os-dk-amber);
+  font-weight: 600;
+  text-decoration: underline;
+}
 .os-cc-frame-wrap--hero .os-cc-frame {
   height: clamp(480px, 62vh, 580px);
 }
